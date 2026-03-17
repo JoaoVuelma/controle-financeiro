@@ -175,20 +175,40 @@ input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  main { padding: 14px; }
-  .metrics { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .two-col { grid-template-columns: 1fr; }
-  .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
-  .metric-value { font-size: 18px; }
-  .page-title { font-size: 17px; }
-  header { padding: 0 14px; }
-  nav button { padding: 0 14px; font-size: 12px; }
-  #save-label { display: none; }
-}
-@media (max-width: 480px) {
-  .metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
+  main { padding: 12px; }
+  .metrics { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
   .metric { padding: 12px 14px; }
-  .btn { padding: 8px 14px; font-size: 12px; }
+  .metric-value { font-size: 18px; }
+  .metric-label { font-size: 10px; }
+  .two-col { grid-template-columns: 1fr; gap: 12px; }
+  .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
+  .page-title { font-size: 17px; }
+  .card { padding: 14px; }
+  .chart-wrap { height: 180px !important; }
+  header { padding: 0 12px; height: 50px; }
+  nav button { padding: 0 12px; height: 42px; font-size: 12px; }
+  #save-label { display: none; }
+  .btn { padding: 8px 14px; font-size: 13px; min-height: 40px; }
+  .btn-sm { padding: 7px 12px; min-height: 36px; }
+  .btn-xs { padding: 5px 10px; min-height: 32px; font-size: 12px; }
+  .inner-tab { padding: 7px 14px; font-size: 12px; min-height: 36px; }
+  /* Tabelas ficam com scroll horizontal suave */
+  .table-wrap { border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  table { font-size: 12px; }
+  td, th { padding: 8px 8px; }
+  /* Forms mais compactos */
+  .form-section { padding: 14px; }
+  .form-grid { gap: 8px; margin-bottom: 8px; }
+}
+@media (max-width: 400px) {
+  main { padding: 10px; }
+  .metrics { gap: 6px; }
+  .metric { padding: 10px 12px; }
+  .metric-value { font-size: 16px; }
+  .logo { font-size: 14px; }
+  .page-head { margin-bottom: 14px; }
+  .month-sel select { font-size: 12px; }
+  nav button { padding: 0 10px; font-size: 11px; }
 }
 </style>
 </head>
@@ -211,6 +231,7 @@ input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow
   <button onclick="showPage('receitas',this)">Receitas</button>
   <button onclick="showPage('despesas',this)">Despesas</button>
   <button onclick="showPage('parcelas',this)">Parcelas</button>
+  <button onclick="showPage('economias',this)">Economias</button>
   <button onclick="showPage('previsao',this)">Previsão</button>
 </nav>
 
@@ -393,6 +414,78 @@ input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow
   <div class="card"><div class="card-title">Receita vs. despesas — mês a mês</div><div class="chart-wrap" style="height:240px"><canvas id="chartRvsD"></canvas></div></div>
 </div>
 
+<!-- ══ ECONOMIAS ══ -->
+<div id="page-economias" class="page">
+  <div class="page-head">
+    <div class="page-title">Economias</div>
+    <div class="month-sel">
+      <label>Ano</label>
+      <select id="eco-ano" onchange="renderEconomias()" style="width:auto">
+        <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Configurações da poupança -->
+  <div class="card" id="eco-config-card">
+    <div class="card-title">Configuração da poupança</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div class="field">Depósito mensal fixo (R$)
+        <input type="number" id="eco-deposito" value="500" step="10" oninput="renderEconomias()">
+      </div>
+      <div class="field">Taxa anual da poupança (% CDI)
+        <input type="number" id="eco-taxa-cdi" value="120" step="1" oninput="renderEconomias()">
+        <span style="font-size:11px;color:var(--text-t)">Ex: 120 = 120% CDI. CDI atual ≈ 10,5% a.a.</span>
+      </div>
+      <div class="field">Saldo inicial da poupança (R$)
+        <input type="number" id="eco-saldo-inicial" value="0" step="100" oninput="renderEconomias()">
+        <span style="font-size:11px;color:var(--text-t)">Se já tem dinheiro guardado, informe aqui</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Métricas do ano -->
+  <div class="metrics" id="eco-metrics" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+
+  <!-- Gráfico principal: Sobra Caixa + Acumulado Poupança (barras empilhadas) -->
+  <div class="card">
+    <div class="card-title">Caixa + Poupança acumulada — mês a mês</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="chartEcoBar"></canvas></div>
+  </div>
+
+  <!-- Gráfico patrimônio total linha -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Crescimento do patrimônio</div>
+      <div class="chart-wrap"><canvas id="chartEcoPatrimonio"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Rendimento mensal da poupança</div>
+      <div class="chart-wrap"><canvas id="chartEcoRendimento"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Tabela detalhada -->
+  <div class="card">
+    <div class="card-title">Detalhamento mensal</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Sobra do Mês (Caixa)</th>
+            <th>Depósito Poupança</th>
+            <th>Acumulado Poupança</th>
+            <th>Patrimônio Total</th>
+            <th>Rendimento do Mês</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-economias"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 </main>
 <div id="toast"></div>
 
@@ -409,6 +502,8 @@ const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigit
 const fmtK = v => { const a=Math.abs(v); return (v<0?'-':'')+(a>=1000?'R$ '+Math.round(a/100)/10+'k':fmt(v)); };
 const uid = () => Date.now() + Math.floor(Math.random()*9999);
 const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// Formata string ISO "yyyy-mm-dd" para "dd/mm/aaaa" sem conversão de fuso
+const fmtDate = s => { if(!s) return '—'; const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
 
 function toast(msg, duration=2500) {
   const el = document.getElementById('toast');
@@ -499,7 +594,7 @@ function importJSON(e) {
       const activePage = document.querySelector('.page.active');
       if (activePage) {
         const pid = activePage.id.replace('page-','');
-        const renders = { dashboard:renderDash, receitas:renderReceitas, despesas:renderDespesas, parcelas:renderParcelas, previsao:renderPrevisao };
+        const renders = { dashboard:renderDash, receitas:renderReceitas, despesas:renderDespesas, parcelas:renderParcelas, economias:renderEconomias, previsao:renderPrevisao };
         if (renders[pid]) renders[pid]();
       }
       toast('✓ Dados importados com sucesso!');
@@ -519,7 +614,7 @@ function showPage(p, btn) {
   document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
   if (btn) btn.classList.add('active');
-  const renders = { dashboard:renderDash, receitas:renderReceitas, despesas:renderDespesas, parcelas:renderParcelas, previsao:renderPrevisao };
+  const renders = { dashboard:renderDash, receitas:renderReceitas, despesas:renderDespesas, parcelas:renderParcelas, economias:renderEconomias, previsao:renderPrevisao };
   if (renders[p]) renders[p]();
 }
 
@@ -569,11 +664,11 @@ function renderDash() {
     <div class="metric"><div class="metric-label">Receita do mês</div><div class="metric-value mv-green">${fmt(rec)}</div><div class="metric-sub">${MESES[m]} ${y}</div></div>
     <div class="metric"><div class="metric-label">Despesas fixas</div><div class="metric-value mv-red">${fmt(fix)}</div><div class="metric-sub">recorrentes</div></div>
     <div class="metric"><div class="metric-label">Despesas variáveis</div><div class="metric-value mv-amber">${fmt(vari)}</div><div class="metric-sub">parcelas + extras</div></div>
-    <div class="metric"><div class="metric-label">Saldo final</div><div class="metric-value ${saldo>=0?'mv-green':'mv-red'}">${fmt(saldo)}</div><div class="metric-sub">${saldo>=0?'Positivo ✓':'Negativo ⚠'}</div></div>
+    <div class="metric"><div class="metric-label">Sobra do mês</div><div class="metric-value ${saldo>0?'mv-green':'mv-amber'}">${fmt(Math.max(0,saldo))}</div><div class="metric-sub">${saldo>0?'Para economizar ✓':'Mês equilibrado'}</div></div>
   `;
 
   const alerts = [];
-  if (saldo < 0) alerts.push({t:'danger', msg:`Saldo negativo em ${MESES[m]}! Despesas superam a receita em ${fmt(Math.abs(saldo))}.`});
+  if (saldo < 0) alerts.push({t:'danger', msg:`Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}. Reveja os gastos.`});
   const over = state.fixas.filter(f => f.valor > f.limite && f.limite > 0);
   if (over.length) alerts.push({t:'warn', msg:`${over.length} despesa(s) estouraram o limite: ${over.map(f=>escHtml(f.desc)).join(', ')}.`});
   if (rec > 0) { const pct=Math.round((fix+vari)/rec*100); if(pct>85) alerts.push({t:'warn',msg:`${pct}% da renda comprometida este mês.`}); }
@@ -592,14 +687,22 @@ function renderDash() {
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:10, font:{size:11}, padding:8, color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#333' } } } }
   });
 
-  // Saldo acumulado bar
-  let acc=0;
-  const saldos = MESES.map((_,i) => { acc+=getSaldo(i,y); return Math.round(acc); });
+  // Saldo acumulado = economias acumuladas mês a mês (sobra real, pode mostrar crescimento)
+  let acc2=0;
+  const saldosAcc = MESES.map((_,i) => { acc2 += getSaldo(i,y); return Math.round(acc2); });
+  const maxAcc = Math.max(...saldosAcc, 0);
   destroyChart('chartSaldo');
   charts.chartSaldo = new Chart(document.getElementById('chartSaldo'), {
     type:'bar',
-    data:{ labels:MESES.map(m=>m.slice(0,3)), datasets:[{ data:saldos, backgroundColor:saldos.map(s=>s>=0?'rgba(29,158,117,.45)':'rgba(226,75,74,.45)'), borderColor:saldos.map(s=>s>=0?'#1D9E75':'#E24B4A'), borderWidth:1.5, borderRadius:4 }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}}, x:{ticks:{font:{size:10}}} } }
+    data:{ labels:MESES.map(m=>m.slice(0,3)), datasets:[{
+      data: saldosAcc.map(s=>Math.max(0,s)),
+      backgroundColor: saldosAcc.map(s=>s>=0?'rgba(29,158,117,.5)':'rgba(226,75,74,.4)'),
+      borderColor: saldosAcc.map(s=>s>=0?'#1D9E75':'#E24B4A'),
+      borderWidth:1.5, borderRadius:4
+    }]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ y:{min:0, ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}}, x:{ticks:{font:{size:10}}} }
+    }
   });
 
   // Pagamentos bar horizontal
@@ -621,19 +724,18 @@ function renderDash() {
 function renderReceitas() {
   const tb = document.getElementById('tbody-receitas');
   if (!state.receitas.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="es-icon">💵</div><p>Nenhuma receita cadastrada</p></div></td></tr>'; return; }
-  const total = state.receitas.reduce((a,r)=>a+r.valor,0);
   tb.innerHTML = state.receitas.map(r => `
     <tr>
       <td style="font-weight:600">${escHtml(r.desc)}</td>
       <td style="color:var(--green);font-weight:700">${fmt(r.valor)}</td>
-      <td style="color:var(--text-t);font-size:12px">${r.inicio}</td>
-      <td style="color:var(--text-t);font-size:12px">${r.fim}</td>
+      <td style="color:var(--text-t);font-size:12px">${fmtDate(r.inicio)}</td>
+      <td style="color:var(--text-t);font-size:12px">${fmtDate(r.fim)}</td>
       <td><div style="display:flex;gap:6px">
         <button class="btn btn-ghost btn-xs" onclick="editReceita(${r.id})">Editar</button>
         <button class="btn btn-danger btn-xs" onclick="delReceita(${r.id})">Remover</button>
       </div></td>
     </tr>
-  `).join('') + `<tr style="background:var(--bg2)"><td style="font-weight:700;padding:10px">Total anual potencial</td><td style="font-weight:700;color:var(--green)">${fmt(total)}</td><td colspan="3"></td></tr>`;
+  `).join('');
 }
 
 function openFormReceita() {
@@ -668,39 +770,59 @@ function delReceita(id) { if(!confirm('Remover esta receita?')) return; state.re
 function renderDespesas() {
   const tbF = document.getElementById('tbody-fixas');
   if (!state.fixas.length) { tbF.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa</p></div></td></tr>'; }
-  else tbF.innerHTML = state.fixas.map(f => {
-    const diff=f.limite-f.valor, pct=f.limite>0?Math.min(100,Math.round(f.valor/f.limite*100)):0;
-    const status = f.valor===0?'<span class="badge badge-neutral">Não usado</span>':diff<0?`<span class="badge badge-over">Estourou ${fmt(Math.abs(diff))}</span>`:'<span class="badge badge-ok">OK</span>';
-    return `<tr>
-      <td style="font-weight:600">${escHtml(f.desc)}</td>
-      <td>${catWrap(f.cat)}</td>
-      <td>${fmt(f.limite)}</td>
-      <td><span style="font-weight:700">${fmt(f.valor)}</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${diff<0?'#E24B4A':'#1D9E75'}"></div></div><div class="prog-labels"><span>${pct}%</span><span>${fmt(f.limite)}</span></div></td>
-      <td>${status}</td>
-      <td>${payTag(f.pag)}</td>
-      <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="editFixa(${f.id})">Editar</button><button class="btn btn-danger btn-xs" onclick="delFixa(${f.id})">Rem.</button></div></td>
-    </tr>`;
-  }).join('');
+  else {
+    const totalFixas = state.fixas.reduce((a,f)=>a+f.valor,0);
+    const totalLimite = state.fixas.reduce((a,f)=>a+f.limite,0);
+    tbF.innerHTML = state.fixas.map(f => {
+      const diff=f.limite-f.valor, pct=f.limite>0?Math.min(100,Math.round(f.valor/f.limite*100)):0;
+      const status = f.valor===0?'<span class="badge badge-neutral">Não usado</span>':diff<0?`<span class="badge badge-over">Estourou ${fmt(Math.abs(diff))}</span>`:'<span class="badge badge-ok">OK</span>';
+      return `<tr>
+        <td style="font-weight:600">${escHtml(f.desc)}</td>
+        <td>${catWrap(f.cat)}</td>
+        <td>${fmt(f.limite)}</td>
+        <td><span style="font-weight:700">${fmt(f.valor)}</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${diff<0?'#E24B4A':'#1D9E75'}"></div></div><div class="prog-labels"><span>${pct}%</span><span>${fmt(f.limite)}</span></div></td>
+        <td>${status}</td>
+        <td>${payTag(f.pag)}</td>
+        <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="editFixa(${f.id})">Editar</button><button class="btn btn-danger btn-xs" onclick="delFixa(${f.id})">Rem.</button></div></td>
+      </tr>`;
+    }).join('') + `
+      <tr style="background:var(--bg3);border-top:2px solid var(--border-s)">
+        <td colspan="2" style="font-weight:700;padding:10px">Total do mês</td>
+        <td style="font-weight:600;color:var(--text-s)">${fmt(totalLimite)}</td>
+        <td style="font-weight:700;color:var(--red)">${fmt(totalFixas)}</td>
+        <td colspan="3"></td>
+      </tr>`;
+  }
 
   const tbV = document.getElementById('tbody-variaveis');
   if (!state.variaveis.length) { tbV.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="es-icon">🛒</div><p>Nenhuma compra cadastrada</p></div></td></tr>'; }
-  else tbV.innerHTML = state.variaveis.map(v => `
-    <tr>
-      <td style="font-weight:600">${escHtml(v.nome)}</td>
-      <td>${catWrap(v.cat)}</td>
-      <td>${fmt(v.total)}</td>
-      <td style="font-weight:700">${fmt(v.mensal)}</td>
-      <td style="color:var(--text-s)">${v.parcelas}x</td>
-      <td><span style="color:${v.faltam>6?'var(--red)':v.faltam>3?'var(--amber)':'var(--green)'};font-weight:700">${v.faltam}</span></td>
-      <td>${payTag(v.pag)}</td>
-      <td><span class="badge ${v.pago?'badge-pago':'badge-nao'}">${v.pago?'SIM':'NÃO'}</span></td>
-      <td><div style="display:flex;gap:4px;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-xs" onclick="editVariavel(${v.id})">Ed.</button>
-        <button class="btn ${v.pago?'btn-ghost':'btn-success'} btn-xs" onclick="togglePago(${v.id})">${v.pago?'Despagar':'Pagar'}</button>
-        <button class="btn btn-danger btn-xs" onclick="delVariavel(${v.id})">Rem.</button>
-      </div></td>
-    </tr>
-  `).join('');
+  else {
+    const totalMensalV = state.variaveis.filter(v=>v.faltam>0).reduce((a,v)=>a+v.mensal,0);
+    const totalRestanteV = state.variaveis.reduce((a,v)=>a+v.mensal*v.faltam,0);
+    tbV.innerHTML = state.variaveis.map(v => `
+      <tr>
+        <td style="font-weight:600">${escHtml(v.nome)}</td>
+        <td>${catWrap(v.cat)}</td>
+        <td>${fmt(v.total)}</td>
+        <td style="font-weight:700">${fmt(v.mensal)}</td>
+        <td style="color:var(--text-s)">${v.parcelas}x</td>
+        <td><span style="color:${v.faltam>6?'var(--red)':v.faltam>3?'var(--amber)':'var(--green)'};font-weight:700">${v.faltam}</span></td>
+        <td>${payTag(v.pag)}</td>
+        <td><span class="badge ${v.pago?'badge-pago':'badge-nao'}">${v.pago?'SIM':'NÃO'}</span></td>
+        <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-xs" onclick="editVariavel(${v.id})">Ed.</button>
+          <button class="btn ${v.pago?'btn-ghost':'btn-success'} btn-xs" onclick="togglePago(${v.id})">${v.pago?'Despagar':'Pagar'}</button>
+          <button class="btn btn-danger btn-xs" onclick="delVariavel(${v.id})">Rem.</button>
+        </div></td>
+      </tr>
+    `).join('') + `
+      <tr style="background:var(--bg3);border-top:2px solid var(--border-s)">
+        <td colspan="3" style="font-weight:700;padding:10px">Total mensal ativo</td>
+        <td style="font-weight:700;color:var(--red)">${fmt(totalMensalV)}</td>
+        <td colspan="2" style="font-size:12px;color:var(--text-t)">Restante total:</td>
+        <td colspan="3" style="font-weight:700;color:var(--amber)">${fmt(totalRestanteV)}</td>
+      </tr>`;
+  }
 }
 
 function openFormFixa() {
@@ -758,7 +880,22 @@ function saveVariavel() {
   else state.variaveis.push({id:uid(),...obj});
   closeForm('form-variavel'); renderDespesas(); markUnsaved(); toast('Compra/parcela salva!');
 }
-function togglePago(id){const v=state.variaveis.find(v=>v.id===id);if(v){v.pago=!v.pago;renderDespesas();markUnsaved();}}
+function togglePago(id){
+  const v=state.variaveis.find(v=>v.id===id);
+  if(!v) return;
+  if(!v.pago) {
+    // Marcando como pago: desconta 1 parcela
+    v.pago = true;
+    v.faltam = Math.max(0, v.faltam - 1);
+    toast(`✓ Pago! Faltam ${v.faltam} parcelas.`);
+  } else {
+    // Desmarcando: devolve 1 parcela
+    v.pago = false;
+    v.faltam = Math.min(v.parcelas, v.faltam + 1);
+    toast('Marcado como não pago.');
+  }
+  renderDespesas(); markUnsaved();
+}
 function delVariavel(id){if(!confirm('Remover?'))return;state.variaveis=state.variaveis.filter(v=>v.id!==id);renderDespesas();markUnsaved();toast('Removido.');}
 
 // ════════════════════════════════════════
@@ -781,7 +918,7 @@ function renderParcelas() {
           <td style="font-weight:700">${fmt(v.mensal)}</td>
           <td><span style="color:${v.faltam<=2?'var(--amber)':'var(--text)'};font-weight:${v.faltam<=2?700:400}">${v.faltam}x</span></td>
           <td>${fmt(v.mensal*v.faltam)}</td>
-          <td style="font-size:12px;color:var(--text-t)">${d.toLocaleDateString('pt-BR',{month:'short',year:'numeric'})}</td>
+          <td style="font-size:12px;color:var(--text-t)">${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})}</td>
           <td>${v.faltam<=2?'<span class="badge badge-warn">Quase acabando</span>':'<span class="badge badge-neutral">Em andamento</span>'}</td>
         </tr>`;
       }).join('')
@@ -805,43 +942,274 @@ function renderParcelas() {
 // ════════════════════════════════════════
 function renderPrevisao() {
   const now=new Date(), m0=now.getMonth(), y0=now.getFullYear();
-  const labels=[],recs=[],desps=[],saldos=[];
+  const labels=[],recs=[],desps=[],sobras=[],saldosAcc=[];
   let acc=0;
   for(let i=0;i<12;i++){
     const m=(m0+i)%12, y=y0+Math.floor((m0+i)/12);
     const r=getReceitaMes(m,y), d=getDespesaFixa()+getDespesaVariavel(m,y);
-    acc+=(r-d); labels.push(MESES[m].slice(0,3)+'/'+String(y).slice(-2));
-    recs.push(Math.round(r)); desps.push(Math.round(d)); saldos.push(Math.round(acc));
+    const sobra=r-d;
+    acc+=sobra;
+    labels.push(MESES[m].slice(0,3)+'/'+String(y).slice(-2));
+    recs.push(Math.round(r)); desps.push(Math.round(d));
+    sobras.push(Math.round(sobra));
+    saldosAcc.push(Math.round(acc));
   }
 
+  // Gráfico linha: sobra acumulada real
   destroyChart('chartPrevisao');
-  charts.chartPrevisao=new Chart(document.getElementById('chartPrevisao'),{type:'line',data:{labels,datasets:[{label:'Saldo acumulado',data:saldos,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#1D9E75',pointBorderColor:'#fff',pointBorderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},x:{ticks:{font:{size:10}}}}}});
+  charts.chartPrevisao=new Chart(document.getElementById('chartPrevisao'),{
+    type:'line',
+    data:{labels,datasets:[{
+      label:'Caixa acumulado',
+      data:saldosAcc,
+      borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',
+      tension:.4,fill:true,
+      pointRadius:4,pointBackgroundColor:saldosAcc.map(s=>s>=0?'#1D9E75':'#E24B4A'),
+      pointBorderColor:'#fff',pointBorderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},
+        x:{ticks:{font:{size:10}}}
+      }
+    }
+  });
 
+  // Gráfico barras: receita vs despesas
   destroyChart('chartRvsD');
-  charts.chartRvsD=new Chart(document.getElementById('chartRvsD'),{type:'bar',data:{labels,datasets:[{label:'Receita',data:recs,backgroundColor:'rgba(29,158,117,.45)',borderColor:'#1D9E75',borderWidth:1.5,borderRadius:3},{label:'Despesas',data:desps,backgroundColor:'rgba(226,75,74,.45)',borderColor:'#E24B4A',borderWidth:1.5,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{y:{ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},x:{ticks:{font:{size:10}}}}}});
+  charts.chartRvsD=new Chart(document.getElementById('chartRvsD'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Receita',data:recs,backgroundColor:'rgba(29,158,117,.45)',borderColor:'#1D9E75',borderWidth:1.5,borderRadius:3},
+      {label:'Despesas',data:desps,backgroundColor:'rgba(226,75,74,.45)',borderColor:'#E24B4A',borderWidth:1.5,borderRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},
+      scales:{y:{ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},x:{ticks:{font:{size:10}}}}
+    }
+  });
 
-  const recMed=Math.round(recs.reduce((a,v)=>a+v,0)/12), despMed=Math.round(desps.reduce((a,v)=>a+v,0)/12);
-  const taxa=recMed>0?Math.round((recMed-despMed)/recMed*100):0;
-  const comprP=recMed>0?Math.round(state.variaveis.reduce((a,v)=>a+v.mensal,0)/recMed*100):0;
+  const recMed=Math.round(recs.reduce((a,v)=>a+v,0)/12);
+  const despMed=Math.round(desps.reduce((a,v)=>a+v,0)/12);
+  const sobraMed=recMed-despMed;
+  const taxa=recMed>0?Math.round(sobraMed/recMed*100):0;
+  const comprP=recMed>0?Math.round(state.variaveis.filter(v=>v.faltam>0).reduce((a,v)=>a+v.mensal,0)/recMed*100):0;
+  const saldoFinal=saldosAcc[saldosAcc.length-1];
 
   document.getElementById('div-indicadores').innerHTML = `
-    <div class="predict-block"><div class="predict-head"><span>Taxa de poupança média</span><span style="color:${taxa>=20?'var(--green)':'var(--red)'}">${taxa}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${Math.max(0,Math.min(100,taxa))}%;background:${taxa>=20?'#1D9E75':'#E24B4A'}"></div></div><div class="prog-labels"><span>Meta: 20%</span><span>${taxa>=20?'✓ Atingida':'Abaixo da meta'}</span></div></div>
-    <div class="predict-block"><div class="predict-head"><span>Renda em parcelas/mês</span><span style="color:${comprP>30?'var(--red)':comprP>20?'var(--amber)':'var(--green)'}">${comprP}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${Math.min(100,comprP)}%;background:${comprP>30?'#E24B4A':comprP>20?'#BA7517':'#1D9E75'}"></div></div><div class="prog-labels"><span>Ideal: abaixo de 20%</span></div></div>
-    <div style="padding:14px;background:var(--bg2);border-radius:var(--radius-sm);margin-top:16px"><div style="font-size:11px;color:var(--text-t);margin-bottom:4px">Saldo projetado em 12 meses</div><div style="font-size:22px;font-weight:700;letter-spacing:-0.5px;color:${saldos[11]>=0?'var(--green)':'var(--red)'}">${fmt(saldos[11])}</div></div>
-    <div style="margin-top:12px;font-size:12px;color:var(--text-t)">Receita média: ${fmt(recMed)}/mês · Despesa média: ${fmt(despMed)}/mês</div>
+    <div class="predict-block">
+      <div class="predict-head"><span>Taxa de sobra média</span><span style="color:${taxa>=20?'var(--green)':'var(--red)'}">${taxa}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${Math.max(0,Math.min(100,taxa))}%;background:${taxa>=20?'#1D9E75':'#E24B4A'}"></div></div>
+      <div class="prog-labels"><span>Meta: 20%</span><span>${taxa>=20?'✓ Atingida':'Abaixo da meta'}</span></div>
+    </div>
+    <div class="predict-block">
+      <div class="predict-head"><span>Renda em parcelas/mês</span><span style="color:${comprP>30?'var(--red)':comprP>20?'var(--amber)':'var(--green)'}">${comprP}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${Math.min(100,comprP)}%;background:${comprP>30?'#E24B4A':comprP>20?'#BA7517':'#1D9E75'}"></div></div>
+      <div class="prog-labels"><span>Ideal: abaixo de 20%</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm)">
+        <div style="font-size:11px;color:var(--text-t);margin-bottom:3px">Receita média/mês</div>
+        <div style="font-size:18px;font-weight:700;color:var(--green)">${fmt(recMed)}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm)">
+        <div style="font-size:11px;color:var(--text-t);margin-bottom:3px">Despesa média/mês</div>
+        <div style="font-size:18px;font-weight:700;color:var(--red)">${fmt(despMed)}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm)">
+        <div style="font-size:11px;color:var(--text-t);margin-bottom:3px">Sobra média/mês</div>
+        <div style="font-size:18px;font-weight:700;color:${sobraMed>=0?'var(--green)':'var(--red)'}">${fmt(sobraMed)}</div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm)">
+        <div style="font-size:11px;color:var(--text-t);margin-bottom:3px">Caixa em 12 meses</div>
+        <div style="font-size:18px;font-weight:700;color:${saldoFinal>=0?'var(--green)':'var(--red)'}">${fmt(saldoFinal)}</div>
+      </div>
+    </div>
   `;
 
-  const melhor=saldos.indexOf(Math.max(...saldos));
-  const piorMesIdx=recs.map((r,i)=>r-desps[i]).reduce((bi,v,i,a)=>v<a[bi]?i:bi,0);
+  const melhorIdx=sobras.indexOf(Math.max(...sobras));
+  const piorIdx=sobras.indexOf(Math.min(...sobras));
   const quaseAcab=state.variaveis.filter(v=>v.faltam>0&&v.faltam<=3);
+  const mesesNegativos=sobras.filter(s=>s<0).length;
   const icons={danger:'⚠',warn:'⚡',info:'ℹ',success:'✓'};
   const analAlerts=[
-    saldos.some(s=>s<0)?{t:'danger',msg:'Saldo acumulado vai ao negativo na projeção. Revise as despesas.'}:null,
-    {t:'info',msg:`Melhor mês projetado: <strong>${labels[melhor]}</strong> — acumulado de ${fmt(Math.max(...saldos))}`},
-    {t:(recs[piorMesIdx]-desps[piorMesIdx]<0?'danger':'warn'),msg:`Mês mais apertado: <strong>${labels[piorMesIdx]}</strong> — saldo de ${fmt(recs[piorMesIdx]-desps[piorMesIdx])}`},
-    quaseAcab.length?{t:'success',msg:`${quaseAcab.length} parcela(s) terminam em até 3 meses, liberando ${fmt(quaseAcab.reduce((a,v)=>a+v.mensal,0))}/mês.`}:null,
+    mesesNegativos>0?{t:'danger',msg:`${mesesNegativos} mês(es) com despesas maiores que a receita na projeção.`}:null,
+    {t:'info',msg:`Melhor mês: <strong>${labels[melhorIdx]}</strong> — sobra de ${fmt(sobras[melhorIdx])}`},
+    {t:sobras[piorIdx]<0?'danger':'warn',msg:`Mês mais apertado: <strong>${labels[piorIdx]}</strong> — ${fmt(sobras[piorIdx])}`},
+    quaseAcab.length?{t:'success',msg:`${quaseAcab.length} parcela(s) terminam em até 3 meses — libera ${fmt(quaseAcab.reduce((a,v)=>a+v.mensal,0))}/mês.`}:null,
+    saldoFinal>0?{t:'success',msg:`Se manter esse ritmo, acumula ${fmt(saldoFinal)} em caixa nos próximos 12 meses.`}:{t:'danger',msg:`No ritmo atual, o caixa ficará ${fmt(saldoFinal)} no final de 12 meses.`},
   ].filter(Boolean);
   document.getElementById('div-analise').innerHTML = analAlerts.map(a=>`<div class="alert alert-${a.t}"><span class="alert-icon">${icons[a.t]}</span><span>${a.msg}</span></div>`).join('');
+}
+
+// ════════════════════════════════════════
+//  ECONOMIAS
+//  - Sobra do Mês = Receita - Despesas (pode ser negativa → mostrar em vermelho)
+//  - Acumulado Poupança = saldo anterior * (1+taxa_mensal) + depósito
+//  - Acumulado Caixa = soma das sobras mensais (pode ser negativo)
+//  - Patrimônio Total = acumCaixa + acumPoupança
+//  - Rendimento = saldo_poupança_anterior * taxa_mensal
+// ════════════════════════════════════════
+function calcEconomias(y) {
+  const deposito   = parseFloat(document.getElementById('eco-deposito').value) || 500;
+  const taxaCDI    = (parseFloat(document.getElementById('eco-taxa-cdi').value) || 120) / 100;
+  const saldoIni   = parseFloat(document.getElementById('eco-saldo-inicial').value) || 0;
+  const CDI_ANUAL  = 0.105; // CDI referência ~10.5% a.a.
+  const taxaMensal = Math.pow(1 + CDI_ANUAL * taxaCDI, 1/12) - 1;
+
+  const rows = [];
+  let acumPoupanca = saldoIni;
+  let acumCaixa    = 0;
+
+  for (let m = 0; m < 12; m++) {
+    const receita  = getReceitaMes(m, y);
+    const despesa  = getDespesaFixa() + getDespesaVariavel(m, y);
+    const sobraMes = receita - despesa; // REAL — pode ser negativo
+
+    const rendimento = acumPoupanca * taxaMensal;
+    acumPoupanca     = acumPoupanca + rendimento + deposito;
+    acumCaixa       += sobraMes; // acumula a sobra real (pode ficar negativo)
+
+    const patrimonioTotal = acumCaixa + acumPoupanca;
+
+    rows.push({
+      mes: MESES[m],
+      sobraMes:        Math.round(sobraMes * 100) / 100,
+      deposito,
+      acumPoupanca:    Math.round(acumPoupanca * 100) / 100,
+      patrimonioTotal: Math.round(patrimonioTotal * 100) / 100,
+      rendimento:      Math.round(rendimento * 100) / 100,
+      acumCaixa:       Math.round(acumCaixa * 100) / 100,
+    });
+  }
+  return rows;
+}
+
+function renderEconomias() {
+  const y = parseInt(document.getElementById('eco-ano').value);
+  const rows = calcEconomias(y);
+
+  // ── Métricas ──
+  const totalRendimento = rows.reduce((a,r) => a + r.rendimento, 0);
+  const patrimonioFinal = rows[rows.length-1].patrimonioTotal;
+  const melhorMes       = rows.reduce((b,r) => r.sobraMes > b.sobraMes ? r : b, rows[0]);
+  const totalSobras     = rows.reduce((a,r) => a + r.sobraMes, 0);
+  document.getElementById('eco-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">Patrimônio em dez/${String(y).slice(-2)}</div><div class="metric-value ${patrimonioFinal>=0?'mv-green':'mv-red'}">${fmt(patrimonioFinal)}</div><div class="metric-sub">caixa + poupança</div></div>
+    <div class="metric"><div class="metric-label">Acumulado poupança</div><div class="metric-value mv-blue">${fmt(rows[rows.length-1].acumPoupanca)}</div><div class="metric-sub">com juros compostos</div></div>
+    <div class="metric"><div class="metric-label">Rendimento total</div><div class="metric-value mv-amber">${fmt(totalRendimento)}</div><div class="metric-sub">juros da poupança no ano</div></div>
+    <div class="metric"><div class="metric-label">Melhor mês</div><div class="metric-value ${melhorMes.sobraMes>=0?'mv-green':'mv-red'}">${fmt(melhorMes.sobraMes)}</div><div class="metric-sub">${melhorMes.mes}</div></div>
+  `;
+
+  // ── Gráfico empilhado: Acumulado Poupança (vermelho) + Caixa acumulado (azul)
+  //    Caixa acumulado pode ser negativo → usar Math.max(0,...) para não quebrar o stacked chart
+  //    mas mostrar o valor real na tabela
+  destroyChart('chartEcoBar');
+  charts.chartEcoBar = new Chart(document.getElementById('chartEcoBar'), {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.mes.slice(0,3)),
+      datasets: [
+        {
+          label: 'Acumulado Poupança',
+          data: rows.map(r => Math.max(0, Math.round(r.acumPoupanca))),
+          backgroundColor: 'rgba(226,75,74,.65)',
+          borderColor: '#E24B4A',
+          borderWidth: 1.5,
+          borderRadius: 3,
+          stack: 'eco',
+        },
+        {
+          label: 'Caixa Acumulado',
+          data: rows.map(r => Math.max(0, Math.round(r.acumCaixa))),
+          backgroundColor: 'rgba(55,138,221,.65)',
+          borderColor: '#378ADD',
+          borderWidth: 1.5,
+          borderRadius: 3,
+          stack: 'eco',
+        },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { boxWidth: 10, font: { size: 11 } } } },
+      scales: {
+        x: { stacked: true, ticks: { font: { size: 10 } } },
+        y: { stacked: true, min: 0, ticks: { callback: v => fmtK(v), font: { size: 10 } }, grid: { color: 'rgba(128,128,128,.1)' } }
+      }
+    }
+  });
+
+  // ── Gráfico linha: Patrimônio Total ──
+  destroyChart('chartEcoPatrimonio');
+  charts.chartEcoPatrimonio = new Chart(document.getElementById('chartEcoPatrimonio'), {
+    type: 'line',
+    data: {
+      labels: rows.map(r => r.mes.slice(0,3)),
+      datasets: [{
+        label: 'Patrimônio Total',
+        data: rows.map(r => Math.round(r.patrimonioTotal)),
+        borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,.12)',
+        tension: 0.4, fill: true,
+        pointRadius: 4, pointBackgroundColor: '#1D9E75', pointBorderColor: '#fff', pointBorderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => fmtK(v), font: { size: 10 } }, grid: { color: 'rgba(128,128,128,.1)' } },
+        x: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  // ── Gráfico barras: Rendimento mensal ──
+  destroyChart('chartEcoRendimento');
+  charts.chartEcoRendimento = new Chart(document.getElementById('chartEcoRendimento'), {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.mes.slice(0,3)),
+      datasets: [{
+        label: 'Rendimento (R$)',
+        data: rows.map(r => Math.round(r.rendimento * 100) / 100),
+        backgroundColor: 'rgba(186,117,23,.55)',
+        borderColor: '#BA7517',
+        borderWidth: 1.5,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(128,128,128,.1)' } },
+        x: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  // ── Tabela: mostrar valores REAIS (inclusive negativos) com cores corretas ──
+  document.getElementById('tbody-economias').innerHTML = rows.map((r, i) => `
+    <tr style="${i % 2 === 1 ? 'background:var(--bg2)' : ''}">
+      <td style="font-weight:600">${r.mes}</td>
+      <td style="color:${r.sobraMes >= 0 ? 'var(--green)' : 'var(--red)'};font-weight:700">${fmt(r.sobraMes)}</td>
+      <td style="color:var(--blue)">${fmt(r.deposito)}</td>
+      <td style="color:var(--red);font-weight:600">${fmt(r.acumPoupanca)}</td>
+      <td style="color:${r.patrimonioTotal>=0?'var(--green)':'var(--red)'};font-weight:700">${fmt(r.patrimonioTotal)}</td>
+      <td style="color:var(--amber)">${fmt(r.rendimento)}</td>
+    </tr>
+  `).join('') + `
+    <tr style="background:var(--bg3);border-top:2px solid var(--border-s)">
+      <td style="font-weight:700">Total</td>
+      <td style="font-weight:700;color:${totalSobras>=0?'var(--green)':'var(--red)'}">${fmt(totalSobras)}</td>
+      <td style="font-weight:700;color:var(--blue)">${fmt(rows.reduce((a,r)=>a+r.deposito,0))}</td>
+      <td style="color:var(--text-t)">—</td>
+      <td style="font-weight:700;color:${patrimonioFinal>=0?'var(--green)':'var(--red)'}">${fmt(patrimonioFinal)}</td>
+      <td style="font-weight:700;color:var(--amber)">${fmt(totalRendimento)}</td>
+    </tr>
+  `;
 }
 
 // ════════════════════════════════════════
