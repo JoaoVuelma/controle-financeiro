@@ -1657,11 +1657,20 @@
     }
 
     // Verifica se inicio/fim incide no mês M/Y
+    // IMPORTANTE: usa parseLocalDate para evitar o bug de timezone do JS.
+    // new Date('2026-04-01') interpreta como UTC e em fuso BR vira 31/03 às 21h,
+    // fazendo comparações de datas falharem. parseLocalDate força hora local.
+    function parseLocalDate(str) {
+      if (!str) return null;
+      const [y, m, d] = str.split('-').map(Number);
+      return new Date(y, m - 1, d); // mês 0-indexed, sem conversão UTC
+    }
+
     function incideNoMes(inicioStr, fimStr, m, y) {
       const d1 = primeiroDia(m, y);
       const d2 = ultimoDia(m, y);
-      const s  = new Date(inicioStr);
-      const e  = fimStr ? new Date(fimStr) : new Date('2099-12-31');
+      const s  = parseLocalDate(inicioStr);
+      const e  = fimStr ? parseLocalDate(fimStr) : new Date(2099, 11, 31);
       return s <= d2 && e >= d1;
     }
 
@@ -1669,15 +1678,10 @@
     // Usa inicio + parcelas diretamente — sem depender de nenhum mês de referência fixo.
     // Retorna > 0 se o mês M ainda está dentro da janela de parcelas.
     function parcelasRestantesEm(v, m, y) {
-      const inicio    = new Date(v.inicio);
-      // Índice absoluto do mês de início (em meses desde ano 0)
+      const inicio    = parseLocalDate(v.inicio);
       const inicioAbs = inicio.getFullYear() * 12 + inicio.getMonth();
-      // Índice absoluto do mês consultado
       const mAbs      = y * 12 + m;
-      // Quantas parcelas já passaram (0 no primeiro mês, 1 no segundo, ...)
       const jaPassaram = mAbs - inicioAbs;
-      // Parcelas restantes neste mês = total − quantas já passaram
-      // Se jaPassaram < 0 → ainda não começou → retorna 0
       if (jaPassaram < 0) return 0;
       return v.parcelas - jaPassaram;
     }
@@ -2042,7 +2046,7 @@
         tbV.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="es-icon">🛒</div><p>Nenhuma compra cadastrada</p></div></td></tr>';
       } else {
         tbV.innerHTML = sortedV.map(v => {
-          const ativaNoMes = parcelasRestantesEm(v, m, y) > 0 && new Date(v.inicio) <= ultimoDia(m, y);
+          const ativaNoMes = parcelasRestantesEm(v, m, y) > 0 && parseLocalDate(v.inicio) <= ultimoDia(m, y);
           return `
             <tr style="${!ativaNoMes ? 'opacity:.45' : ''}">
               <td style="font-weight:600">${escHtml(v.nome)}</td>
@@ -2268,7 +2272,7 @@
 
       // Parcelas que ainda têm saldo a partir do mês selecionado
       const ativas = state.variaveis
-        .filter(v => parcelasRestantesEm(v, m, y) > 0 && new Date(v.inicio) <= ultimoDia(m, y))
+        .filter(v => parcelasRestantesEm(v, m, y) > 0 && parseLocalDate(v.inicio) <= ultimoDia(m, y))
         .sort((a, b) => a.inicio.localeCompare(b.inicio));
 
       // Comprometimento = o que realmente cai no mês selecionado
@@ -2295,7 +2299,7 @@
 
       document.getElementById('tbody-parcelas').innerHTML = ativas.length
         ? ativas.map(v => {
-            const fim = new Date(v.inicio);
+            const fim = parseLocalDate(v.inicio);
             fim.setMonth(fim.getMonth() + v.parcelas);
             return `
               <tr>
@@ -2356,7 +2360,7 @@
       // Gráfico: liberação por mês (quando cada parcela termina)
       const libT = {};
       ativas.forEach(v => {
-        const fim = new Date(v.inicio);
+        const fim = parseLocalDate(v.inicio);
         fim.setMonth(fim.getMonth() + v.parcelas);
         const key = MESES[fim.getMonth()].slice(0, 3) + '/' + String(fim.getFullYear()).slice(-2);
         libT[key] = (libT[key] || 0) + v.mensal;
