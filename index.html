@@ -518,38 +518,45 @@ function payTag(p) { return `<span class="pay-tag ${PAY_CLASS[p]||'pt-dinheiro'}
 function catWrap(c) { return `<span class="cat-wrap"><span class="cat-dot" style="background:${CAT_COLORS[c]||'#888'}"></span>${escHtml(c)}</span>`; }
 
 // ════════════════════════════════════════
-//  DEFAULT DATA
+//  DEFAULT DATA — alinhado com planilha
 // ════════════════════════════════════════
 const DEFAULT_STATE = {
   receitas: [
-    { id:1, desc:'Salário', valor:2250, inicio:'2026-02-01', fim:'2026-12-31' },
-    { id:2, desc:'Vale', valor:750, inicio:'2026-02-25', fim:'2026-12-25' },
-    { id:3, desc:'Pagamento de Férias', valor:2900, inicio:'2026-04-01', fim:'2026-04-01' },
-    { id:4, desc:'13º Salário (1ª Parcela)', valor:1250, inicio:'2026-11-01', fim:'2026-11-01' },
-    { id:5, desc:'13º Salário (2ª Parcela)', valor:1000, inicio:'2026-12-01', fim:'2026-12-01' },
+    // Janeiro: salário indicativo (recebido em jan, referente a dez/25)
+    { id: 101, desc: 'Salário', valor: 2550, inicio: '2026-01-01', fim: '2026-01-01' },
+    // Fevereiro: salário indicativo
+    { id: 102, desc: 'Salário', valor: 1092, inicio: '2026-02-17', fim: '2026-02-17' },
+    // Março em diante: salário + vale recorrentes
+    { id: 1, desc: 'Salário', valor: 2250, inicio: '2026-03-01', fim: '2026-12-31' },
+    { id: 2, desc: 'Vale', valor: 750, inicio: '2026-03-01', fim: '2026-12-25' },
+    { id: 3, desc: 'Pagamento de Férias', valor: 2900, inicio: '2026-04-01', fim: '2026-04-01' },
+    { id: 4, desc: '13º Salário (1ª Parcela)', valor: 1250, inicio: '2026-11-01', fim: '2026-11-01' },
+    { id: 5, desc: '13º Salário (2ª Parcela)', valor: 1000, inicio: '2026-12-01', fim: '2026-12-01' },
   ],
   fixas: [
-    { id:1, desc:'Faculdade', cat:'Educação', limite:517, valor:517, pag:'Cartão Sicredi', inicio:'2026-01-01', fim:'' },
-    { id:2, desc:'Corte', cat:'Saúde', limite:100, valor:100, pag:'Cartão Sicredi', inicio:'2026-01-01', fim:'' },
-    { id:3, desc:'Streaming', cat:'Serviços', limite:183, valor:183, pag:'Cartão Sicredi', inicio:'2026-01-01', fim:'' },
-    { id:4, desc:'Poupança', cat:'Investimentos', limite:500, valor:0, pag:'Poupança', inicio:'2026-01-02', fim:'' },
-    { id:5, desc:'Mercado', cat:'Alimentação', limite:100, valor:150, pag:'Cartão Sicredi', inicio:'2026-01-02', fim:'' },
-    { id:6, desc:'Farmácia', cat:'Saúde', limite:50, valor:60, pag:'Cartão Sicredi', inicio:'2026-01-02', fim:'' },
-    { id:7, desc:'Lazer mensal', cat:'Lazer', limite:450, valor:1500, pag:'Cartão Sicredi', inicio:'2026-01-02', fim:'' },
+    { id: 1, desc: 'Faculdade', cat: 'Educação', limite: 517, valor: 517, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
+    { id: 2, desc: 'Corte', cat: 'Saúde', limite: 100, valor: 100, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
+    { id: 3, desc: 'Streaming', cat: 'Serviços', limite: 183, valor: 183, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
+    { id: 4, desc: 'Poupança', cat: 'Investimentos', limite: 500, valor: 500, pag: 'Poupança', inicio: '2026-04-01', fim: '' },
+    { id: 5, desc: 'Mercado', cat: 'Alimentação', limite: 100, valor: 150, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
+    { id: 6, desc: 'Farmácia', cat: 'Saúde', limite: 50, valor: 60, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
+    { id: 7, desc: 'Lazer mensal', cat: 'Lazer', limite: 450, valor: 500, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
   ],
+  // Variáveis: "inicio" = mês em que aparece na fatura = mês trabalhado
+  // O pagamento efetivo ocorre no mês seguinte (salário do mês seguinte paga a fatura)
   variaveis: [
-    { id:1, nome:'Mercado Livre 2', cat:'Compra', total:52, mensal:26, parcelas:2, faltam:1, pag:'Cartão M Pago', inicio:'2026-02-12', pago:false },
-    { id:2, nome:'Airbnb', cat:'Lazer', total:438, mensal:73, parcelas:6, faltam:5, pag:'Cartão Banri', inicio:'2026-02-12', pago:false },
-    { id:3, nome:'Perfume', cat:'Compra', total:756, mensal:63, parcelas:12, faltam:11, pag:'Cartão M Pago', inicio:'2026-02-12', pago:false },
-    { id:4, nome:'Renner', cat:'Compra', total:180, mensal:60, parcelas:3, faltam:2, pag:'Cartão Sicredi', inicio:'2026-02-20', pago:false },
-    { id:5, nome:'C&A', cat:'Compra', total:326, mensal:163, parcelas:2, faltam:2, pag:'Cartão M Pago', inicio:'2026-03-01', pago:false },
-    { id:6, nome:'Crédito Banri', cat:'Crédito', total:86, mensal:86, parcelas:3, faltam:2, pag:'Conta Corrente Banri', inicio:'2026-03-01', pago:false },
-    { id:7, nome:'H&M', cat:'Compra', total:348, mensal:58, parcelas:6, faltam:6, pag:'Cartão Sicredi', inicio:'2026-03-01', pago:false },
-    { id:8, nome:'Crédito Mercado', cat:'Crédito', total:610, mensal:122, parcelas:5, faltam:4, pag:'Conta Corrente M Pago', inicio:'2026-03-02', pago:false },
-    { id:9, nome:'Amazon 1', cat:'Compra', total:288, mensal:48, parcelas:6, faltam:6, pag:'Cartão Banri', inicio:'2026-03-09', pago:false },
-    { id:10, nome:'Aniversário Júlia', cat:'Lazer', total:660, mensal:110, parcelas:6, faltam:6, pag:'Pix', inicio:'2026-09-01', pago:false },
-    { id:11, nome:'Nike', cat:'Compra', total:660, mensal:110, parcelas:6, faltam:6, pag:'Cartão Sicredi', inicio:'2026-01-01', pago:false },
-    { id:12, nome:'Hering', cat:'Compra', total:264, mensal:66, parcelas:4, faltam:2, pag:'Pix', inicio:'2026-04-01', pago:false },
+    { id: 11, nome: 'Nike', cat: 'Compra', total: 660, mensal: 110, parcelas: 6, faltam: 6, pag: 'Cartão Sicredi', inicio: '2026-01-01', pago: false },
+    { id: 1, nome: 'Mercado Livre 2', cat: 'Compra', total: 52, mensal: 26, parcelas: 2, faltam: 1, pag: 'Cartão M Pago', inicio: '2026-02-12', pago: false },
+    { id: 2, nome: 'Airbnb', cat: 'Lazer', total: 438, mensal: 73, parcelas: 6, faltam: 5, pag: 'Cartão Banri', inicio: '2026-02-12', pago: false },
+    { id: 3, nome: 'Perfume', cat: 'Compra', total: 756, mensal: 63, parcelas: 12, faltam: 11, pag: 'Cartão M Pago', inicio: '2026-02-12', pago: false },
+    { id: 4, nome: 'Renner', cat: 'Compra', total: 180, mensal: 60, parcelas: 3, faltam: 2, pag: 'Cartão Sicredi', inicio: '2026-02-20', pago: false },
+    { id: 5, nome: 'C&A', cat: 'Compra', total: 326, mensal: 163, parcelas: 2, faltam: 2, pag: 'Cartão M Pago', inicio: '2026-03-01', pago: false },
+    { id: 6, nome: 'Crédito Banri', cat: 'Crédito', total: 86, mensal: 86, parcelas: 3, faltam: 2, pag: 'Conta Corrente Banri', inicio: '2026-03-01', pago: false },
+    { id: 7, nome: 'H&M', cat: 'Compra', total: 348, mensal: 58, parcelas: 6, faltam: 6, pag: 'Cartão Sicredi', inicio: '2026-03-01', pago: false },
+    { id: 8, nome: 'Crédito Mercado', cat: 'Crédito', total: 610, mensal: 122, parcelas: 5, faltam: 4, pag: 'Conta Corrente M Pago', inicio: '2026-03-02', pago: false },
+    { id: 9, nome: 'Amazon 1', cat: 'Compra', total: 288, mensal: 48, parcelas: 6, faltam: 6, pag: 'Cartão Banri', inicio: '2026-03-09', pago: false },
+    { id: 12, nome: 'Hering', cat: 'Compra', total: 264, mensal: 66, parcelas: 4, faltam: 2, pag: 'Pix', inicio: '2026-04-01', pago: false },
+    { id: 10, nome: 'Aniversário Júlia', cat: 'Lazer', total: 660, mensal: 110, parcelas: 6, faltam: 6, pag: 'Pix', inicio: '2026-09-01', pago: false },
   ]
 };
 
@@ -636,7 +643,20 @@ function clearForm(id) {
 
 // ════════════════════════════════════════
 //  COMPUTE
+//
+//  REGRA DE NEGÓCIO CENTRAL:
+//  - Janeiro e Fevereiro são meses "indicativos" — só mostram receita recebida,
+//    sem sobra/saldo (saldo = R$0,00 nesses meses)
+//  - Despesas do mês M são pagas com o salário de M+1:
+//    Ex: despesas de março → cobradas em abril (fatura fecha em março, paga em abril)
+//    Logo: getDespesaVariavel(m) usa parcelas com inicio <= fim do mês M-1
+//    e a receita de M paga as despesas de M-1
+//  - Na prática: para calcular a SOBRA do mês M (quanto sobra no bolso em M),
+//    usamos: Receita(M) - Despesas_que_vencem_em_M
+//    onde "despesas que vencem em M" = despesas cadastradas com inicio <= M-1
 // ════════════════════════════════════════
+const MESES_INDICATIVOS = [0, 1]; // Janeiro=0, Fevereiro=1
+
 function getReceitaMes(m, y=2026) {
   const d1 = new Date(y, m, 1), d2 = new Date(y, m+1, 0);
   return state.receitas.filter(r => {
@@ -644,13 +664,42 @@ function getReceitaMes(m, y=2026) {
     return s <= d2 && e >= d1;
   }).reduce((a,r) => a + r.valor, 0);
 }
-function getDespesaFixa() { return state.fixas.reduce((a,f) => a + f.valor, 0); }
+
+// Despesas fixas: só contam a partir de março (meses não-indicativos)
+// Para meses indicativos, retorna 0
+function getDespesaFixa(m=99) {
+  if (MESES_INDICATIVOS.includes(m)) return 0;
+  return state.fixas.reduce((a,f) => a + f.valor, 0);
+}
+
+// Despesas variáveis do mês M = parcelas cuja fatura fechou no mês ANTERIOR (M-1)
+// Ou seja: inicio <= fim do mês (M-1), ainda com faltam > 0
+// Para janeiro/fevereiro retorna 0 (indicativos)
 function getDespesaVariavel(m, y=2026) {
-  const d2 = new Date(y, m+1, 0);
-  return state.variaveis.filter(v => new Date(v.inicio) <= d2 && v.faltam > 0)
+  if (MESES_INDICATIVOS.includes(m)) return 0;
+  // Fatura fecha no mês anterior: d2 = fim do mês M-1
+  const prevM = m === 0 ? 11 : m - 1;
+  const prevY = m === 0 ? y - 1 : y;
+  const d2prev = new Date(prevY, prevM + 1, 0); // último dia do mês anterior
+  return state.variaveis
+    .filter(v => new Date(v.inicio) <= d2prev && v.faltam > 0)
     .reduce((a,v) => a + v.mensal, 0);
 }
-function getSaldo(m, y=2026) { return getReceitaMes(m,y) - getDespesaFixa() - getDespesaVariavel(m,y); }
+
+// getSaldo: para meses indicativos retorna 0 (sem sobra/perda)
+function getSaldo(m, y=2026) {
+  if (MESES_INDICATIVOS.includes(m)) return 0;
+  return getReceitaMes(m,y) - getDespesaFixa(m) - getDespesaVariavel(m,y);
+}
+
+// Para exibir as despesas variáveis NA TABELA do mês (o que está sendo consumido naquele mês,
+// independente de quando paga) — usado só na aba Despesas
+function getDespesaVariavelMesAtual(m, y=2026) {
+  const d2 = new Date(y, m+1, 0);
+  return state.variaveis
+    .filter(v => new Date(v.inicio) <= d2 && v.faltam > 0)
+    .reduce((a,v) => a + v.mensal, 0);
+}
 
 // ════════════════════════════════════════
 //  DASHBOARD
@@ -658,24 +707,29 @@ function getSaldo(m, y=2026) { return getReceitaMes(m,y) - getDespesaFixa() - ge
 function renderDash() {
   const m = parseInt(document.getElementById('dash-mes').value);
   const y = parseInt(document.getElementById('dash-ano').value);
-  const rec = getReceitaMes(m,y), fix = getDespesaFixa(), vari = getDespesaVariavel(m,y), saldo = rec-fix-vari;
+  const isIndicativo = MESES_INDICATIVOS.includes(m);
+  const rec = getReceitaMes(m,y);
+  const fix = getDespesaFixa(m);
+  const vari = getDespesaVariavel(m,y);
+  const saldo = getSaldo(m,y);
 
   document.getElementById('dash-metrics').innerHTML = `
     <div class="metric"><div class="metric-label">Receita do mês</div><div class="metric-value mv-green">${fmt(rec)}</div><div class="metric-sub">${MESES[m]} ${y}</div></div>
-    <div class="metric"><div class="metric-label">Despesas fixas</div><div class="metric-value mv-red">${fmt(fix)}</div><div class="metric-sub">recorrentes</div></div>
-    <div class="metric"><div class="metric-label">Despesas variáveis</div><div class="metric-value mv-amber">${fmt(vari)}</div><div class="metric-sub">parcelas + extras</div></div>
-    <div class="metric"><div class="metric-label">Sobra do mês</div><div class="metric-value ${saldo>0?'mv-green':'mv-amber'}">${fmt(Math.max(0,saldo))}</div><div class="metric-sub">${saldo>0?'Para economizar ✓':'Mês equilibrado'}</div></div>
+    <div class="metric"><div class="metric-label">Despesas fixas</div><div class="metric-value ${isIndicativo?'mv-amber':'mv-red'}">${isIndicativo?'—':fmt(fix)}</div><div class="metric-sub">${isIndicativo?'mês indicativo':'recorrentes'}</div></div>
+    <div class="metric"><div class="metric-label">Despesas variáveis</div><div class="metric-value ${isIndicativo?'mv-amber':'mv-amber'}">${isIndicativo?'—':fmt(vari)}</div><div class="metric-sub">${isIndicativo?'mês indicativo':'faturas do mês anterior'}</div></div>
+    <div class="metric"><div class="metric-label">Sobra do mês</div><div class="metric-value ${isIndicativo?'mv-amber':saldo>0?'mv-green':'mv-red'}">${isIndicativo?'R$ 0,00':fmt(saldo)}</div><div class="metric-sub">${isIndicativo?'mês indicativo':saldo>0?'Para economizar ✓':'Despesas > receita'}</div></div>
   `;
 
   const alerts = [];
-  if (saldo < 0) alerts.push({t:'danger', msg:`Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}. Reveja os gastos.`});
+  if (!isIndicativo && saldo < 0) alerts.push({t:'danger', msg:`Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}. Reveja os gastos.`});
+  if (isIndicativo) alerts.push({t:'info', msg:`${MESES[m]} é um mês indicativo — mostra apenas a receita recebida. O controle efetivo começa em março.`});
   const over = state.fixas.filter(f => f.valor > f.limite && f.limite > 0);
-  if (over.length) alerts.push({t:'warn', msg:`${over.length} despesa(s) estouraram o limite: ${over.map(f=>escHtml(f.desc)).join(', ')}.`});
-  if (rec > 0) { const pct=Math.round((fix+vari)/rec*100); if(pct>85) alerts.push({t:'warn',msg:`${pct}% da renda comprometida este mês.`}); }
+  if (!isIndicativo && over.length) alerts.push({t:'warn', msg:`${over.length} despesa(s) estouraram o limite: ${over.map(f=>escHtml(f.desc)).join(', ')}.`});
+  if (!isIndicativo && rec > 0) { const pct=Math.round((fix+vari)/rec*100); if(pct>85) alerts.push({t:'warn',msg:`${pct}% da renda comprometida este mês.`}); }
   const icons = { danger:'⚠', warn:'⚡', info:'ℹ', success:'✓' };
   document.getElementById('dash-alerts').innerHTML = alerts.map(a => `<div class="alert alert-${a.t}"><span class="alert-icon">${icons[a.t]}</span><span>${a.msg}</span></div>`).join('');
 
-  // Categorias doughnut
+  // Categorias doughnut — só despesas reais (não indicativos)
   const catT = {};
   state.fixas.forEach(f => { catT[f.cat]=(catT[f.cat]||0)+f.valor; });
   state.variaveis.forEach(v => { catT[v.cat]=(catT[v.cat]||0)+v.mensal; });
@@ -684,24 +738,27 @@ function renderDash() {
   charts.chartCat = new Chart(document.getElementById('chartCat'), {
     type:'doughnut',
     data:{ labels:catE.map(c=>c[0]), datasets:[{ data:catE.map(c=>Math.round(c[1])), backgroundColor:catE.map(c=>CAT_COLORS[c[0]]||'#888'), borderWidth:2, borderColor:'transparent' }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:10, font:{size:11}, padding:8, color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#333' } } } }
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ boxWidth:10, font:{size:11}, padding:8 } } } }
   });
 
-  // Saldo acumulado = economias acumuladas mês a mês (sobra real, pode mostrar crescimento)
+  // Saldo acumulado anual — jan/fev = 0 (indicativo), março em diante acumula a sobra real
   let acc2=0;
-  const saldosAcc = MESES.map((_,i) => { acc2 += getSaldo(i,y); return Math.round(acc2); });
-  const maxAcc = Math.max(...saldosAcc, 0);
+  const saldosAcc = MESES.map((_,i) => {
+    const s = getSaldo(i, y); // jan/fev já retorna 0
+    acc2 += s;
+    return Math.round(acc2);
+  });
   destroyChart('chartSaldo');
   charts.chartSaldo = new Chart(document.getElementById('chartSaldo'), {
     type:'bar',
-    data:{ labels:MESES.map(m=>m.slice(0,3)), datasets:[{
-      data: saldosAcc.map(s=>Math.max(0,s)),
+    data:{ labels:MESES.map(mes=>mes.slice(0,3)), datasets:[{
+      data: saldosAcc,
       backgroundColor: saldosAcc.map(s=>s>=0?'rgba(29,158,117,.5)':'rgba(226,75,74,.4)'),
       borderColor: saldosAcc.map(s=>s>=0?'#1D9E75':'#E24B4A'),
       borderWidth:1.5, borderRadius:4
     }]},
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ y:{min:0, ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}}, x:{ticks:{font:{size:10}}} }
+      scales:{ y:{ ticks:{callback:v=>fmtK(v),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}}, x:{ticks:{font:{size:10}}} }
     }
   });
 
@@ -724,7 +781,8 @@ function renderDash() {
 function renderReceitas() {
   const tb = document.getElementById('tbody-receitas');
   if (!state.receitas.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="es-icon">💵</div><p>Nenhuma receita cadastrada</p></div></td></tr>'; return; }
-  tb.innerHTML = state.receitas.map(r => `
+  const sorted = [...state.receitas].sort((a,b) => a.inicio.localeCompare(b.inicio));
+  tb.innerHTML = sorted.map(r => `
     <tr>
       <td style="font-weight:600">${escHtml(r.desc)}</td>
       <td style="color:var(--green);font-weight:700">${fmt(r.valor)}</td>
@@ -769,11 +827,12 @@ function delReceita(id) { if(!confirm('Remover esta receita?')) return; state.re
 // ════════════════════════════════════════
 function renderDespesas() {
   const tbF = document.getElementById('tbody-fixas');
-  if (!state.fixas.length) { tbF.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa</p></div></td></tr>'; }
+  const sortedFixas = [...state.fixas].sort((a,b) => a.inicio.localeCompare(b.inicio));
+  if (!sortedFixas.length) { tbF.innerHTML='<tr><td colspan="7"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa</p></div></td></tr>'; }
   else {
-    const totalFixas = state.fixas.reduce((a,f)=>a+f.valor,0);
-    const totalLimite = state.fixas.reduce((a,f)=>a+f.limite,0);
-    tbF.innerHTML = state.fixas.map(f => {
+    const totalFixas = sortedFixas.reduce((a,f)=>a+f.valor,0);
+    const totalLimite = sortedFixas.reduce((a,f)=>a+f.limite,0);
+    tbF.innerHTML = sortedFixas.map(f => {
       const diff=f.limite-f.valor, pct=f.limite>0?Math.min(100,Math.round(f.valor/f.limite*100)):0;
       const status = f.valor===0?'<span class="badge badge-neutral">Não usado</span>':diff<0?`<span class="badge badge-over">Estourou ${fmt(Math.abs(diff))}</span>`:'<span class="badge badge-ok">OK</span>';
       return `<tr>
@@ -795,11 +854,12 @@ function renderDespesas() {
   }
 
   const tbV = document.getElementById('tbody-variaveis');
-  if (!state.variaveis.length) { tbV.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="es-icon">🛒</div><p>Nenhuma compra cadastrada</p></div></td></tr>'; }
+  const sortedVar = [...state.variaveis].sort((a,b) => a.inicio.localeCompare(b.inicio));
+  if (!sortedVar.length) { tbV.innerHTML='<tr><td colspan="9"><div class="empty-state"><div class="es-icon">🛒</div><p>Nenhuma compra cadastrada</p></div></td></tr>'; }
   else {
-    const totalMensalV = state.variaveis.filter(v=>v.faltam>0).reduce((a,v)=>a+v.mensal,0);
-    const totalRestanteV = state.variaveis.reduce((a,v)=>a+v.mensal*v.faltam,0);
-    tbV.innerHTML = state.variaveis.map(v => `
+    const totalMensalV = sortedVar.filter(v=>v.faltam>0).reduce((a,v)=>a+v.mensal,0);
+    const totalRestanteV = sortedVar.reduce((a,v)=>a+v.mensal*v.faltam,0);
+    tbV.innerHTML = sortedVar.map(v => `
       <tr>
         <td style="font-weight:600">${escHtml(v.nome)}</td>
         <td>${catWrap(v.cat)}</td>
@@ -910,7 +970,7 @@ function renderParcelas() {
     <div class="metric"><div class="metric-label">Prazo mais longo</div><div class="metric-value mv-blue">${maxP} meses</div></div>
   `;
   document.getElementById('tbody-parcelas').innerHTML = aberto.length
-    ? aberto.sort((a,b)=>b.faltam-a.faltam).map(v=>{
+    ? aberto.sort((a,b) => a.inicio.localeCompare(b.inicio)).map(v=>{
         const d=new Date(v.inicio); d.setMonth(d.getMonth()+v.parcelas);
         return `<tr>
           <td style="font-weight:600">${escHtml(v.nome)}</td>
@@ -946,7 +1006,7 @@ function renderPrevisao() {
   let acc=0;
   for(let i=0;i<12;i++){
     const m=(m0+i)%12, y=y0+Math.floor((m0+i)/12);
-    const r=getReceitaMes(m,y), d=getDespesaFixa()+getDespesaVariavel(m,y);
+    const r=getReceitaMes(m,y), d=getDespesaFixa(m)+getDespesaVariavel(m,y);
     const sobra=r-d;
     acc+=sobra;
     labels.push(MESES[m].slice(0,3)+'/'+String(y).slice(-2));
@@ -1064,11 +1124,12 @@ function calcEconomias(y) {
 
   for (let m = 0; m < 12; m++) {
     const receita  = getReceitaMes(m, y);
-    const despesa  = getDespesaFixa() + getDespesaVariavel(m, y);
-    const sobraMes = receita - despesa; // REAL — pode ser negativo
+    const despesa  = getDespesaFixa(m) + getDespesaVariavel(m, y);
+    const sobraMes = MESES_INDICATIVOS.includes(m) ? 0 : receita - despesa;
 
     const rendimento = acumPoupanca * taxaMensal;
-    acumPoupanca     = acumPoupanca + rendimento + deposito;
+    const depositoMes = MESES_INDICATIVOS.includes(m) ? 0 : deposito;
+    acumPoupanca     = acumPoupanca + rendimento + depositoMes;
     acumCaixa       += sobraMes; // acumula a sobra real (pode ficar negativo)
 
     const patrimonioTotal = acumCaixa + acumPoupanca;
@@ -1076,10 +1137,10 @@ function calcEconomias(y) {
     rows.push({
       mes: MESES[m],
       sobraMes:        Math.round(sobraMes * 100) / 100,
-      deposito,
+      deposito:        depositoMes,
       acumPoupanca:    Math.round(acumPoupanca * 100) / 100,
       patrimonioTotal: Math.round(patrimonioTotal * 100) / 100,
-      rendimento:      Math.round(rendimento * 100) / 100,
+      rendimento:      MESES_INDICATIVOS.includes(m) ? 0 : Math.round(rendimento * 100) / 100,
       acumCaixa:       Math.round(acumCaixa * 100) / 100,
     });
   }
@@ -1217,7 +1278,9 @@ function renderEconomias() {
 // ════════════════════════════════════════
 (function init() {
   const now = new Date();
-  document.getElementById('dash-mes').value = now.getMonth();
+  // Mostrar mês atual, mas se for jan/fev mostrar março (primeiro mês real)
+  const mes = now.getMonth() <= 1 ? 2 : now.getMonth();
+  document.getElementById('dash-mes').value = mes;
   document.getElementById('dash-ano').value = now.getFullYear();
   renderDash();
 })();
