@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T23:13:07.762Z",
+  "_savedAt": "2026-03-17T23:27:33.459Z",
   "receitas": [
     {
       "id": 1,
@@ -108,6 +108,66 @@
       "pag": 1,
       "inicio": "2026-01-02",
       "fim": ""
+    },
+    {
+      "id": 1773789585114,
+      "desc": "Restante do Colchão",
+      "cat": 10,
+      "limite": 200,
+      "valor": 200,
+      "pag": 5,
+      "inicio": "2026-03-17",
+      "fim": "2026-03-17"
+    },
+    {
+      "id": 1773789614203,
+      "desc": "Pizza e presente",
+      "cat": 5,
+      "limite": 170,
+      "valor": 170,
+      "pag": 5,
+      "inicio": "2026-03-17",
+      "fim": "2026-03-17"
+    },
+    {
+      "id": 1773789667362,
+      "desc": "Viagem Ferias Maio",
+      "cat": 5,
+      "limite": 1800,
+      "valor": 1400,
+      "pag": 5,
+      "inicio": "2026-05-17",
+      "fim": "2026-05-18"
+    },
+    {
+      "id": 1773789710617,
+      "desc": "Faculdade",
+      "cat": 3,
+      "limite": 800,
+      "valor": 800,
+      "pag": 1,
+      "inicio": "2026-07-01",
+      "fim": "2026-12-17"
+    },
+    {
+      "id": 1773789748371,
+      "desc": "Ferias Final de Ano",
+      "cat": 5,
+      "limite": 1500,
+      "valor": 1250,
+      "pag": 5,
+      "inicio": "2026-12-17",
+      "fim": "2026-12-17"
+    },
+    {
+      "id": 1773790019143,
+      "desc": "Parafusadeira",
+      "cat": 10,
+      "limite": 200,
+      "valor": 200,
+      "pag": 5,
+      "inicio": "2026-03-17",
+      "fim": "2026-03-17"
     }
   ],
   "variaveis": [
@@ -241,6 +301,42 @@
       "faltam": 6,
       "pag": 5,
       "inicio": "2026-09-01",
+      "pago": false
+    },
+    {
+      "id": 1773789812145,
+      "nome": "Amazon 2",
+      "cat": 10,
+      "total": 105,
+      "mensal": 35,
+      "parcelas": 3,
+      "faltam": 3,
+      "pag": 1,
+      "inicio": "2026-03-17",
+      "pago": false
+    },
+    {
+      "id": 1773789860361,
+      "nome": "Quadros",
+      "cat": 10,
+      "total": 156,
+      "mensal": 52,
+      "parcelas": 3,
+      "faltam": 3,
+      "pag": 3,
+      "inicio": "2026-03-17",
+      "pago": false
+    },
+    {
+      "id": 1773789924962,
+      "nome": "Mercado Livre 3",
+      "cat": 10,
+      "total": 720,
+      "mensal": 60,
+      "parcelas": 12,
+      "faltam": 12,
+      "pag": 2,
+      "inicio": "2026-03-17",
       "pago": false
     }
   ]
