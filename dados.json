@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T23:08:45.309Z",
+  "_savedAt": "2026-03-17T23:11:02.011Z",
   "receitas": [
     {
       "id": 1,
@@ -111,18 +111,6 @@
     }
   ],
   "variaveis": [
-    {
-      "id": 11,
-      "nome": "Nike",
-      "cat": 10,
-      "total": 660,
-      "mensal": 110,
-      "parcelas": 6,
-      "faltam": 6,
-      "pag": 1,
-      "inicio": "2026-01-01",
-      "pago": false
-    },
     {
       "id": 1,
       "nome": "Mercado Livre 2",
