@@ -786,7 +786,6 @@ async function githubLoad() {
     setSyncStatus('error', 'Token não configurado');
     document.getElementById('btn-salvar').style.display = 'inline-flex';
     setSyncStatus('error', 'Configure o token ⚙');
-    // Usa dados padrão e renderiza normalmente
     state = JSON.parse(JSON.stringify(DEFAULT_STATE));
     reRenderActive();
     return;
@@ -800,7 +799,6 @@ async function githubLoad() {
     );
 
     if (res.status === 404) {
-      // Arquivo ainda não existe — usar dados padrão e avisar
       setSyncStatus('ok', 'Novo arquivo (salve para criar)');
       document.getElementById('btn-salvar').style.display = 'inline-flex';
       state = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -811,8 +809,18 @@ async function githubLoad() {
 
     const json = await res.json();
     ghFileSha = json.sha;
-    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
-    state = { receitas: decoded.receitas||[], fixas: decoded.fixas||[], variaveis: decoded.variaveis||[] };
+    
+    // CORREÇÃO: Decodificação Base64 com suporte a UTF-8 (Acentos)
+    const b64 = json.content.replace(/\n/g, '');
+    const decodedText = decodeURIComponent(escape(atob(b64)));
+    const decoded = JSON.parse(decodedText);
+    
+    state = { 
+      receitas: decoded.receitas || [], 
+      fixas: decoded.fixas || [], 
+      variaveis: decoded.variaveis || [] 
+    };
+    
     markSaved();
     reRenderActive();
     toast('✓ Dados carregados do GitHub!');
@@ -833,14 +841,17 @@ async function githubSave() {
   document.getElementById('btn-salvar').disabled = true;
 
   const payload = { _version: 1, _savedAt: new Date().toISOString(), ...state };
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+  
+  // CORREÇÃO: Codificação Base64 com suporte a UTF-8 (Acentos)
+  const jsonString = JSON.stringify(payload, null, 2);
+  const content = btoa(unescape(encodeURIComponent(jsonString)));
 
   const body = {
     message: `dados: atualização ${new Date().toLocaleString('pt-BR')}`,
     content,
     branch: GH_BRANCH,
   };
-  if (ghFileSha) body.sha = ghFileSha; // necessário para update
+  if (ghFileSha) body.sha = ghFileSha;
 
   try {
     const res = await fetch(
@@ -860,7 +871,7 @@ async function githubSave() {
       throw new Error(err.message || `HTTP ${res.status}`);
     }
     const json = await res.json();
-    ghFileSha = json.content.sha; // atualiza SHA para próximo save
+    ghFileSha = json.content.sha;
     markSaved();
     toast('✓ Dados salvos no GitHub!');
   } catch(err) {
@@ -1026,12 +1037,12 @@ function getDespesaVariavelMesAtual(m, y = 2026) {
 function renderDash() {
   const m = parseInt(document.getElementById('dash-mes').value);
   const y = parseInt(document.getElementById('dash-ano').value);
-  const isIndicativo = MESES_INDICATIVOS.includes(m);
-  const rec = getReceitaMes(m,y);
-  const fix = getDespesaFixa(m);
-  const vari = getDespesaVariavel(m,y);
-  const saldo = getSaldo(m,y);
-
+  
+  const isIndicativo = MESES_INDICATIVOS.includes(m) && y === 2026;
+  const rec = getReceitaMes(m, y);
+  const fix = getDespesaFixa(m, y);
+  const vari = getDespesaVariavel(m, y);
+  const saldo = getSaldo(m, y);
   document.getElementById('dash-metrics').innerHTML = `
     <div class="metric"><div class="metric-label">Receita do mês</div><div class="metric-value mv-green">${fmt(rec)}</div><div class="metric-sub">${MESES[m]} ${y}</div></div>
     <div class="metric"><div class="metric-label">Despesas fixas</div><div class="metric-value ${isIndicativo?'mv-amber':'mv-red'}">${isIndicativo?'—':fmt(fix)}</div><div class="metric-sub">${isIndicativo?'mês indicativo':'recorrentes'}</div></div>
