@@ -1,10 +1,10 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T20:04:45.745Z",
+  "_savedAt": "2026-03-17T20:31:47.207Z",
   "receitas": [
     {
       "id": 1,
-      "desc": "Salário",
+      "desc": "SalÃ¡rio",
       "valor": 2250,
       "inicio": "2026-01-01",
       "fim": "2026-12-31"
@@ -18,21 +18,21 @@
     },
     {
       "id": 3,
-      "desc": "Pagamento de Férias",
+      "desc": "Pagamento de FÃ©rias",
       "valor": 2900,
       "inicio": "2026-04-01",
       "fim": "2026-04-01"
     },
     {
       "id": 4,
-      "desc": "13º Salário (1ª Parcela)",
+      "desc": "13Âº SalÃ¡rio (1Âª Parcela)",
       "valor": 1250,
       "inicio": "2026-11-01",
       "fim": "2026-11-01"
     },
     {
       "id": 5,
-      "desc": "13º Salário (2ª Parcela)",
+      "desc": "13Âº SalÃ¡rio (2Âª Parcela)",
       "valor": 1000,
       "inicio": "2026-12-01",
       "fim": "2026-12-01"
@@ -52,50 +52,50 @@
     {
       "id": 2,
       "desc": "Corte",
-      "cat": "Saúde",
+      "cat": "SaÃºde",
       "limite": 100,
       "valor": 100,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-01-01",
       "fim": ""
     },
     {
       "id": 3,
       "desc": "Streaming",
-      "cat": "Serviços",
+      "cat": "ServiÃ§os",
       "limite": 183,
       "valor": 183,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-01-01",
       "fim": ""
     },
     {
       "id": 4,
-      "desc": "Poupança",
+      "desc": "PoupanÃ§a",
       "cat": "Investimentos",
       "limite": 500,
       "valor": 500,
-      "pag": "Poupança",
+      "pag": "PoupanÃ§a",
       "inicio": "2026-04-01",
       "fim": ""
     },
     {
       "id": 5,
       "desc": "Mercado",
-      "cat": "Alimentação",
+      "cat": "AlimentaÃ§Ã£o",
       "limite": 100,
       "valor": 150,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-01-02",
       "fim": ""
     },
     {
       "id": 6,
-      "desc": "Farmácia",
-      "cat": "Saúde",
+      "desc": "FarmÃ¡cia",
+      "cat": "SaÃºde",
       "limite": 50,
       "valor": 60,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-01-02",
       "fim": ""
     },
@@ -105,13 +105,13 @@
       "cat": "Lazer",
       "limite": 450,
       "valor": 500,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-01-02",
       "fim": ""
     },
     {
       "id": 1773777561213,
-      "desc": "Restante Colchão",
+      "desc": "Restante ColchÃ£o",
       "cat": "Compra",
       "limite": 200,
       "valor": 200,
@@ -152,10 +152,10 @@
     {
       "id": 1773777786097,
       "desc": "Faculdade",
-      "cat": "Educação",
+      "cat": "EducaÃ§Ã£o",
       "limite": 800,
       "valor": 800,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-07-01",
       "fim": "2026-12-17"
     },
@@ -179,7 +179,7 @@
       "mensal": 26,
       "parcelas": 2,
       "faltam": 1,
-      "pag": "Cartão M Pago",
+      "pag": "CartÃ£o M Pago",
       "inicio": "2026-02-12",
       "pago": false
     },
@@ -191,7 +191,7 @@
       "mensal": 73,
       "parcelas": 6,
       "faltam": 5,
-      "pag": "Cartão Banri",
+      "pag": "CartÃ£o Banri",
       "inicio": "2026-02-12",
       "pago": false
     },
@@ -203,7 +203,7 @@
       "mensal": 63,
       "parcelas": 12,
       "faltam": 11,
-      "pag": "Cartão M Pago",
+      "pag": "CartÃ£o M Pago",
       "inicio": "2026-02-12",
       "pago": false
     },
@@ -215,7 +215,7 @@
       "mensal": 60,
       "parcelas": 3,
       "faltam": 2,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-02-20",
       "pago": false
     },
@@ -227,14 +227,14 @@
       "mensal": 163,
       "parcelas": 2,
       "faltam": 2,
-      "pag": "Cartão M Pago",
+      "pag": "CartÃ£o M Pago",
       "inicio": "2026-03-01",
       "pago": false
     },
     {
       "id": 6,
-      "nome": "Crédito Banri",
-      "cat": "Crédito",
+      "nome": "CrÃ©dito Banri",
+      "cat": "CrÃ©dito",
       "total": 86,
       "mensal": 86,
       "parcelas": 3,
@@ -251,14 +251,14 @@
       "mensal": 58,
       "parcelas": 6,
       "faltam": 6,
-      "pag": "Cartão Sicredi",
+      "pag": "CartÃ£o Sicredi",
       "inicio": "2026-03-01",
       "pago": false
     },
     {
       "id": 8,
-      "nome": "Crédito Mercado",
-      "cat": "Crédito",
+      "nome": "CrÃ©dito Mercado",
+      "cat": "CrÃ©dito",
       "total": 610,
       "mensal": 122,
       "parcelas": 5,
@@ -275,7 +275,7 @@
       "mensal": 48,
       "parcelas": 6,
       "faltam": 6,
-      "pag": "Cartão Banri",
+      "pag": "CartÃ£o Banri",
       "inicio": "2026-03-09",
       "pago": false
     },
@@ -293,7 +293,7 @@
     },
     {
       "id": 10,
-      "nome": "Aniversário Júlia",
+      "nome": "AniversÃ¡rio JÃºlia",
       "cat": "Lazer",
       "total": 660,
       "mensal": 110,
