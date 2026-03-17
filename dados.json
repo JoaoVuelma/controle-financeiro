@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T23:27:33.459Z",
+  "_savedAt": "2026-03-17T23:35:17.165Z",
   "receitas": [
     {
       "id": 1,
@@ -168,6 +168,26 @@
       "pag": 5,
       "inicio": "2026-03-17",
       "fim": "2026-03-17"
+    },
+    {
+      "id": 1773790374844,
+      "desc": "Extra Cartão Sicredi",
+      "cat": 11,
+      "limite": 300,
+      "valor": 250,
+      "pag": 1,
+      "inicio": "2026-03-17",
+      "fim": "2026-03-17"
+    },
+    {
+      "id": 1773790424236,
+      "desc": "Extra Cartão Banri",
+      "cat": 11,
+      "limite": 400,
+      "valor": 360,
+      "pag": 3,
+      "inicio": "2026-03-18",
+      "fim": "2026-03-19"
     }
   ],
   "variaveis": [
@@ -262,9 +282,9 @@
       "total": 610,
       "mensal": 122,
       "parcelas": 5,
-      "faltam": 4,
+      "faltam": 3,
       "pag": 8,
-      "inicio": "2026-03-02",
+      "inicio": "2026-04-02",
       "pago": false
     },
     {
@@ -337,6 +357,18 @@
       "faltam": 12,
       "pag": 2,
       "inicio": "2026-03-17",
+      "pago": false
+    },
+    {
+      "id": 1773790234629,
+      "nome": "Credito Mercado 2",
+      "cat": 9,
+      "total": 1157,
+      "mensal": 105.18,
+      "parcelas": 11,
+      "faltam": 11,
+      "pag": 8,
+      "inicio": "2026-04-17",
       "pago": false
     }
   ]
