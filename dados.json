@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T20:01:00.431Z",
+  "_savedAt": "2026-03-17T20:03:59.167Z",
   "receitas": [
     {
       "id": 1,
@@ -47,7 +47,7 @@
       "valor": 517,
       "pag": "Cartão Sicredi",
       "inicio": "2026-01-01",
-      "fim": ""
+      "fim": "2026-06-17"
     },
     {
       "id": 2,
@@ -135,6 +135,36 @@
       "cat": "Lazer",
       "limite": 170,
       "valor": 170,
+      "pag": "Pix",
+      "inicio": "2026-03-17",
+      "fim": "2026-03-17"
+    },
+    {
+      "id": 1773777720800,
+      "desc": "Ferias de Maio",
+      "cat": "Lazer",
+      "limite": 1800,
+      "valor": 1400,
+      "pag": "Pix",
+      "inicio": "2026-05-01",
+      "fim": "2026-05-01"
+    },
+    {
+      "id": 1773777786097,
+      "desc": "Faculdade",
+      "cat": "Educação",
+      "limite": 800,
+      "valor": 800,
+      "pag": "Cartão Sicredi",
+      "inicio": "2026-07-01",
+      "fim": "2026-12-17"
+    },
+    {
+      "id": 1773777840040,
+      "desc": "Parafusadeira",
+      "cat": "Compra",
+      "limite": 150,
+      "valor": 150,
       "pag": "Pix",
       "inicio": "2026-03-17",
       "fim": "2026-03-17"
