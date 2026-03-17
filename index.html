@@ -918,63 +918,106 @@ function clearForm(id) {
 }
 
 // ════════════════════════════════════════
-//  COMPUTE
-//
-//  REGRA DE NEGÓCIO CENTRAL:
-//  - Janeiro e Fevereiro são meses "indicativos" — só mostram receita recebida,
-//    sem sobra/saldo (saldo = R$0,00 nesses meses)
-//  - Despesas do mês M são pagas com o salário de M+1:
-//    Ex: despesas de março → cobradas em abril (fatura fecha em março, paga em abril)
-//    Logo: getDespesaVariavel(m) usa parcelas com inicio <= fim do mês M-1
-//    e a receita de M paga as despesas de M-1
-//  - Na prática: para calcular a SOBRA do mês M (quanto sobra no bolso em M),
-//    usamos: Receita(M) - Despesas_que_vencem_em_M
-//    onde "despesas que vencem em M" = despesas cadastradas com inicio <= M-1
+//  COMPUTE (LÓGICA TEMPORAL CORRIGIDA)
 // ════════════════════════════════════════
+
 const MESES_INDICATIVOS = [0, 1]; // Janeiro=0, Fevereiro=1
 
-function getReceitaMes(m, y=2026) {
-  const d1 = new Date(y, m, 1), d2 = new Date(y, m+1, 0);
-  return state.receitas.filter(r => {
-    const s = new Date(r.inicio), e = new Date(r.fim || '2099-12-31');
-    return s <= d2 && e >= d1;
-  }).reduce((a,r) => a + r.valor, 0);
+/**
+ * Converte Ano e Mês para um valor numérico absoluto.
+ * Ex: 2026/Março (2026, 2) vira 24314.
+ * Isso facilita a verificação se um mês está dentro de um período.
+ */
+function getMesAnoAbs(ano, mes) {
+  return (ano * 12) + mes;
 }
 
-// Despesas fixas: só contam a partir de março (meses não-indicativos)
-// Para meses indicativos, retorna 0
-function getDespesaFixa(m=99) {
-  if (MESES_INDICATIVOS.includes(m)) return 0;
-  return state.fixas.reduce((a,f) => a + f.valor, 0);
+/**
+ * Lê uma string de data "YYYY-MM-DD" ou "YYYY-MM" e retorna o Mês Absoluto.
+ */
+function parseDataAbs(dataString) {
+  if (!dataString) return null;
+  const [y, m] = dataString.split('-');
+  return getMesAnoAbs(parseInt(y), parseInt(m) - 1);
 }
 
-// Despesas variáveis do mês M = parcelas cuja fatura fechou no mês ANTERIOR (M-1)
-// Ou seja: inicio <= fim do mês (M-1), ainda com faltam > 0
-// Para janeiro/fevereiro retorna 0 (indicativos)
-function getDespesaVariavel(m, y=2026) {
-  if (MESES_INDICATIVOS.includes(m)) return 0;
-  // Fatura fecha no mês anterior: d2 = fim do mês M-1
-  const prevM = m === 0 ? 11 : m - 1;
-  const prevY = m === 0 ? y - 1 : y;
-  const d2prev = new Date(prevY, prevM + 1, 0); // último dia do mês anterior
-  return state.variaveis
-    .filter(v => new Date(v.inicio) <= d2prev && v.faltam > 0)
-    .reduce((a,v) => a + v.mensal, 0);
+// ── RECEITAS ────────────────────────────────────
+function getReceitaMes(m, y = 2026) {
+  const mesAtualAbs = getMesAnoAbs(y, m);
+
+  return state.receitas.reduce((total, r) => {
+    const inicioAbs = parseDataAbs(r.inicio);
+    // Se a receita não tem data de fim, jogamos para o "infinito"
+    const fimAbs = r.fim ? parseDataAbs(r.fim) : 999999; 
+
+    // Só soma se o mês pesquisado estiver dentro do período da receita
+    if (mesAtualAbs >= inicioAbs && mesAtualAbs <= fimAbs) {
+      return total + r.valor;
+    }
+    return total;
+  }, 0);
 }
 
-// getSaldo: para meses indicativos retorna 0 (sem sobra/perda)
-function getSaldo(m, y=2026) {
-  if (MESES_INDICATIVOS.includes(m)) return 0;
-  return getReceitaMes(m,y) - getDespesaFixa(m) - getDespesaVariavel(m,y);
+// ── DESPESAS FIXAS ──────────────────────────────
+function getDespesaFixa(m, y = 2026) {
+  // Mantendo sua regra de negócio para os meses indicativos de 2026
+  if (MESES_INDICATIVOS.includes(m) && y === 2026) return 0;
+
+  const mesAtualAbs = getMesAnoAbs(y, m);
+
+  return state.fixas.reduce((total, f) => {
+    const inicioAbs = parseDataAbs(f.inicio);
+    const fimAbs = f.fim ? parseDataAbs(f.fim) : 999999;
+
+    if (mesAtualAbs >= inicioAbs && mesAtualAbs <= fimAbs) {
+      return total + f.valor;
+    }
+    return total;
+  }, 0);
 }
 
-// Para exibir as despesas variáveis NA TABELA do mês (o que está sendo consumido naquele mês,
-// independente de quando paga) — usado só na aba Despesas
-function getDespesaVariavelMesAtual(m, y=2026) {
-  const d2 = new Date(y, m+1, 0);
+// ── DESPESAS VARIÁVEIS / PARCELADAS ─────────────
+// Regra: "O pagamento efetivo ocorre no mês seguinte".
+// Se a compra/fatura iniciou no mês M, ela impacta o saldo no mês M+1.
+function getDespesaVariavel(m, y = 2026) {
+  if (MESES_INDICATIVOS.includes(m) && y === 2026) return 0;
+
+  const mesPagamentoAbs = getMesAnoAbs(y, m);
+
+  return state.variaveis.reduce((total, v) => {
+    const inicioFaturaAbs = parseDataAbs(v.inicio);
+    
+    // O impacto no caixa ocorre 1 mês depois do registro da fatura
+    const inicioPagamento = inicioFaturaAbs + 1;
+    
+    // Termina 'x' parcelas depois de começar a pagar
+    const fimPagamento = inicioPagamento + v.parcelas - 1;
+
+    // Se o mês que estamos analisando cai dentro da janela de parcelas
+    if (mesPagamentoAbs >= inicioPagamento && mesPagamentoAbs <= fimPagamento) {
+      return total + v.mensal;
+    }
+    return total;
+  }, 0);
+}
+
+// ── SALDO ───────────────────────────────────────
+function getSaldo(m, y = 2026) {
+  if (MESES_INDICATIVOS.includes(m) && y === 2026) return 0;
+  
+  const totalReceita = getReceitaMes(m, y);
+  const totalFixa = getDespesaFixa(m, y);
+  const totalVariavel = getDespesaVariavel(m, y);
+  
+  return totalReceita - totalFixa - totalVariavel;
+}
+
+// Essa função continuará alimentando apenas a tabela visual do mês atual
+function getDespesaVariavelMesAtual(m, y = 2026) {
+  const d2 = new Date(y, m + 1, 0);
   return state.variaveis
     .filter(v => new Date(v.inicio) <= d2 && v.faltam > 0)
-    .reduce((a,v) => a + v.mensal, 0);
+    .reduce((a, v) => a + v.mensal, 0);
 }
 
 // ════════════════════════════════════════
