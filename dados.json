@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-17T20:03:59.167Z",
+  "_savedAt": "2026-03-17T20:04:45.745Z",
   "receitas": [
     {
       "id": 1,
@@ -171,18 +171,6 @@
     }
   ],
   "variaveis": [
-    {
-      "id": 11,
-      "nome": "Nike",
-      "cat": "Compra",
-      "total": 660,
-      "mensal": 110,
-      "parcelas": 6,
-      "faltam": 6,
-      "pag": "Cartão Sicredi",
-      "inicio": "2026-01-01",
-      "pago": false
-    },
     {
       "id": 1,
       "nome": "Mercado Livre 2",
