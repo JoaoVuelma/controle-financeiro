@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:20:07.082Z",
+  "_savedAt": "2026-03-30T17:26:30.049Z",
   "receitas": [
     {
       "id": 1,
@@ -144,7 +144,7 @@
       "id": 1773789667362,
       "desc": "Viagem Ferias Maio",
       "cat": 5,
-      "limite": 1800,
+      "limite": 1400,
       "valor": 1400,
       "pag": 5,
       "inicio": "2026-05-17",
