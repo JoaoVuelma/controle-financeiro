@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:12:26.361Z",
+  "_savedAt": "2026-03-30T17:20:07.082Z",
   "receitas": [
     {
       "id": 1,
@@ -426,6 +426,18 @@
       "faltam": 5,
       "pag": 2,
       "inicio": "2026-03-30",
+      "pago": false
+    },
+    {
+      "id": 1774891145800,
+      "nome": "Credito Mercado 3",
+      "cat": 9,
+      "total": 1255,
+      "mensal": 104.58,
+      "parcelas": 12,
+      "faltam": 11,
+      "pag": 8,
+      "inicio": "2026-04-30",
       "pago": false
     }
   ]
