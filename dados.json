@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:34:08.392Z",
+  "_savedAt": "2026-03-30T17:37:23.609Z",
   "receitas": [
     {
       "id": 1,
@@ -209,6 +209,26 @@
       "pag": 5,
       "inicio": "2026-04-01",
       "fim": "2026-04-01"
+    },
+    {
+      "id": 1774892186068,
+      "desc": "Pagamento de Credito Mercado 2",
+      "cat": 9,
+      "limite": 743,
+      "valor": 743,
+      "pag": 8,
+      "inicio": "2026-04-30",
+      "fim": "2026-04-30"
+    },
+    {
+      "id": 1774892241194,
+      "desc": "Pagamento de Credito Mercado 3",
+      "cat": 9,
+      "limite": 460,
+      "valor": 460,
+      "pag": 8,
+      "inicio": "2026-04-30",
+      "fim": "2026-04-30"
     }
   ],
   "variaveis": [
