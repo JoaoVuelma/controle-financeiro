@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:10:29.880Z",
+  "_savedAt": "2026-03-30T17:12:26.361Z",
   "receitas": [
     {
       "id": 1,
@@ -278,10 +278,10 @@
       "cat": 9,
       "total": 86,
       "mensal": 86,
-      "parcelas": 3,
-      "faltam": 2,
+      "parcelas": 1,
+      "faltam": 1,
       "pag": 7,
-      "inicio": "2026-03-01",
+      "inicio": "2026-04-01",
       "pago": false
     },
     {
