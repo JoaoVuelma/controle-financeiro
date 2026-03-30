@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:07:33.081Z",
+  "_savedAt": "2026-03-30T17:10:29.880Z",
   "receitas": [
     {
       "id": 1,
@@ -50,6 +50,13 @@
       "valor": 2700,
       "inicio": "2026-07-01",
       "fim": "2026-12-30"
+    },
+    {
+      "id": 1774890483375,
+      "desc": "Alemão e let",
+      "valor": 80,
+      "inicio": "2026-04-01",
+      "fim": "2026-04-01"
     }
   ],
   "fixas": [
@@ -407,6 +414,18 @@
       "faltam": 11,
       "pag": 1,
       "inicio": "2026-04-01",
+      "pago": false
+    },
+    {
+      "id": 1774890631600,
+      "nome": "Mercado Livre Extra",
+      "cat": 10,
+      "total": 150,
+      "mensal": 30,
+      "parcelas": 5,
+      "faltam": 5,
+      "pag": 2,
+      "inicio": "2026-03-30",
       "pago": false
     }
   ]
