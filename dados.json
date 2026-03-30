@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:26:30.049Z",
+  "_savedAt": "2026-03-30T17:34:08.392Z",
   "receitas": [
     {
       "id": 1,
@@ -94,10 +94,10 @@
       "id": 4,
       "desc": "Poupanca",
       "cat": 7,
-      "limite": 500,
-      "valor": 500,
+      "limite": 700,
+      "valor": 700,
       "pag": 6,
-      "inicio": "2026-04-01",
+      "inicio": "2026-06-01",
       "fim": "2026-12-31"
     },
     {
@@ -381,18 +381,6 @@
       "pago": false
     },
     {
-      "id": 1773790234629,
-      "nome": "Credito Mercado 2",
-      "cat": 9,
-      "total": 1157,
-      "mensal": 105.18,
-      "parcelas": 11,
-      "faltam": 11,
-      "pag": 8,
-      "inicio": "2026-04-17",
-      "pago": false
-    },
-    {
       "id": 1774888847145,
       "nome": "PC",
       "cat": 10,
@@ -426,18 +414,6 @@
       "faltam": 5,
       "pag": 2,
       "inicio": "2026-03-30",
-      "pago": false
-    },
-    {
-      "id": 1774891145800,
-      "nome": "Credito Mercado 3",
-      "cat": 9,
-      "total": 1255,
-      "mensal": 104.58,
-      "parcelas": 12,
-      "faltam": 11,
-      "pag": 8,
-      "inicio": "2026-04-30",
       "pago": false
     }
   ]
