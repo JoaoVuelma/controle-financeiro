@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:37:23.609Z",
+  "_savedAt": "2026-03-30T17:52:36.810Z",
   "receitas": [
     {
       "id": 1,
@@ -229,6 +229,16 @@
       "pag": 8,
       "inicio": "2026-04-30",
       "fim": "2026-04-30"
+    },
+    {
+      "id": 1774893100399,
+      "desc": "Menos o saldo do mes passado",
+      "cat": 9,
+      "limite": 440,
+      "valor": 440,
+      "pag": 5,
+      "inicio": "2026-04-01",
+      "fim": "2026-04-01"
     }
   ],
   "variaveis": [
