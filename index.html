@@ -1087,10 +1087,6 @@
         <div class="card-title">Configuração da poupança</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
           <div class="field">
-            Depósito mensal fixo (R$)
-            <input type="number" id="eco-deposito" value="500" step="10" oninput="renderEconomias()">
-          </div>
-          <div class="field">
             Taxa anual (% CDI)
             <input type="number" id="eco-taxa-cdi" value="120" step="1" oninput="renderEconomias()">
             <span style="font-size:11px;color:var(--text-t)">Ex: 120 = 120% do CDI ≈ 10,5% a.a.</span>
@@ -1099,6 +1095,10 @@
             Saldo inicial da poupança (R$)
             <input type="number" id="eco-saldo-inicial" value="0" step="100" oninput="renderEconomias()">
             <span style="font-size:11px;color:var(--text-t)">Informe se já tem dinheiro guardado</span>
+          </div>
+          <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm);font-size:12px;color:var(--green-dark)">
+            <strong>Depósito automático</strong><br>
+            O valor depositado em cada mês é lido das despesas fixas com pagamento <em>Poupança</em> — respeitando o período de vigência de cada uma.
           </div>
         </div>
       </div>
@@ -2406,7 +2406,6 @@
        - Patrimônio    = acumCaixa + acumPoupança
     ================================================================ */
     function calcEconomias(y) {
-      const deposito   = parseFloat(document.getElementById('eco-deposito').value)     || 500;
       const taxaCDI    = (parseFloat(document.getElementById('eco-taxa-cdi').value)    || 120) / 100;
       const saldoIni   = parseFloat(document.getElementById('eco-saldo-inicial').value)|| 0;
 
@@ -2419,11 +2418,16 @@
       let acumCaixa    = 0;
 
       for (let m = 0; m < 12; m++) {
-        const sobraMes   = getSaldoMes(m, y);
+        const sobraMes = getSaldoMes(m, y);
+
+        // Rendimento sobre o saldo atual antes do depósito
         const rendimento = acumPoupanca * taxaMensal;
 
-        // Só deposita na poupança se há sobra positiva no mês
-        const depositoMes = sobraMes > 0 ? deposito : 0;
+        // Depósito = soma das despesas fixas com pagamento Poupança (pag === 6)
+        // vigentes neste mês, respeitando inicio/fim de cada uma
+        const depositoMes = mesZerado(m, y) ? 0 : state.fixas
+          .filter(f => (f.pag === 6 || f.pag === 'Poupança') && incideNoMes(f.inicio, f.fim, m, y))
+          .reduce((acc, f) => acc + f.valor, 0);
 
         acumPoupanca = acumPoupanca + rendimento + depositoMes;
         acumCaixa   += sobraMes;
