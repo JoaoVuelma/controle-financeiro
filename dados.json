@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-31T12:57:57.565Z",
+  "_savedAt": "2026-03-31T13:01:53.709Z",
   "receitas": [
     {
       "id": 1,
@@ -98,7 +98,7 @@
       "desc": "Mercado",
       "cat": 1,
       "limite": 100,
-      "valor": 150,
+      "valor": 100,
       "pag": 1,
       "inicio": "2026-01-02",
       "fim": ""
@@ -108,7 +108,7 @@
       "desc": "Farmacia",
       "cat": 2,
       "limite": 50,
-      "valor": 60,
+      "valor": 50,
       "pag": 1,
       "inicio": "2026-01-02",
       "fim": ""
@@ -117,8 +117,8 @@
       "id": 7,
       "desc": "Lazer mensal",
       "cat": 5,
-      "limite": 450,
-      "valor": 500,
+      "limite": 350,
+      "valor": 350,
       "pag": 1,
       "inicio": "2026-01-02",
       "fim": ""
