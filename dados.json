@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-31T13:06:45.525Z",
+  "_savedAt": "2026-03-31T15:49:25.089Z",
   "receitas": [
     {
       "id": 1,
@@ -138,16 +138,6 @@
       "fim": ""
     },
     {
-      "id": 1773789585114,
-      "desc": "Restante do Colchão",
-      "cat": 10,
-      "limite": 120,
-      "valor": 120,
-      "pag": 5,
-      "inicio": "2026-03-17",
-      "fim": "2026-03-17"
-    },
-    {
       "id": 1773789667362,
       "desc": "Viagem Ferias Maio",
       "cat": 5,
@@ -181,7 +171,7 @@
       "id": 1773790019143,
       "desc": "Parafusadeira",
       "cat": 10,
-      "limite": 150,
+      "limite": 50,
       "valor": 150,
       "pag": 5,
       "inicio": "2026-03-17",
