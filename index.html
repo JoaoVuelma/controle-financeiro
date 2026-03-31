@@ -935,10 +935,15 @@
             <div class="field">Gasto (R$)   <input type="number" id="f-valor"  step="0.01"></div>
             <div class="field">Pagamento
               <select id="f-pag">
-                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
+                <option value="1">Cartão Sicredi</option>
+                <option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option>
+                <option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option>
+                <option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option>
+                <option value="8">Conta Corrente M Pago</option>
+                <option value="9">Cartão Santander</option>
               </select>
             </div>
           </div>
@@ -998,10 +1003,15 @@
             <div class="field">Parcelas restantes <input type="number" id="v-faltam" min="0"></div>
             <div class="field">Pagamento
               <select id="v-pag">
-                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
+                <option value="1">Cartão Sicredi</option>
+                <option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option>
+                <option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option>
+                <option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option>
+                <option value="8">Conta Corrente M Pago</option>
+                <option value="9">Cartão Santander</option>
               </select>
             </div>
             <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
@@ -1261,6 +1271,7 @@
       6: 'Poupança',
       7: 'Conta Corrente Banri',
       8: 'Conta Corrente M Pago',
+      9: 'Cartão Santander',
     };
 
     // Traduz ID numérico → nome. Se já for string (legado), retorna a string.
@@ -1292,6 +1303,7 @@
       'Poupança':             'pt-poupanca',
       'Conta Corrente Banri': 'pt-banri',
       'Conta Corrente M Pago':'pt-mpago',
+      'Cartão Santander'     :'pt-sant',
     };
 
     // Cores dos gráficos por nome de pagamento (após tradução)
@@ -1304,6 +1316,7 @@
       'Poupança':             '#639922',
       'Conta Corrente Banri': '#5DCAA5',
       'Conta Corrente M Pago':'#3BDAB0',
+      'Cartão Santander'     :'#eb4034',
     };
 
     // Mês e ano de referência — removido: parcelas agora calculadas por inicio+parcelas
