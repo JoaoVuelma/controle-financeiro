@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-30T17:54:05.441Z",
+  "_savedAt": "2026-03-31T11:18:02.380Z",
   "receitas": [
     {
       "id": 1,
@@ -167,8 +167,8 @@
       "id": 1773790019143,
       "desc": "Parafusadeira",
       "cat": 10,
-      "limite": 200,
-      "valor": 200,
+      "limite": 150,
+      "valor": 150,
       "pag": 5,
       "inicio": "2026-03-17",
       "fim": "2026-03-17"
@@ -197,8 +197,8 @@
       "id": 1774888768820,
       "desc": "PC",
       "cat": 10,
-      "limite": 1000,
-      "valor": 1000,
+      "limite": 750,
+      "valor": 750,
       "pag": 5,
       "inicio": "2026-04-01",
       "fim": "2026-04-01"
@@ -407,10 +407,10 @@
       "id": 1774888847145,
       "nome": "PC",
       "cat": 10,
-      "total": 500,
-      "mensal": 250,
-      "parcelas": 2,
-      "faltam": 2,
+      "total": 750,
+      "mensal": 150,
+      "parcelas": 5,
+      "faltam": 5,
       "pag": 5,
       "inicio": "2026-05-01",
       "pago": false
