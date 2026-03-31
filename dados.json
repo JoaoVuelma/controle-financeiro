@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-03-31T16:01:33.410Z",
+  "_savedAt": "2026-03-31T21:44:13.463Z",
   "receitas": [
     {
       "id": 1,
@@ -166,16 +166,6 @@
       "pag": 5,
       "inicio": "2026-12-17",
       "fim": "2026-12-17"
-    },
-    {
-      "id": 1773790019143,
-      "desc": "Parafusadeira",
-      "cat": 10,
-      "limite": 50,
-      "valor": 150,
-      "pag": 5,
-      "inicio": "2026-03-17",
-      "fim": "2026-03-17"
     },
     {
       "id": 1773790374844,
@@ -365,18 +355,6 @@
       "faltam": 6,
       "pag": 3,
       "inicio": "2026-03-09",
-      "pago": false
-    },
-    {
-      "id": 12,
-      "nome": "Hering",
-      "cat": 10,
-      "total": 264,
-      "mensal": 66,
-      "parcelas": 4,
-      "faltam": 2,
-      "pag": 5,
-      "inicio": "2026-04-01",
       "pago": false
     },
     {
