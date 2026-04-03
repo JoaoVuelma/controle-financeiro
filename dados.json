@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-03T12:24:03.912Z",
+  "_savedAt": "2026-04-03T12:25:22.519Z",
   "receitas": [
     {
       "id": 1,
@@ -256,6 +256,16 @@
       "pag": 9,
       "inicio": "2026-04-01",
       "fim": "2026-04-01"
+    },
+    {
+      "id": 1775219089179,
+      "desc": "Dentista Primo",
+      "cat": 2,
+      "limite": 500,
+      "valor": 500,
+      "pag": 5,
+      "inicio": "2026-04-03",
+      "fim": "2026-04-03"
     }
   ],
   "variaveis": [
@@ -449,6 +459,18 @@
       "faltam": 5,
       "pag": 2,
       "inicio": "2026-03-30",
+      "pago": false
+    },
+    {
+      "id": 1775219127238,
+      "nome": "Parcela dentista primo",
+      "cat": 2,
+      "total": 500,
+      "mensal": 100,
+      "parcelas": 5,
+      "faltam": 5,
+      "pag": 5,
+      "inicio": "2026-05-01",
       "pago": false
     }
   ]
