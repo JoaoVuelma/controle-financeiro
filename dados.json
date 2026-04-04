@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-03T12:29:08.205Z",
+  "_savedAt": "2026-04-04T14:30:30.684Z",
   "receitas": [
     {
       "id": 1,
@@ -442,7 +442,7 @@
       "nome": "Perifericos",
       "cat": 10,
       "total": 550,
-      "mensal": 50,
+      "mensal": 30,
       "parcelas": 11,
       "faltam": 11,
       "pag": 9,
