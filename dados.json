@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-04T14:30:30.684Z",
+  "_savedAt": "2026-04-04T14:32:56.768Z",
   "receitas": [
     {
       "id": 1,
@@ -471,6 +471,18 @@
       "faltam": 5,
       "pag": 5,
       "inicio": "2026-05-01",
+      "pago": false
+    },
+    {
+      "id": 1775313178524,
+      "nome": "Mercado Livre 5",
+      "cat": 10,
+      "total": 500,
+      "mensal": 45.45,
+      "parcelas": 11,
+      "faltam": 11,
+      "pag": 9,
+      "inicio": "2026-04-01",
       "pago": false
     }
   ]
