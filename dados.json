@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-06T14:11:10.260Z",
+  "_savedAt": "2026-04-06T14:14:48.620Z",
   "receitas": [
     {
       "id": 1,
@@ -438,18 +438,6 @@
       "pago": false
     },
     {
-      "id": 1774889079105,
-      "nome": "Perifericos",
-      "cat": 10,
-      "total": 550,
-      "mensal": 30,
-      "parcelas": 11,
-      "faltam": 11,
-      "pag": 9,
-      "inicio": "2026-03-31",
-      "pago": false
-    },
-    {
       "id": 1774890631600,
       "nome": "Mercado Livre Extra",
       "cat": 10,
@@ -496,6 +484,18 @@
       "pag": 2,
       "inicio": "2026-03-06",
       "pago": true
+    },
+    {
+      "id": 1775484710672,
+      "nome": "Parcela dos itens que sobraram Amazon",
+      "cat": 10,
+      "total": 150,
+      "mensal": 15,
+      "parcelas": 10,
+      "faltam": 10,
+      "pag": 9,
+      "inicio": "2026-04-06",
+      "pago": false
     }
   ]
 }
