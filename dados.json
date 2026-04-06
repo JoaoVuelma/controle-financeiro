@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-04T14:32:56.768Z",
+  "_savedAt": "2026-04-06T14:11:10.260Z",
   "receitas": [
     {
       "id": 1,
@@ -300,10 +300,10 @@
       "total": 756,
       "mensal": 63,
       "parcelas": 12,
-      "faltam": 11,
+      "faltam": 10,
       "pag": 2,
       "inicio": "2026-02-12",
-      "pago": false
+      "pago": true
     },
     {
       "id": 4,
@@ -324,10 +324,10 @@
       "total": 326,
       "mensal": 163,
       "parcelas": 2,
-      "faltam": 2,
+      "faltam": 1,
       "pag": 2,
       "inicio": "2026-03-01",
-      "pago": false
+      "pago": true
     },
     {
       "id": 6,
@@ -420,10 +420,10 @@
       "total": 500,
       "mensal": 41.67,
       "parcelas": 12,
-      "faltam": 12,
+      "faltam": 11,
       "pag": 2,
       "inicio": "2026-03-17",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1774888847145,
@@ -456,10 +456,10 @@
       "total": 150,
       "mensal": 30,
       "parcelas": 5,
-      "faltam": 5,
+      "faltam": 4,
       "pag": 2,
       "inicio": "2026-03-30",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1775219127238,
@@ -484,6 +484,18 @@
       "pag": 9,
       "inicio": "2026-04-01",
       "pago": false
+    },
+    {
+      "id": 1775484583322,
+      "nome": "Mercado Livre Cama",
+      "cat": 10,
+      "total": 285,
+      "mensal": 31.67,
+      "parcelas": 9,
+      "faltam": 8,
+      "pag": 2,
+      "inicio": "2026-03-06",
+      "pago": true
     }
   ]
 }
