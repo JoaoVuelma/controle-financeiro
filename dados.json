@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-07T23:27:39.658Z",
+  "_savedAt": "2026-04-07T23:28:19.494Z",
   "receitas": [
     {
       "id": 1,
@@ -186,6 +186,16 @@
       "pag": 5,
       "inicio": "2026-03-01",
       "fim": "2026-03-31"
+    },
+    {
+      "id": 1775604499293,
+      "desc": "Restante do clareamento Primo",
+      "cat": 2,
+      "limite": 400,
+      "valor": 400,
+      "pag": 5,
+      "inicio": "2026-11-10",
+      "fim": "2026-11-10"
     }
   ],
   "variaveis": [
