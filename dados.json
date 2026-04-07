@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-07T22:57:17.756Z",
+  "_savedAt": "2026-04-07T22:59:13.305Z",
   "receitas": [
     {
       "id": 1,
@@ -386,6 +386,18 @@
       "faltam": 10,
       "pag": 9,
       "inicio": "2026-04-06",
+      "pago": false
+    },
+    {
+      "id": 1775602754786,
+      "nome": "Parcela cartão sicredi",
+      "cat": 9,
+      "total": 1640,
+      "mensal": 820,
+      "parcelas": 2,
+      "faltam": 2,
+      "pag": 1,
+      "inicio": "2026-04-08",
       "pago": false
     }
   ]
