@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-07T23:42:18.108Z",
+  "_savedAt": "2026-04-07T23:45:33.662Z",
   "receitas": [
     {
       "id": 1,
@@ -189,6 +189,16 @@
       "pag": 5,
       "inicio": "2026-04-07",
       "fim": "2026-04-07"
+    },
+    {
+      "id": 1775605540466,
+      "desc": "Restante crédito mercado 3",
+      "cat": 9,
+      "limite": 400,
+      "valor": 400,
+      "pag": 5,
+      "inicio": "2026-11-10",
+      "fim": "2026-11-10"
     }
   ],
   "variaveis": [
