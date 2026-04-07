@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-07T22:55:50.134Z",
+  "_savedAt": "2026-04-07T22:57:17.756Z",
   "receitas": [
     {
       "id": 1,
@@ -344,12 +344,12 @@
       "id": 1775219127238,
       "nome": "Parcela dentista primo",
       "cat": 2,
-      "total": 500,
+      "total": 1000,
       "mensal": 100,
-      "parcelas": 5,
-      "faltam": 5,
+      "parcelas": 10,
+      "faltam": 10,
       "pag": 5,
-      "inicio": "2026-05-01",
+      "inicio": "2026-04-01",
       "pago": false
     },
     {
