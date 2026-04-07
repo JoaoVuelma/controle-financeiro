@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-07T23:01:09.370Z",
+  "_savedAt": "2026-04-07T23:02:33.230Z",
   "receitas": [
     {
       "id": 1,
@@ -320,10 +320,10 @@
       "id": 1774888847145,
       "nome": "PC",
       "cat": 10,
-      "total": 900,
-      "mensal": 150,
-      "parcelas": 6,
-      "faltam": 6,
+      "total": 1750,
+      "mensal": 175,
+      "parcelas": 10,
+      "faltam": 10,
       "pag": 5,
       "inicio": "2026-05-01",
       "pago": false
