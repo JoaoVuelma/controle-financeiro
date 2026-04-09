@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-09T22:07:44.706Z",
+  "_savedAt": "2026-04-09T22:08:21.815Z",
   "receitas": [
     {
       "id": 1,
@@ -452,6 +452,18 @@
       "faltam": 6,
       "pag": 8,
       "inicio": "2026-04-10",
+      "pago": false
+    },
+    {
+      "id": 1775772499548,
+      "nome": "Academia",
+      "cat": 2,
+      "total": 1350,
+      "mensal": 150,
+      "parcelas": 9,
+      "faltam": 9,
+      "pag": 5,
+      "inicio": "2026-05-10",
       "pago": false
     }
   ]
