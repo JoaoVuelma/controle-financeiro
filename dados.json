@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-09T22:08:21.815Z",
+  "_savedAt": "2026-04-10T13:07:45.997Z",
   "receitas": [
     {
       "id": 1,
@@ -464,6 +464,18 @@
       "faltam": 9,
       "pag": 5,
       "inicio": "2026-05-10",
+      "pago": false
+    },
+    {
+      "id": 1775826342539,
+      "nome": "Utilitarios",
+      "cat": 10,
+      "total": 170,
+      "mensal": 17,
+      "parcelas": 10,
+      "faltam": 10,
+      "pag": 9,
+      "inicio": "2026-05-05",
       "pago": false
     }
   ]
