@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-10T13:07:45.997Z",
+  "_savedAt": "2026-04-10T13:21:50.094Z",
   "receitas": [
     {
       "id": 1,
@@ -209,10 +209,10 @@
       "total": 438,
       "mensal": 73,
       "parcelas": 6,
-      "faltam": 5,
+      "faltam": 4,
       "pag": 3,
       "inicio": "2026-02-12",
-      "pago": false
+      "pago": true
     },
     {
       "id": 3,
@@ -233,10 +233,10 @@
       "total": 180,
       "mensal": 60,
       "parcelas": 3,
-      "faltam": 2,
+      "faltam": 1,
       "pag": 1,
       "inicio": "2026-02-20",
-      "pago": false
+      "pago": true
     },
     {
       "id": 5,
@@ -269,10 +269,10 @@
       "total": 348,
       "mensal": 58,
       "parcelas": 6,
-      "faltam": 6,
+      "faltam": 5,
       "pag": 1,
       "inicio": "2026-03-01",
-      "pago": false
+      "pago": true
     },
     {
       "id": 8,
@@ -293,10 +293,10 @@
       "total": 288,
       "mensal": 48,
       "parcelas": 6,
-      "faltam": 6,
+      "faltam": 5,
       "pag": 3,
       "inicio": "2026-03-09",
-      "pago": false
+      "pago": true
     },
     {
       "id": 10,
@@ -317,10 +317,10 @@
       "total": 105,
       "mensal": 35,
       "parcelas": 3,
-      "faltam": 3,
+      "faltam": 2,
       "pag": 1,
       "inicio": "2026-03-17",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1773789860361,
@@ -329,10 +329,10 @@
       "total": 156,
       "mensal": 52,
       "parcelas": 3,
-      "faltam": 3,
+      "faltam": 2,
       "pag": 3,
       "inicio": "2026-03-17",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1773789924962,
@@ -407,18 +407,6 @@
       "pago": true
     },
     {
-      "id": 1775484710672,
-      "nome": "Parcela dos itens que sobraram Amazon",
-      "cat": 10,
-      "total": 150,
-      "mensal": 15,
-      "parcelas": 10,
-      "faltam": 10,
-      "pag": 9,
-      "inicio": "2026-04-06",
-      "pago": false
-    },
-    {
       "id": 1775602754786,
       "nome": "Parcela cartão sicredi",
       "cat": 9,
@@ -475,7 +463,19 @@
       "parcelas": 10,
       "faltam": 10,
       "pag": 9,
-      "inicio": "2026-05-05",
+      "inicio": "2026-04-07",
+      "pago": false
+    },
+    {
+      "id": 1775827300654,
+      "nome": "Teclado Pichau",
+      "cat": 10,
+      "total": 216,
+      "mensal": 36,
+      "parcelas": 6,
+      "faltam": 6,
+      "pag": 9,
+      "inicio": "2026-04-01",
       "pago": false
     }
   ]
