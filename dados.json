@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-12T13:38:18.902Z",
+  "_savedAt": "2026-04-12T13:47:44.485Z",
   "receitas": [
     {
       "id": 1,
@@ -379,7 +379,7 @@
       "parcelas": 6,
       "faltam": 5,
       "pag": 5,
-      "inicio": "2026-05-10",
+      "inicio": "2026-04-10",
       "pago": false
     },
     {
@@ -451,7 +451,7 @@
       "parcelas": 9,
       "faltam": 9,
       "pag": 5,
-      "inicio": "2026-05-10",
+      "inicio": "2026-04-12",
       "pago": false
     },
     {
