@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-10T13:21:50.094Z",
+  "_savedAt": "2026-04-12T13:38:18.902Z",
   "receitas": [
     {
       "id": 1,
@@ -476,6 +476,18 @@
       "faltam": 6,
       "pag": 9,
       "inicio": "2026-04-01",
+      "pago": false
+    },
+    {
+      "id": 1776001107106,
+      "nome": "Mais perifericos do PC",
+      "cat": 10,
+      "total": 600,
+      "mensal": 60,
+      "parcelas": 10,
+      "faltam": 10,
+      "pag": 9,
+      "inicio": "2026-04-12",
       "pago": false
     }
   ]
