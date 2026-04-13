@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-13T11:53:53.234Z",
+  "_savedAt": "2026-04-13T14:06:58.779Z",
   "receitas": [
     {
       "id": 1,
@@ -520,6 +520,14 @@
       "desc": "Almoco com julia",
       "valor": 50,
       "pag": 9,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776089223061,
+      "cat": 1,
+      "desc": "Marmita segunda",
+      "valor": 52,
+      "pag": 5,
       "data": "2026-04-13"
     }
   ]
