@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-12T14:18:36.681Z",
+  "_savedAt": "2026-04-13T11:53:53.234Z",
   "receitas": [
     {
       "id": 1,
@@ -479,6 +479,48 @@
       "pag": 9,
       "inicio": "2026-04-12",
       "pago": false
+    }
+  ],
+  "gastos": [
+    {
+      "id": 1776081083724,
+      "cat": 3,
+      "desc": "",
+      "valor": 517,
+      "pag": 1,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081161558,
+      "cat": 2,
+      "desc": "Desodorantes",
+      "valor": 51,
+      "pag": 3,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081182241,
+      "cat": 4,
+      "desc": "",
+      "valor": 183,
+      "pag": 9,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081202128,
+      "cat": 5,
+      "desc": "Pizza com julia",
+      "valor": 110,
+      "pag": 9,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081225519,
+      "cat": 1,
+      "desc": "Almoco com julia",
+      "valor": 50,
+      "pag": 9,
+      "data": "2026-04-13"
     }
   ]
 }
