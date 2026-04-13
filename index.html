@@ -374,6 +374,7 @@
     .pt-dinheiro { background: var(--bg3); color: var(--text-s); }
     .pt-pix      { background: #BA751720; color: #8A5200; }
     .pt-poupanca { background: #63992220; color: #3B6D11; }
+    .pt-santander{ background: #EC000020; color: #B50000; }
 
     @media (prefers-color-scheme: dark) {
       .pt-sicredi  { color: #5DCAA5; }
@@ -381,6 +382,7 @@
       .pt-banri    { color: #85B7EB; }
       .pt-pix      { color: #FAC775; }
       .pt-poupanca { color: #97C459; }
+      .pt-santander{ color: #FF6B6B; }
     }
 
     /* ================================================================
@@ -1065,7 +1067,7 @@
                 <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
                 <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
                 <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
               </select>
             </div>
           </div>
@@ -1128,7 +1130,7 @@
                 <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
                 <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
                 <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
               </select>
             </div>
             <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
@@ -1397,7 +1399,7 @@
             <option value="4">Dinheiro Vivo</option>
             <option value="5">Pix</option>
             <option value="7">Conta Corrente Banri</option>
-            <option value="8">Conta Corrente M Pago</option>
+            <option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
           </select>
         </div>
 
@@ -1511,11 +1513,13 @@
       6: 'Poupança',
       7: 'Conta Corrente Banri',
       8: 'Conta Corrente M Pago',
+      9: 'Cartão Santander',
     };
 
-    // Traduz ID numérico → nome. Se já for string (legado), retorna a string.
-    const getCatNome = c => CATEGORIAS[c] || c;
-    const getPagNome = p => PAGAMENTOS[p] || p;
+    // Traduz ID numérico → nome. String() garante que IDs sem mapeamento
+    // nunca quebrem .replace() ou outras operações de string.
+    const getCatNome = c => (c != null) ? (CATEGORIAS[c] || String(c)) : '?';
+    const getPagNome = p => (p != null) ? (PAGAMENTOS[p] || String(p)) : '?';
 
     // Cores por nome de categoria (após tradução)
     const CAT_COLORS = {
@@ -1542,6 +1546,7 @@
       'Poupança':             'pt-poupanca',
       'Conta Corrente Banri': 'pt-banri',
       'Conta Corrente M Pago':'pt-mpago',
+      'Cartão Santander':     'pt-santander',
     };
 
     // Cores dos gráficos por nome de pagamento (após tradução)
@@ -1554,6 +1559,7 @@
       'Poupança':             '#639922',
       'Conta Corrente Banri': '#5DCAA5',
       'Conta Corrente M Pago':'#3BDAB0',
+      'Cartão Santander':     '#EC0000',
     };
 
     // Mês e ano de referência — removido: parcelas agora calculadas por inicio+parcelas
@@ -1588,13 +1594,13 @@
 
     // Tag de pagamento colorida — traduz ID → nome antes de renderizar
     const payTag = p => {
-      const nome = getPagNome(p);
+      const nome = String(getPagNome(p) ?? p ?? '?');
       return `<span class="pay-tag ${PAY_CLASS[nome] || 'pt-dinheiro'}">${escHtml(nome.replace('Conta Corrente ', 'CC '))}</span>`;
     };
 
     // Wrap de categoria com dot colorido — traduz ID → nome antes de renderizar
     const catWrap = c => {
-      const nome = getCatNome(c);
+      const nome = String(getCatNome(c) ?? c ?? '?');
       return `<span class="cat-wrap"><span class="cat-dot" style="background:${CAT_COLORS[nome]||'#888'}"></span>${escHtml(nome)}</span>`;
     };
 
