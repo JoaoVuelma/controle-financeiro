@@ -620,6 +620,132 @@
     .predict-head span:last-child { font-weight: 700; }
 
     /* ================================================================
+       ABA GASTOS — Budget cards e chips
+    ================================================================ */
+
+    /* Card de orçamento por categoria */
+    .budget-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow);
+    }
+    .budget-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .budget-cat-name {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .budget-values {
+      font-size: 12px;
+      color: var(--text-t);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .budget-values strong { color: var(--text); }
+    .budget-prog-bar {
+      height: 7px;
+      border-radius: 4px;
+      background: var(--bg3);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .budget-prog-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .4s ease;
+    }
+    .budget-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-t);
+    }
+    .budget-footer .restante-ok    { color: var(--green-dark); font-weight: 600; }
+    .budget-footer .restante-over  { color: var(--red);        font-weight: 600; }
+    .budget-footer .restante-warn  { color: var(--amber);      font-weight: 600; }
+
+    /* Lançamentos individuais */
+    .gasto-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .gasto-item:last-child { border-bottom: none; }
+    .gasto-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .gasto-info { flex: 1; min-width: 0; }
+    .gasto-desc { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gasto-meta { font-size: 11px; color: var(--text-t); margin-top: 1px; }
+    .gasto-valor { font-size: 14px; font-weight: 700; color: var(--red); white-space: nowrap; flex-shrink: 0; }
+    .gasto-del {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-t); font-size: 16px; padding: 4px 6px;
+      border-radius: 6px; flex-shrink: 0; line-height: 1;
+    }
+    .gasto-del:hover { background: var(--red-light); color: var(--red); }
+
+    /* Chips de categoria no modal */
+    .cat-chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1.5px solid var(--border-s);
+      background: none;
+      cursor: pointer;
+      color: var(--text-s);
+      font-family: inherit;
+      transition: all .12s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .cat-chip.selected {
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* Botão flutuante + */
+    #btn-novo-gasto {
+      position: fixed !important;
+      bottom: max(24px, env(safe-area-inset-bottom)) !important;
+      right: 20px !important;
+      width: 56px !important; height: 56px !important;
+      border-radius: 50% !important;
+      background: var(--blue-dark) !important;
+      color: #fff !important;
+      border: none !important;
+      font-size: 28px !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 16px rgba(24,95,165,.5) !important;
+      z-index: 300 !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: transform .15s, box-shadow .15s !important;
+      display: none; /* hidden by default, shown only on gastos tab */
+    }
+    #btn-novo-gasto:active {
+      transform: scale(.93) !important;
+    }
+
+    /* ================================================================
        RESPONSIVO — iPhone 13 (390px) e menores
        Regra: ZERO scroll lateral na tela.
        Tabelas scrollam só dentro do .table-wrap.
@@ -806,6 +932,7 @@
     <button onclick="showPage('receitas',this)">Receitas</button>
     <button onclick="showPage('despesas',this)">Despesas</button>
     <button onclick="showPage('parcelas',this)">Parcelas</button>
+    <button onclick="showPage('gastos',this)">Gastos</button>
     <button onclick="showPage('economias',this)">Economias</button>
     <button onclick="showPage('previsao',this)">Previsão</button>
   </nav>
@@ -935,15 +1062,10 @@
             <div class="field">Gasto (R$)   <input type="number" id="f-valor"  step="0.01"></div>
             <div class="field">Pagamento
               <select id="f-pag">
-                <option value="1">Cartão Sicredi</option>
-                <option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option>
-                <option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option>
-                <option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option>
-                <option value="8">Conta Corrente M Pago</option>
-                <option value="9">Cartão Santander</option>
+                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option><option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
               </select>
             </div>
           </div>
@@ -1003,15 +1125,10 @@
             <div class="field">Parcelas restantes <input type="number" id="v-faltam" min="0"></div>
             <div class="field">Pagamento
               <select id="v-pag">
-                <option value="1">Cartão Sicredi</option>
-                <option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option>
-                <option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option>
-                <option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option>
-                <option value="8">Conta Corrente M Pago</option>
-                <option value="9">Cartão Santander</option>
+                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option><option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option>
               </select>
             </div>
             <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
@@ -1176,7 +1293,130 @@
 
     </div><!-- /previsao -->
 
+    <!-- ── GASTOS ── -->
+    <div id="page-gastos" class="page">
+
+      <div class="page-head">
+        <div class="page-title">Gastos do Mês</div>
+        <div class="month-sel">
+          <label>Mês</label>
+          <select id="g-mes" onchange="renderGastos()" style="width:auto">
+            <option value="0">Janeiro</option>  <option value="1">Fevereiro</option>
+            <option value="2">Março</option>    <option value="3">Abril</option>
+            <option value="4">Maio</option>     <option value="5">Junho</option>
+            <option value="6">Julho</option>    <option value="7">Agosto</option>
+            <option value="8">Setembro</option> <option value="9">Outubro</option>
+            <option value="10">Novembro</option><option value="11">Dezembro</option>
+          </select>
+          <select id="g-ano" onchange="renderGastos()" style="width:auto">
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Resumo do mês -->
+      <div class="metrics" id="g-metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+
+      <!-- Cards de orçamento por categoria -->
+      <div id="g-budget-cards"></div>
+
+      <!-- Lista de lançamentos -->
+      <div class="card">
+        <div class="card-title" id="g-lista-title">Lançamentos do mês</div>
+        <div id="g-lista-empty" class="empty-state" style="display:none">
+          <div class="es-icon">📝</div>
+          <p>Nenhum gasto lançado ainda</p>
+        </div>
+        <div id="g-lista"></div>
+      </div>
+
+    </div><!-- /gastos -->
+
+    <!-- Botão + flutuante para lançar gasto (visível só na aba Gastos) -->
+    <button id="btn-novo-gasto" onclick="abrirModalGasto()" style="
+      display:none;
+      position:fixed;
+      bottom: max(24px, env(safe-area-inset-bottom));
+      right: 20px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--blue-dark);
+      color: #fff;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(24,95,165,.5);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .15s, box-shadow .15s;
+    " aria-label="Lançar novo gasto">＋</button>
+
   </main>
+
+  <!-- ================================================================
+       MODAL — Lançar gasto
+  ================================================================ -->
+  <div id="modal-gasto" class="modal-overlay" style="display:none"
+       onclick="if(event.target===this) fecharModalGasto()">
+    <div class="modal-box" style="max-width:440px">
+      <div class="modal-title" id="modal-gasto-title">📝 Lançar gasto</div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+
+        <!-- Valor — destaque grande, primeiro campo -->
+        <div class="field">
+          Valor (R$)
+          <input type="number" id="mg-valor" placeholder="0,00" step="0.01"
+                 style="font-size:24px;font-weight:700;text-align:center;padding:14px"
+                 inputmode="decimal">
+        </div>
+
+        <!-- Descrição -->
+        <div class="field">
+          Descrição <span style="color:var(--text-t);font-weight:400">(opcional)</span>
+          <input type="text" id="mg-desc" placeholder="ex: Remédio, café, gasolina...">
+        </div>
+
+        <!-- Categoria — grade de chips -->
+        <div class="field">
+          Categoria
+          <div id="mg-cat-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+          <input type="hidden" id="mg-cat">
+        </div>
+
+        <!-- Pagamento -->
+        <div class="field">
+          Pagamento
+          <select id="mg-pag">
+            <option value="1">Cartão Sicredi</option>
+            <option value="2">Cartão M Pago</option>
+            <option value="3">Cartão Banri</option>
+            <option value="4">Dinheiro Vivo</option>
+            <option value="5">Pix</option>
+            <option value="7">Conta Corrente Banri</option>
+            <option value="8">Conta Corrente M Pago</option>
+          </select>
+        </div>
+
+        <!-- Data -->
+        <div class="field">
+          Data
+          <input type="date" id="mg-data">
+        </div>
+
+      </div>
+      <div class="modal-actions" style="margin-top:20px">
+        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="salvarGasto()">
+          Salvar gasto
+        </button>
+        <button class="btn btn-ghost" onclick="fecharModalGasto()">Cancelar</button>
+      </div>
+      <input type="hidden" id="mg-id">
+    </div>
+  </div>
 
   <!-- ================================================================
        MODAL — Configuração GitHub
@@ -1271,7 +1511,6 @@
       6: 'Poupança',
       7: 'Conta Corrente Banri',
       8: 'Conta Corrente M Pago',
-      9: 'Cartão Santander',
     };
 
     // Traduz ID numérico → nome. Se já for string (legado), retorna a string.
@@ -1303,7 +1542,6 @@
       'Poupança':             'pt-poupanca',
       'Conta Corrente Banri': 'pt-banri',
       'Conta Corrente M Pago':'pt-mpago',
-      'Cartão Santander'     :'pt-sant',
     };
 
     // Cores dos gráficos por nome de pagamento (após tradução)
@@ -1316,7 +1554,6 @@
       'Poupança':             '#639922',
       'Conta Corrente Banri': '#5DCAA5',
       'Conta Corrente M Pago':'#3BDAB0',
-      'Cartão Santander'     :'#eb4034',
     };
 
     // Mês e ano de referência — removido: parcelas agora calculadas por inicio+parcelas
@@ -1414,6 +1651,9 @@
         { id: 12, nome: 'Hering',          cat: 'Compra',  total: 264, mensal:  66, parcelas: 4,  faltam: 2,  pag: 'Pix',                   inicio: '2026-04-01', pago: false },
         { id: 10, nome: 'Aniversario Julia',cat:'Lazer',   total: 660, mensal: 110, parcelas: 6,  faltam: 6,  pag: 'Pix',                   inicio: '2026-09-01', pago: false },
       ],
+      // gastos: lançamentos de gastos reais por mês
+      // cada item: { id, cat (número), desc, valor, pag (número), data: 'YYYY-MM-DD' }
+      gastos: [],
     };
 
     /* ================================================================
@@ -1515,6 +1755,7 @@
           receitas:  decoded.receitas  || [],
           fixas:     decoded.fixas     || [],
           variaveis: decoded.variaveis || [],
+          gastos:    decoded.gastos    || [],
         };
 
         markSaved();
@@ -1618,10 +1859,14 @@
         receitas:  renderReceitas,
         despesas:  renderDespesas,
         parcelas:  renderParcelas,
+        gastos:    renderGastos,
         economias: renderEconomias,
         previsao:  renderPrevisao,
       };
       if (pid && renders[pid]) renders[pid]();
+      // Botão flutuante só aparece na aba gastos
+      const btn = document.getElementById('btn-novo-gasto');
+      if (btn) btn.style.display = pid === 'gastos' ? 'flex' : 'none';
     }
 
     // Abre / fecha formulários
@@ -2755,6 +3000,286 @@
     }
 
     /* ================================================================
+       GASTOS — LANÇAMENTOS REAIS
+
+       Estrutura de cada gasto:
+         { id, cat (int enum), desc (string), valor (float),
+           pag (int enum), data (string 'YYYY-MM-DD') }
+
+       O orçamento de cada categoria vem das despesas fixas daquele mês
+       (limite). O gasto real é a soma dos lançamentos do mês.
+    ================================================================ */
+
+    // Garante que state.gastos existe (retrocompatibilidade com dados antigos)
+    function ensureGastos() {
+      if (!state.gastos) state.gastos = [];
+    }
+
+    // Retorna os gastos do mês M/Y
+    function gastosDoMes(m, y) {
+      ensureGastos();
+      return state.gastos.filter(g => {
+        const d = parseLocalDate(g.data);
+        return d.getFullYear() === y && d.getMonth() === m;
+      });
+    }
+
+    // Soma dos gastos de uma categoria no mês
+    function gastosCatMes(catId, m, y) {
+      return gastosDoMes(m, y)
+        .filter(g => g.cat === catId || getCatNome(g.cat) === getCatNome(catId))
+        .reduce((acc, g) => acc + g.valor, 0);
+    }
+
+    /* ── RENDER ──────────────────────────────────────────────────── */
+    function renderGastos() {
+      const m = parseInt(document.getElementById('g-mes').value);
+      const y = parseInt(document.getElementById('g-ano').value);
+
+      const gastosMes = gastosDoMes(m, y);
+
+      // Despesas fixas vigentes neste mês (excluindo Poupança)
+      const fixasVigentes = state.fixas.filter(f =>
+        incideNoMes(f.inicio, f.fim, m, y) &&
+        f.pag !== 6 && f.pag !== 'Poupança'
+      );
+
+      // Totais para métricas
+      const orcamentoTotal = fixasVigentes.reduce((acc, f) => acc + f.limite, 0);
+      const gastoTotal     = gastosMes.reduce((acc, g) => acc + g.valor, 0);
+      const saldoLivre     = orcamentoTotal - gastoTotal;
+
+      // Dias restantes no mês
+      const hoje       = new Date();
+      const ultimoMes  = new Date(y, m + 1, 0);
+      const diasRest   = (hoje.getFullYear() === y && hoje.getMonth() === m)
+        ? ultimoMes.getDate() - hoje.getDate()
+        : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
+
+      // Métricas do mês
+      document.getElementById('g-metrics').innerHTML = `
+        <div class="metric">
+          <div class="metric-label">Orçamento total</div>
+          <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
+          <div class="metric-sub">${fixasVigentes.length} categorias</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Gasto real</div>
+          <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
+          <div class="metric-sub">${gastosMes.length} lançamentos</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
+          <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
+          <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
+        </div>
+      `;
+
+      // Cards de orçamento por categoria
+      const budgetCards = document.getElementById('g-budget-cards');
+      if (!fixasVigentes.length) {
+        budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
+      } else {
+        // Agrupa por categoria (pode ter múltiplas fixas na mesma cat)
+        const catMap = {};
+        fixasVigentes.forEach(f => {
+          const k = f.cat; // mantém como enum
+          if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
+          catMap[k].limite += f.limite;
+        });
+
+        budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
+          const gasto  = gastosCatMes(parseInt(catId) || catId, m, y);
+          const limite = info.limite;
+          const resto  = limite - gasto;
+          const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
+          const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
+          const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
+          const nomecat = info.desc;
+          const corDot  = CAT_COLORS[nomecat] || '#888';
+
+          return `
+            <div class="budget-card">
+              <div class="budget-card-head">
+                <div class="budget-cat-name">
+                  <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
+                  ${escHtml(nomecat)}
+                </div>
+                <div class="budget-values">
+                  <strong style="color:${cor}">${fmt(gasto)}</strong>
+                  <span> / ${fmt(limite)}</span>
+                </div>
+              </div>
+              <div class="budget-prog-bar">
+                <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
+              </div>
+              <div class="budget-footer">
+                <span>${pct}% usado</span>
+                <span class="restante-${cor2}">
+                  ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Lista de lançamentos
+      const lista = document.getElementById('g-lista');
+      const empty = document.getElementById('g-lista-empty');
+      const titulo = document.getElementById('g-lista-title');
+      titulo.textContent = `Lançamentos de ${MESES[m]}`;
+
+      if (!gastosMes.length) {
+        lista.innerHTML = '';
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        const sorted = [...gastosMes].sort((a, b) => b.data.localeCompare(a.data));
+        lista.innerHTML = sorted.map(g => {
+          const nomeCat = getCatNome(g.cat);
+          const nomePag = getPagNome(g.pag);
+          const corCat  = CAT_COLORS[nomeCat] || '#888';
+          const dataFmt = fmtDate(g.data);
+          return `
+            <div class="gasto-item">
+              <span class="gasto-dot" style="background:${corCat}"></span>
+              <div class="gasto-info">
+                <div class="gasto-desc">${escHtml(g.desc || nomeCat)}</div>
+                <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${dataFmt}</div>
+              </div>
+              <span class="gasto-valor">− ${fmt(g.valor)}</span>
+              <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    /* ── MODAL DE LANÇAMENTO ─────────────────────────────────────── */
+    function abrirModalGasto(idEdicao) {
+      // Constrói os chips de categoria com base nas fixas vigentes do mês atual
+      const m = parseInt(document.getElementById('g-mes').value);
+      const y = parseInt(document.getElementById('g-ano').value);
+
+      // Coleta categorias únicas das fixas vigentes no mês + todas as fixas (para outros meses)
+      const catsSet = new Set();
+      state.fixas.forEach(f => catsSet.add(f.cat));
+      // Adiciona categorias padrão sempre disponíveis
+      [1,2,3,4,5,6,7,8,9,10,11].forEach(c => catsSet.add(c));
+
+      const chips = document.getElementById('mg-cat-chips');
+      chips.innerHTML = [...catsSet].map(catId => {
+        const nome = getCatNome(catId);
+        const cor  = CAT_COLORS[nome] || '#888';
+        return `
+          <button type="button" class="cat-chip" data-cat="${catId}"
+                  onclick="selecionarCatChip(this, ${JSON.stringify(catId)})"
+                  style="--chip-cor:${cor}">
+            <span style="width:8px;height:8px;border-radius:2px;background:${cor};flex-shrink:0"></span>
+            ${escHtml(nome)}
+          </button>
+        `;
+      }).join('');
+
+      // Data padrão = hoje
+      const hoje = new Date();
+      document.getElementById('mg-data').value =
+        `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+
+      document.getElementById('mg-valor').value = '';
+      document.getElementById('mg-desc').value  = '';
+      document.getElementById('mg-cat').value   = '';
+      document.getElementById('mg-id').value    = '';
+      document.getElementById('modal-gasto-title').textContent = '📝 Lançar gasto';
+
+      if (idEdicao) {
+        ensureGastos();
+        const g = state.gastos.find(g => g.id === idEdicao);
+        if (g) {
+          document.getElementById('mg-valor').value = g.valor;
+          document.getElementById('mg-desc').value  = g.desc || '';
+          document.getElementById('mg-data').value  = g.data;
+          document.getElementById('mg-cat').value   = g.cat;
+          document.getElementById('mg-id').value    = g.id;
+          document.getElementById('modal-gasto-title').textContent = '✏️ Editar gasto';
+          // Seleciona o chip correto
+          const chipEl = chips.querySelector(`[data-cat="${g.cat}"]`);
+          if (chipEl) selecionarCatChip(chipEl, g.cat);
+          // Pagamento
+          const pagSel = document.getElementById('mg-pag');
+          const pagOpt = Array.from(pagSel.options).find(o => o.value == g.pag || o.text === getPagNome(g.pag));
+          if (pagOpt) pagSel.value = pagOpt.value;
+        }
+      }
+
+      document.getElementById('modal-gasto').style.display = 'flex';
+      // Foca no campo de valor após animação
+      setTimeout(() => document.getElementById('mg-valor').focus(), 120);
+    }
+
+    function selecionarCatChip(el, catId) {
+      // Desmarca todos
+      document.querySelectorAll('#mg-cat-chips .cat-chip').forEach(c => {
+        c.classList.remove('selected');
+        c.style.background = '';
+        c.style.color = '';
+      });
+      // Marca o clicado
+      const nome = getCatNome(catId);
+      const cor  = CAT_COLORS[nome] || '#888';
+      el.classList.add('selected');
+      el.style.background = cor;
+      el.style.color = '#fff';
+      document.getElementById('mg-cat').value = catId;
+    }
+
+    function fecharModalGasto() {
+      document.getElementById('modal-gasto').style.display = 'none';
+    }
+
+    function salvarGasto() {
+      const valor = parseFloat(document.getElementById('mg-valor').value);
+      const catRaw = document.getElementById('mg-cat').value;
+      const data   = document.getElementById('mg-data').value;
+
+      if (!valor || valor <= 0) { toast('⚠ Informe o valor do gasto.'); return; }
+      if (!catRaw)               { toast('⚠ Selecione uma categoria.'); return; }
+      if (!data)                 { toast('⚠ Informe a data.'); return; }
+
+      ensureGastos();
+
+      const obj = {
+        cat:   parseInt(catRaw) || catRaw,
+        desc:  document.getElementById('mg-desc').value.trim(),
+        valor,
+        pag:   parseInt(document.getElementById('mg-pag').value),
+        data,
+      };
+
+      const idEdit = document.getElementById('mg-id').value;
+      if (idEdit) {
+        const i = state.gastos.findIndex(g => g.id == idEdit);
+        if (i >= 0) state.gastos[i] = { ...state.gastos[i], ...obj };
+      } else {
+        state.gastos.push({ id: uid(), ...obj });
+      }
+
+      fecharModalGasto();
+      renderGastos();
+      markUnsaved();
+      toast('✓ Gasto lançado!');
+    }
+
+    function delGasto(id) {
+      ensureGastos();
+      state.gastos = state.gastos.filter(g => g.id !== id);
+      renderGastos();
+      markUnsaved();
+      toast('Lançamento removido.');
+    }
+
+    /* ================================================================
        INICIALIZAÇÃO
     ================================================================ */
     (function init() {
@@ -2762,6 +3287,8 @@
       const now = new Date();
       document.getElementById('dash-mes').value = now.getMonth();
       document.getElementById('dash-ano').value = now.getFullYear();
+      document.getElementById('g-mes').value = now.getMonth();
+      document.getElementById('g-ano').value = now.getFullYear();
 
       // Re-renderiza os gráficos ao rotacionar o dispositivo
       let resizeTimer;
