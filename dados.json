@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-14T11:37:51.348Z",
+  "_savedAt": "2026-04-14T11:49:45.864Z",
   "receitas": [
     {
       "id": 1,
@@ -568,6 +568,14 @@
       "desc": "Estacionamento",
       "valor": 14,
       "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776167369515,
+      "cat": 1,
+      "desc": "Cacau Show",
+      "valor": 43,
+      "pag": 1,
       "data": "2026-04-14"
     }
   ]
