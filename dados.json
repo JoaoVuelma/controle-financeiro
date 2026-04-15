@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-14T23:35:35.598Z",
+  "_savedAt": "2026-04-15T16:14:41.827Z",
   "receitas": [
     {
       "id": 1,
@@ -478,6 +478,18 @@
       "faltam": 10,
       "pag": 9,
       "inicio": "2026-04-12",
+      "pago": false
+    },
+    {
+      "id": 1776269681229,
+      "nome": "Limpeza Mercado Livre",
+      "cat": 10,
+      "total": 210,
+      "mensal": 19.09,
+      "parcelas": 11,
+      "faltam": 11,
+      "pag": 9,
+      "inicio": "2026-04-15",
       "pago": false
     }
   ],
