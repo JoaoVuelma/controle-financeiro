@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-20T13:25:53.491Z",
+  "_savedAt": "2026-04-20T13:26:44.360Z",
   "receitas": [
     {
       "id": 1,
@@ -77,8 +77,8 @@
       "id": 4,
       "desc": "Poupanca",
       "cat": 7,
-      "limite": 700,
-      "valor": 700,
+      "limite": 500,
+      "valor": 500,
       "pag": 6,
       "inicio": "2026-06-01",
       "fim": ""
