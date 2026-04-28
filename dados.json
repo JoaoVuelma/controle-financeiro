@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-04-20T13:26:44.360Z",
+  "_savedAt": "2026-04-28T18:17:35.848Z",
   "receitas": [
     {
       "id": 1,
@@ -471,6 +471,18 @@
       "faltam": 11,
       "pag": 9,
       "inicio": "2026-04-15",
+      "pago": false
+    },
+    {
+      "id": 1777400261157,
+      "nome": "Credito mercado final",
+      "cat": 9,
+      "total": 900,
+      "mensal": 112.5,
+      "parcelas": 8,
+      "faltam": 8,
+      "pag": 8,
+      "inicio": "2026-04-28",
       "pago": false
     }
   ],
