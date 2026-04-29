@@ -1970,7 +1970,10 @@
       if (mesZerado(m, y)) return 0;
       return state.fixas
         .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-        .reduce((acc, f) => acc + f.valor, 0);
+        .reduce((acc, f) => {
+          const real = gastoRealCat(f.cat, m, y);
+          return acc + (real > 0 ? real : f.limite);
+        }, 0);
     }
 
     // Soma das DESPESAS VARIÁVEIS que incidem no mês M/Y
@@ -2061,6 +2064,23 @@
       if (zero) {
         alerts.push({ t: 'info', msg: `${MESES[m]} é um mês anterior ao início do controle — todos os valores estão zerados. O controle começa em março de ${y}.` });
       } else {
+        // Alertas de fechamento de fatura
+const hoje = new Date();
+if (hoje.getMonth() === m && hoje.getFullYear() === y && state.fechamentos) {
+  Object.entries(state.fechamentos).forEach(([cidStr, fech]) => {
+    const cid = parseInt(cidStr);
+    const diasRest = fech - hoje.getDate();
+    if (diasRest >= 0 && diasRest <= 5) {
+      const totalCartao = (state.gastos || [])
+        .filter(g => { const d = parseLocalDate(g.data); return d && d.getFullYear() === y && d.getMonth() === m && g.pag === cid; })
+        .reduce((a, g) => a + g.valor, 0);
+      if (totalCartao > 0) {
+        const nd = diasRest === 0 ? 'hoje' : diasRest === 1 ? 'amanhã' : `em ${diasRest} dias`;
+        alerts.push({ t: diasRest <= 2 ? 'danger' : 'warn', msg: `💳 Fatura ${getPagNome(cid)} fecha ${nd} — ${fmt(totalCartao)} lançados` });
+      }
+    }
+  });
+}
         if (saldo < 0)
           alerts.push({ t: 'danger', msg: `Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}.` });
 
@@ -3070,128 +3090,134 @@
 
     /* ── RENDER ──────────────────────────────────────────────────── */
     function renderGastos() {
-      const m = parseInt(document.getElementById('g-mes').value);
-      const y = parseInt(document.getElementById('g-ano').value);
+  const m = parseInt(document.getElementById('g-mes').value);
+  const y = parseInt(document.getElementById('g-ano').value);
+  ensureGastos();
 
-      const gastosMes = gastosDoMes(m, y);
+  // Lista exibe gastos pela DATA REAL do lançamento
+  const gastosMes = gastosDoMes(m, y);
+  // Orçamento usa gastos pelo MÊS DE COBRANÇA (considera fechamento)
+  const gastosOrc = gastosCobrancaMes(m, y);
 
-      // Despesas fixas vigentes neste mês (excluindo Poupança)
-      const fixasVigentes = state.fixas.filter(f =>
-        incideNoMes(f.inicio, f.fim, m, y) &&
-        f.pag !== 6 && f.pag !== 'Poupança'
-      );
+  const fixasVigentes = state.fixas.filter(f =>
+    incideNoMes(f.inicio, f.fim, m, y) &&
+    f.pag !== 6 && f.pag !== 'Poupança'
+  );
 
-      // Totais para métricas
-      const orcamentoTotal = fixasVigentes.reduce((acc, f) => acc + f.limite, 0);
-      const gastoTotal     = gastosMes.reduce((acc, g) => acc + g.valor, 0);
-      const saldoLivre     = orcamentoTotal - gastoTotal;
+  const orcamentoTotal = fixasVigentes.reduce((acc, f) => acc + f.limite, 0);
+  const gastoTotal     = gastosOrc.reduce((acc, g) => acc + g.valor, 0);
+  const saldoLivre     = orcamentoTotal - gastoTotal;
 
-      // Dias restantes no mês
-      const hoje       = new Date();
-      const ultimoMes  = new Date(y, m + 1, 0);
-      const diasRest   = (hoje.getFullYear() === y && hoje.getMonth() === m)
-        ? ultimoMes.getDate() - hoje.getDate()
-        : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
+  const hoje      = new Date();
+  const ultimoMes = new Date(y, m + 1, 0);
+  const diasRest  = (hoje.getFullYear() === y && hoje.getMonth() === m)
+    ? ultimoMes.getDate() - hoje.getDate()
+    : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
 
-      // Métricas do mês
-      document.getElementById('g-metrics').innerHTML = `
-        <div class="metric">
-          <div class="metric-label">Orçamento total</div>
-          <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
-          <div class="metric-sub">${fixasVigentes.length} categorias</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">Gasto real</div>
-          <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
-          <div class="metric-sub">${gastosMes.length} lançamentos</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
-          <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
-          <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
+  document.getElementById('g-metrics').innerHTML = `
+    <div class="metric">
+      <div class="metric-label">Orçamento total</div>
+      <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
+      <div class="metric-sub">${fixasVigentes.length} categorias</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Gasto real</div>
+      <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
+      <div class="metric-sub">${gastosOrc.length} lançamentos</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
+      <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
+      <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
+    </div>
+  `;
+
+  // Budget cards por categoria (usa cobrança)
+  const budgetCards = document.getElementById('g-budget-cards');
+  if (!fixasVigentes.length) {
+    budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
+  } else {
+    const catMap = {};
+    fixasVigentes.forEach(f => {
+      const k = f.cat;
+      if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
+      catMap[k].limite += f.limite;
+    });
+
+    budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
+      const gasto  = gastoRealCat(parseInt(catId) || catId, m, y);
+      const limite = info.limite;
+      const resto  = limite - gasto;
+      const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
+      const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
+      const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
+      const nomecat = info.desc;
+      const corDot  = CAT_COLORS[nomecat] || '#888';
+
+      return `
+        <div class="budget-card">
+          <div class="budget-card-head">
+            <div class="budget-cat-name">
+              <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
+              ${escHtml(nomecat)}
+            </div>
+            <div class="budget-values">
+              <strong style="color:${cor}">${fmt(gasto)}</strong>
+              <span> / ${fmt(limite)}</span>
+            </div>
+          </div>
+          <div class="budget-prog-bar">
+            <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
+          </div>
+          <div class="budget-footer">
+            <span>${pct}% usado</span>
+            <span class="restante-${cor2}">
+              ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
+            </span>
+          </div>
         </div>
       `;
+    }).join('');
+  }
 
-      // Cards de orçamento por categoria
-      const budgetCards = document.getElementById('g-budget-cards');
-      if (!fixasVigentes.length) {
-        budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
-      } else {
-        // Agrupa por categoria (pode ter múltiplas fixas na mesma cat)
-        const catMap = {};
-        fixasVigentes.forEach(f => {
-          const k = f.cat; // mantém como enum
-          if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
-          catMap[k].limite += f.limite;
-        });
+  // Lista de lançamentos (pela data real, com tag de fatura diferente)
+  const lista  = document.getElementById('g-lista');
+  const empty  = document.getElementById('g-lista-empty');
+  document.getElementById('g-lista-title').textContent = `Lançamentos de ${MESES[m]}`;
 
-        budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
-          const gasto  = gastosCatMes(parseInt(catId) || catId, m, y);
-          const limite = info.limite;
-          const resto  = limite - gasto;
-          const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
-          const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
-          const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
-          const nomecat = info.desc;
-          const corDot  = CAT_COLORS[nomecat] || '#888';
-
-          return `
-            <div class="budget-card">
-              <div class="budget-card-head">
-                <div class="budget-cat-name">
-                  <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
-                  ${escHtml(nomecat)}
-                </div>
-                <div class="budget-values">
-                  <strong style="color:${cor}">${fmt(gasto)}</strong>
-                  <span> / ${fmt(limite)}</span>
-                </div>
-              </div>
-              <div class="budget-prog-bar">
-                <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
-              </div>
-              <div class="budget-footer">
-                <span>${pct}% usado</span>
-                <span class="restante-${cor2}">
-                  ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
-                </span>
-              </div>
-            </div>
-          `;
-        }).join('');
+  if (!gastosMes.length) {
+    lista.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    const sorted = [...gastosMes].sort((a, b) => b.data.localeCompare(a.data));
+    lista.innerHTML = sorted.map(g => {
+      const nomeCat = getCatNome(g.cat);
+      const nomePag = getPagNome(g.pag);
+      const corCat  = CAT_COLORS[nomeCat] || '#888';
+      // Verifica se vai para fatura de outro mês
+      let faturaTag = '';
+      const mc = getMesCobranca(g.data, g.pag);
+      if (mc) {
+        const dg = parseLocalDate(g.data);
+        if (mc.m !== dg.getMonth() || mc.y !== dg.getFullYear()) {
+          faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--amber-light);color:var(--amber);margin-left:4px">fatura ${MESES[mc.m].slice(0,3)}/${String(mc.y).slice(-2)}</span>`;
+        }
       }
-
-      // Lista de lançamentos
-      const lista = document.getElementById('g-lista');
-      const empty = document.getElementById('g-lista-empty');
-      const titulo = document.getElementById('g-lista-title');
-      titulo.textContent = `Lançamentos de ${MESES[m]}`;
-
-      if (!gastosMes.length) {
-        lista.innerHTML = '';
-        empty.style.display = 'block';
-      } else {
-        empty.style.display = 'none';
-        const sorted = [...gastosMes].sort((a, b) => b.data.localeCompare(a.data));
-        lista.innerHTML = sorted.map(g => {
-          const nomeCat = getCatNome(g.cat);
-          const nomePag = getPagNome(g.pag);
-          const corCat  = CAT_COLORS[nomeCat] || '#888';
-          const dataFmt = fmtDate(g.data);
-          return `
-            <div class="gasto-item">
-              <span class="gasto-dot" style="background:${corCat}"></span>
-              <div class="gasto-info">
-                <div class="gasto-desc">${escHtml(g.desc || nomeCat)}</div>
-                <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${dataFmt}</div>
-              </div>
-              <span class="gasto-valor">− ${fmt(g.valor)}</span>
-              <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
-            </div>
-          `;
-        }).join('');
-      }
-    }
+      return `
+        <div class="gasto-item">
+          <span class="gasto-dot" style="background:${corCat}"></span>
+          <div class="gasto-info">
+            <div class="gasto-desc">${escHtml(g.desc || nomeCat)}${faturaTag}</div>
+            <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${fmtDate(g.data)}</div>
+          </div>
+          <span class="gasto-valor">− ${fmt(g.valor)}</span>
+          <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
+        </div>
+      `;
+    }).join('');
+  }
+}
 
     /* ── MODAL DE LANÇAMENTO ─────────────────────────────────────── */
     function abrirModalGasto(idEdicao) {
