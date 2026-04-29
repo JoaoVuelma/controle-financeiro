@@ -1943,11 +1943,15 @@
     // Usa inicio + parcelas diretamente — sem depender de nenhum mês de referência fixo.
     // Retorna > 0 se o mês M ainda está dentro da janela de parcelas.
     function parcelasRestantesEm(v, m, y) {
-      const inicio    = parseLocalDate(v.inicio);
-      const inicioAbs = inicio.getFullYear() * 12 + inicio.getMonth();
+      // Agora pegamos o início real considerando o fechamento do cartão
+      const inicioReal = getMesCobranca(v.inicio, v.pag);
+      if (!inicioReal) return 0;
+      
+      const inicioAbs = inicioReal.y * 12 + inicioReal.m;
       const mAbs      = y * 12 + m;
       const jaPassaram = mAbs - inicioAbs;
-      if (jaPassaram < 0) return 0;
+      
+      if (jaPassaram < 0) return 0; // Ainda não chegou na fatura
       return v.parcelas - jaPassaram;
     }
 
@@ -1990,16 +1994,41 @@
       return getReceitaMes(m, y) - getDespesaFixaMes(m, y) - getDespesaVariavelMes(m, y);
     }
 
-    /* ── FECHAMENTOS DE FATURA ── */
-    function getMesCobranca(dataStr, pagId) {
-      const fech = state.fechamentos && state.fechamentos[pagId];
-      if (!fech) return null;
+   function getMesCobranca(dataStr, pagId) {
       const d = parseLocalDate(dataStr);
+      if (!d) return null;
+
+      const fech = state.fechamentos ? parseInt(state.fechamentos[pagId]) : NaN;
+      
+      // Se não tem data de fechamento configurada, fica no mês real da compra
+      if (!fech || isNaN(fech)) return { m: d.getMonth(), y: d.getFullYear() };
+
+      // 1. Descobre o mês em que a fatura efetivamente FECHA
+      let mFech = d.getMonth();
+      let yFech = d.getFullYear();
+
+      // Se passou do dia de fechamento, cai na fatura que fecha no mês seguinte
       if (d.getDate() > fech) {
-        const next = new Date(d.getFullYear(), d.getMonth() + 1, 1);
-        return { m: next.getMonth(), y: next.getFullYear() };
+        mFech++;
+        if (mFech > 11) {
+          mFech = 0;
+          yFech++;
+        }
       }
-      return { m: d.getMonth(), y: d.getFullYear() };
+
+      // 2. ALINHAMENTO COM O SALÁRIO (A Mágica)
+      // Se o cartão fecha no início do mês (dia 15 ou antes, como o seu dia 5), 
+      // ele vence nesse mesmo mês e é pago com o salário do mês ANTERIOR.
+      // Então, subtraímos 1 mês para ele aparecer no painel correto (ex: Maio -> Abril).
+      if (fech <= 15) {
+        mFech--;
+        if (mFech < 0) {
+          mFech = 11;
+          yFech--;
+        }
+      }
+
+      return { m: mFech, y: yFech };
     }
     
     // Gastos filtrados pelo mês de COBRANÇA (usado no orçamento/budget cards)
@@ -2065,22 +2094,35 @@
         alerts.push({ t: 'info', msg: `${MESES[m]} é um mês anterior ao início do controle — todos os valores estão zerados. O controle começa em março de ${y}.` });
       } else {
         // Alertas de fechamento de fatura
-const hoje = new Date();
-if (hoje.getMonth() === m && hoje.getFullYear() === y && state.fechamentos) {
-  Object.entries(state.fechamentos).forEach(([cidStr, fech]) => {
-    const cid = parseInt(cidStr);
-    const diasRest = fech - hoje.getDate();
-    if (diasRest >= 0 && diasRest <= 5) {
-      const totalCartao = (state.gastos || [])
-        .filter(g => { const d = parseLocalDate(g.data); return d && d.getFullYear() === y && d.getMonth() === m && g.pag === cid; })
-        .reduce((a, g) => a + g.valor, 0);
-      if (totalCartao > 0) {
-        const nd = diasRest === 0 ? 'hoje' : diasRest === 1 ? 'amanhã' : `em ${diasRest} dias`;
-        alerts.push({ t: diasRest <= 2 ? 'danger' : 'warn', msg: `💳 Fatura ${getPagNome(cid)} fecha ${nd} — ${fmt(totalCartao)} lançados` });
-      }
-    }
-  });
-}
+        const hoje = new Date();
+        if (hoje.getMonth() === m && hoje.getFullYear() === y && state.fechamentos) {
+          Object.entries(state.fechamentos).forEach(([cidStr, fech]) => {
+            const cid = parseInt(cidStr);
+            const diasRest = fech - hoje.getDate();
+            
+            if (diasRest >= 0 && diasRest <= 10) { // Expandido para avisar com 10 dias de antecedência
+              // Pega gastos avulsos da fatura
+              const gAvulsos = (state.gastos || [])
+                .filter(g => g.pag === cid)
+                .filter(g => {
+                   const mc = getMesCobranca(g.data, g.pag);
+                   return mc && mc.m === m && mc.y === y;
+                }).reduce((a, g) => a + g.valor, 0);
+
+              // Pega parcelas ativas caindo nesta fatura
+              const gVar = (state.variaveis || [])
+                .filter(v => v.pag === cid && parcelasRestantesEm(v, m, y) > 0)
+                .reduce((a, v) => a + v.mensal, 0);
+
+              const totalCartao = gAvulsos + gVar;
+
+              if (totalCartao > 0) {
+                const nd = diasRest === 0 ? 'hoje' : diasRest === 1 ? 'amanhã' : `em ${diasRest} dias`;
+                alerts.push({ t: diasRest <= 2 ? 'danger' : 'warn', msg: `💳 Fatura ${getPagNome(cid)} fecha ${nd} — Valor: ${fmt(totalCartao)}` });
+              }
+            }
+          });
+        }
         if (saldo < 0)
           alerts.push({ t: 'danger', msg: `Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}.` });
 
@@ -3111,113 +3153,133 @@ if (hoje.getMonth() === m && hoje.getFullYear() === y && state.fechamentos) {
   const hoje      = new Date();
   const ultimoMes = new Date(y, m + 1, 0);
   const diasRest  = (hoje.getFullYear() === y && hoje.getMonth() === m)
-    ? ultimoMes.getDate() - hoje.getDate()
-    : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
-
-  document.getElementById('g-metrics').innerHTML = `
-    <div class="metric">
-      <div class="metric-label">Orçamento total</div>
-      <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
-      <div class="metric-sub">${fixasVigentes.length} categorias</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Gasto real</div>
-      <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
-      <div class="metric-sub">${gastosOrc.length} lançamentos</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
-      <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
-      <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
-    </div>
-  `;
-
-  // Budget cards por categoria (usa cobrança)
-  const budgetCards = document.getElementById('g-budget-cards');
-  if (!fixasVigentes.length) {
-    budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
-  } else {
-    const catMap = {};
-    fixasVigentes.forEach(f => {
-      const k = f.cat;
-      if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
-      catMap[k].limite += f.limite;
-    });
-
-    budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
-      const gasto  = gastoRealCat(parseInt(catId) || catId, m, y);
-      const limite = info.limite;
-      const resto  = limite - gasto;
-      const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
-      const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
-      const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
-      const nomecat = info.desc;
-      const corDot  = CAT_COLORS[nomecat] || '#888';
-
-      return `
-        <div class="budget-card">
-          <div class="budget-card-head">
-            <div class="budget-cat-name">
-              <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
-              ${escHtml(nomecat)}
+      ? ultimoMes.getDate() - hoje.getDate()
+      : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
+  
+    document.getElementById('g-metrics').innerHTML = `
+      <div class="metric">
+        <div class="metric-label">Orçamento total</div>
+        <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
+        <div class="metric-sub">${fixasVigentes.length} categorias</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Gasto real</div>
+        <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
+        <div class="metric-sub">${gastosOrc.length} lançamentos</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
+        <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
+        <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
+      </div>
+    `;
+  
+    // Budget cards por categoria (usa cobrança)
+    const budgetCards = document.getElementById('g-budget-cards');
+    if (!fixasVigentes.length) {
+      budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
+    } else {
+      const catMap = {};
+      fixasVigentes.forEach(f => {
+        const k = f.cat;
+        if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
+        catMap[k].limite += f.limite;
+      });
+  
+      budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
+        const gasto  = gastoRealCat(parseInt(catId) || catId, m, y);
+        const limite = info.limite;
+        const resto  = limite - gasto;
+        const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
+        const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
+        const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
+        const nomecat = info.desc;
+        const corDot  = CAT_COLORS[nomecat] || '#888';
+  
+        return `
+          <div class="budget-card">
+            <div class="budget-card-head">
+              <div class="budget-cat-name">
+                <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
+                ${escHtml(nomecat)}
+              </div>
+              <div class="budget-values">
+                <strong style="color:${cor}">${fmt(gasto)}</strong>
+                <span> / ${fmt(limite)}</span>
+              </div>
             </div>
-            <div class="budget-values">
-              <strong style="color:${cor}">${fmt(gasto)}</strong>
-              <span> / ${fmt(limite)}</span>
+            <div class="budget-prog-bar">
+              <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
+            </div>
+            <div class="budget-footer">
+              <span>${pct}% usado</span>
+              <span class="restante-${cor2}">
+                ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
+              </span>
             </div>
           </div>
-          <div class="budget-prog-bar">
-            <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
-          </div>
-          <div class="budget-footer">
-            <span>${pct}% usado</span>
-            <span class="restante-${cor2}">
-              ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
-            </span>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // Lista de lançamentos (pela data real, com tag de fatura diferente)
-  const lista  = document.getElementById('g-lista');
-  const empty  = document.getElementById('g-lista-empty');
-  document.getElementById('g-lista-title').textContent = `Lançamentos de ${MESES[m]}`;
-
-  if (!gastosMes.length) {
-    lista.innerHTML = '';
-    empty.style.display = 'block';
-  } else {
-    empty.style.display = 'none';
-    const sorted = [...gastosMes].sort((a, b) => b.data.localeCompare(a.data));
-    lista.innerHTML = sorted.map(g => {
-      const nomeCat = getCatNome(g.cat);
-      const nomePag = getPagNome(g.pag);
-      const corCat  = CAT_COLORS[nomeCat] || '#888';
-      // Verifica se vai para fatura de outro mês
-      let faturaTag = '';
-      const mc = getMesCobranca(g.data, g.pag);
-      if (mc) {
-        const dg = parseLocalDate(g.data);
-        if (mc.m !== dg.getMonth() || mc.y !== dg.getFullYear()) {
-          faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--amber-light);color:var(--amber);margin-left:4px">fatura ${MESES[mc.m].slice(0,3)}/${String(mc.y).slice(-2)}</span>`;
-        }
+        `;
+      }).join('');
+    }
+  
+    // Lista de lançamentos mesclada (Orçamento do mês + Lançamentos literais do calendário)
+    const lista  = document.getElementById('g-lista');
+    const empty  = document.getElementById('g-lista-empty');
+    document.getElementById('g-lista-title').textContent = `Lançamentos (Fatura e Avulsos de ${MESES[m]})`;
+  
+    const setIds = new Set();
+    const gastosParaMostrar = [];
+  
+    // 1. Puxa tudo que compõe a fatura deste mês
+    gastosOrc.forEach(g => { setIds.add(g.id); gastosParaMostrar.push(g); });
+    // 2. Puxa tudo que foi comprado neste mês, para não sumir da tela
+    gastosMes.forEach(g => {
+      if (!setIds.has(g.id)) {
+        setIds.add(g.id);
+        gastosParaMostrar.push(g);
       }
-      return `
-        <div class="gasto-item">
-          <span class="gasto-dot" style="background:${corCat}"></span>
-          <div class="gasto-info">
-            <div class="gasto-desc">${escHtml(g.desc || nomeCat)}${faturaTag}</div>
-            <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${fmtDate(g.data)}</div>
+    });
+  
+    if (!gastosParaMostrar.length) {
+      lista.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      const sorted = gastosParaMostrar.sort((a, b) => b.data.localeCompare(a.data));
+      lista.innerHTML = sorted.map(g => {
+        const nomeCat = getCatNome(g.cat);
+        const nomePag = getPagNome(g.pag);
+        const corCat  = CAT_COLORS[nomeCat] || '#888';
+        
+        let faturaTag = '';
+        const mc = getMesCobranca(g.data, g.pag);
+        const dg = parseLocalDate(g.data);
+  
+        // Regra visual das tags
+        if (mc && (mc.m !== dg.getMonth() || mc.y !== dg.getFullYear())) {
+          if (mc.m === m && mc.y === y) {
+             // Pertence a esta fatura, mas foi comprado mês passado
+             faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--blue-light);color:var(--blue-dark);margin-left:4px">compra de ${MESES[dg.getMonth()].slice(0,3)}</span>`;
+          } else {
+             // Comprado neste mês, mas já foi para a próxima fatura
+             faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--amber-light);color:var(--amber);margin-left:4px">fatura ${MESES[mc.m].slice(0,3)}/${String(mc.y).slice(-2)}</span>`;
+          }
+        }
+  
+        return `
+          <div class="gasto-item">
+            <span class="gasto-dot" style="background:${corCat}"></span>
+            <div class="gasto-info">
+              <div class="gasto-desc">${escHtml(g.desc || nomeCat)}${faturaTag}</div>
+              <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${fmtDate(g.data)}</div>
+            </div>
+            <span class="gasto-valor">− ${fmt(g.valor)}</span>
+            <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
           </div>
-          <span class="gasto-valor">− ${fmt(g.valor)}</span>
-          <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
   }
-}
 
     /* ── MODAL DE LANÇAMENTO ─────────────────────────────────────── */
     function abrirModalGasto(idEdicao) {
