@@ -2923,7 +2923,7 @@
 
       const catsSet = new Set();
       state.fixas.forEach(f => catsSet.add(f.cat));
-     .forEach(c => catsSet.add(c));
+      state.gastos.forEach(c => catsSet.add(c.cat));
 
       const chips = document.getElementById('mg-cat-chips');
       chips.innerHTML = [...catsSet].map(catId => {
