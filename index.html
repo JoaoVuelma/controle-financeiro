@@ -1696,7 +1696,7 @@
       return v.parcelas - jaPassaram;
     }
 
-    const MESES_ZERADOS = { ano: 2026, meses: };
+    const MESES_ZERADOS = { ano: 2026, meses: 12};
     function mesZerado(m, y) {
       return y === MESES_ZERADOS.ano && MESES_ZERADOS.meses.includes(m);
     }
@@ -2921,7 +2921,7 @@
 
       const catsSet = new Set();
       state.fixas.forEach(f => catsSet.add(f.cat));
-     .forEach(c => catsSet.add(c));
+      state.categorias.forEach(c => catsSet.add(c));
 
       const chips = document.getElementById('mg-cat-chips');
       chips.innerHTML = [...catsSet].map(catId => {
