@@ -1758,10 +1758,11 @@
         const b64clean  = json.content.replace(/\n/g, '');
         const decoded   = JSON.parse(decodeURIComponent(escape(atob(b64clean))));
         state = {
-          receitas:  decoded.receitas  || [],
-          fixas:     decoded.fixas     || [],
-          variaveis: decoded.variaveis || [],
-          gastos:    decoded.gastos    || [],
+          receitas:    decoded.receitas    || [],
+          fixas:       decoded.fixas       || [],
+          variaveis:   decoded.variaveis   || [],
+          gastos:      decoded.gastos      || [],
+          fechamentos: decoded.fechamentos || {},
         };
 
         markSaved();
@@ -1984,6 +1985,36 @@
     function getSaldoMes(m, y) {
       if (mesZerado(m, y)) return 0;
       return getReceitaMes(m, y) - getDespesaFixaMes(m, y) - getDespesaVariavelMes(m, y);
+    }
+
+    /* ── FECHAMENTOS DE FATURA ── */
+    function getMesCobranca(dataStr, pagId) {
+      const fech = state.fechamentos && state.fechamentos[pagId];
+      if (!fech) return null;
+      const d = parseLocalDate(dataStr);
+      if (d.getDate() > fech) {
+        const next = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+        return { m: next.getMonth(), y: next.getFullYear() };
+      }
+      return { m: d.getMonth(), y: d.getFullYear() };
+    }
+    
+    // Gastos filtrados pelo mês de COBRANÇA (usado no orçamento/budget cards)
+    function gastosCobrancaMes(m, y) {
+      if (!state.gastos) return [];
+      return state.gastos.filter(g => {
+        const mc = getMesCobranca(g.data, g.pag);
+        if (mc) return mc.m === m && mc.y === y;
+        const d = parseLocalDate(g.data);
+        return d && d.getFullYear() === y && d.getMonth() === m;
+      });
+    }
+    
+    // Valor real gasto em uma categoria num mês (por cobrança)
+    function gastoRealCat(catId, m, y) {
+      return gastosCobrancaMes(m, y)
+        .filter(g => g.cat === catId || getCatNome(g.cat) === getCatNome(catId))
+        .reduce((a, g) => a + g.valor, 0);
     }
 
     /* ================================================================
