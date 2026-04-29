@@ -8,6 +8,9 @@
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1A1A18"  media="(prefers-color-scheme: dark)">
   <title>Meu Financeiro</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
   <style>
@@ -1008,7 +1011,7 @@
             </div>
           </div>
           <div class="form-grid">
-            <div class="field">Data início            <input type="date" id="f-inicio"></div>
+            <div class="field">Data início             <input type="date" id="f-inicio"></div>
             <div class="field">Data fim (opcional)   <input type="date" id="f-fim"></div>
           </div>
           <div class="form-actions">
@@ -1672,7 +1675,6 @@
         }
       }
 
-      // Alinhamento com o Salário
       if (fech <= 15) {
         mFech--;
         if (mFech < 0) {
@@ -2852,7 +2854,7 @@
                 <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
               </div>
               <div class="budget-footer">
-                <span>${pct}% usado</span>
+                <span>${pct}% used</span>
                 <span class="restante-${cor2}">
                   ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
                 </span>
@@ -2921,7 +2923,7 @@
 
       const catsSet = new Set();
       state.fixas.forEach(f => catsSet.add(f.cat));
-      state.categorias.forEach(c => catsSet.add(c));
+     .forEach(c => catsSet.add(c));
 
       const chips = document.getElementById('mg-cat-chips');
       chips.innerHTML = [...catsSet].map(catId => {
@@ -2958,7 +2960,6 @@
           document.getElementById('mg-id').value    = g.id;
           document.getElementById('modal-gasto-title').textContent = '✏️ Editar gasto';
           const chipEl = chips.querySelector(`[data-cat="${g.cat}"]`);
-          // Agora chamamos apenas com o elemento, sem passar o valor problemático junto
           if (chipEl) selecionarCatChip(chipEl);
           const pagSel = document.getElementById('mg-pag');
           const pagOpt = Array.from(pagSel.options).find(o => o.value == g.pag || o.text === getPagNome(g.pag));
@@ -2976,7 +2977,6 @@
         c.style.background = '';
         c.style.color = '';
       });
-      // Pega o ID da categoria de forma segura direto do HTML do botão
       const catId = el.getAttribute('data-cat');
       const nome = getCatNome(catId);
       const cor  = CAT_COLORS[nome] || '#888';
@@ -3084,7 +3084,7 @@
     window.salvarFaturaManual = function(y, m, cid, val) {
         if (!state.faturasCustom) state.faturasCustom = {};
         const key = `${y}-${m}-${cid}`;
-        if (val.trim() === '') {
+        if (val == null || String(val).trim() === '') {
             delete state.faturasCustom[key]; 
         } else {
             state.faturasCustom[key] = parseFloat(val);
