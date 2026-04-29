@@ -123,7 +123,6 @@
       flex-shrink: 0;
     }
 
-    /* Indicador de sincronização */
     .sync-status {
       display: flex;
       align-items: center;
@@ -147,7 +146,7 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50%       { opacity: .4; }
+      50%      { opacity: .4; }
     }
 
     /* ================================================================
@@ -355,7 +354,7 @@
     .badge-warn    { background: var(--amber-light);  color: var(--amber);       }
     .badge-pago    { background: var(--blue-light);   color: var(--blue-dark);   }
     .badge-nao     { background: var(--red-light);    color: var(--red);         }
-    .badge-neutral { background: var(--bg3);           color: var(--text-s);      }
+    .badge-neutral { background: var(--bg3);          color: var(--text-s);      }
 
     /* ================================================================
        TAGS DE PAGAMENTO
@@ -625,7 +624,6 @@
        ABA GASTOS — Budget cards e chips
     ================================================================ */
 
-    /* Card de orçamento por categoria */
     .budget-card {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -741,7 +739,7 @@
       align-items: center !important;
       justify-content: center !important;
       transition: transform .15s, box-shadow .15s !important;
-      display: none; /* hidden by default, shown only on gastos tab */
+      display: none;
     }
     #btn-novo-gasto:active {
       transform: scale(.93) !important;
@@ -749,52 +747,40 @@
 
     /* ================================================================
        RESPONSIVO — iPhone 13 (390px) e menores
-       Regra: ZERO scroll lateral na tela.
-       Tabelas scrollam só dentro do .table-wrap.
     ================================================================ */
     @media (max-width: 430px) {
-
-      /* Base */
       html      { font-size: 14px; }
       main      { padding: 12px; max-width: 100%; }
-      *         { min-width: 0; } /* previne overflow em flex/grid */
+      * { min-width: 0; }
 
-      /* Header */
       header          { padding: 0 12px; height: 48px; gap: 8px; }
       .logo           { font-size: 14px; }
       .header-actions { gap: 6px; }
-      #sync-label     { display: none; }        /* só mostra o dot */
+      #sync-label     { display: none; }
       #btn-salvar     { padding: 6px 12px; font-size: 12px; }
 
-      /* Nav */
       nav button { padding: 0 11px; height: 40px; font-size: 11px; }
 
-      /* Cabeçalho de página */
       .page-head    { margin-bottom: 14px; gap: 8px; }
       .page-title   { font-size: 16px; }
       .month-sel    { gap: 6px; }
       .month-sel select { font-size: 12px; padding: 5px 6px; }
 
-      /* Métricas — 2×2 */
       .metrics        { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
       .metric         { padding: 11px 12px; }
       .metric-label   { font-size: 9px; letter-spacing: .03em; margin-bottom: 4px; }
       .metric-value   { font-size: 16px; }
       .metric-sub     { font-size: 10px; margin-top: 3px; }
 
-      /* Cards */
       .card       { padding: 12px; margin-bottom: 12px; border-radius: 12px; }
       .card-title { font-size: 10px; margin-bottom: 12px; }
       .two-col    { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
 
-      /* Gráficos */
       .chart-wrap { height: 180px !important; }
 
-      /* Alertas */
       .alert      { padding: 9px 11px; font-size: 12px; gap: 8px; }
       .alert-icon { font-size: 13px; }
 
-      /* Tabelas — scroll só dentro do wrapper com sombra indicativa */
       .table-wrap {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -811,35 +797,20 @@
       th      { padding: 7px 7px; font-size: 10px; }
       td      { padding: 8px 7px; }
 
-      /* Botões dentro de tabela — empilha verticalmente */
       td > div[style*="flex"] { flex-direction: column; gap: 3px; }
-      .btn-xs {
-        padding: 5px 8px;
-        font-size: 11px;
-        min-height: 30px;
-        width: 100%;
-        justify-content: center;
-      }
+      .btn-xs { padding: 5px 8px; font-size: 11px; min-height: 30px; width: 100%; justify-content: center; }
 
       .badge   { font-size: 10px; padding: 2px 7px; }
       .pay-tag { font-size: 10px; padding: 2px 6px; }
       .cat-wrap { font-size: 11px; gap: 4px; }
 
-      /* Formulários — 1 coluna, inputs com área de toque confortável */
       .form-section       { padding: 14px; border-radius: 12px; }
       .form-section-title { font-size: 13px; margin-bottom: 12px; }
-      .form-grid,
-      .form-grid.g3,
-      .form-grid.g1       { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+      .form-grid, .form-grid.g3, .form-grid.g1 { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
       .field              { font-size: 12px; gap: 4px; }
 
-      input[type=text],
-      input[type=number],
-      input[type=date],
-      select {
-        padding: 10px 11px;
-        font-size: 16px; /* evita zoom automático do iOS */
-        border-radius: 8px;
+      input[type=text], input[type=number], input[type=date], select {
+        padding: 10px 11px; font-size: 16px; border-radius: 8px;
       }
 
       .btn          { padding: 11px 16px; font-size: 13px; min-height: 44px; border-radius: 8px; }
@@ -848,43 +819,24 @@
       .checkbox-row { min-height: 44px; }
 
       .inner-tab { padding: 8px 14px; font-size: 12px; min-height: 38px; }
-
       .prog-bar    { height: 5px; }
       .prog-labels { font-size: 10px; }
-
       .predict-block { margin-bottom: 14px; }
       .predict-head  { font-size: 12px; }
 
-      /* Modal — sobe de baixo (sheet style) */
       .modal-overlay { padding: 12px; align-items: flex-end; }
-      .modal-box     {
-        padding: 20px;
-        border-radius: 16px 16px 12px 12px;
-        max-height: 90vh;
-        overflow-y: auto;
-      }
+      .modal-box     { padding: 20px; border-radius: 16px 16px 12px 12px; max-height: 90vh; overflow-y: auto; }
       .modal-title { font-size: 15px; }
       .modal-sub   { font-size: 12px; margin-bottom: 16px; }
       .step-item   { font-size: 12px; margin-bottom: 8px; }
       .modal-actions .btn { flex: 1; justify-content: center; }
 
-      /* Toast — largura total */
-      #toast {
-        bottom: 16px;
-        right: 12px;
-        left: 12px;
-        text-align: center;
-        font-size: 12px;
-        padding: 10px 16px;
-      }
+      #toast { bottom: 16px; right: 12px; left: 12px; text-align: center; font-size: 12px; padding: 10px 16px; }
 
       .empty-state      { padding: 28px 16px; }
       .empty-state .es-icon { font-size: 28px; }
 
-      /* Parcelas — métricas em coluna única */
       #metrics-parcelas { grid-template-columns: 1fr !important; }
-
-      /* Economias */
       #eco-metrics { grid-template-columns: 1fr 1fr !important; }
     }
 
@@ -893,14 +845,10 @@
       main    { padding: 14px; }
       .metrics     { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .two-col     { grid-template-columns: 1fr; gap: 14px; }
-      .form-grid,
-      .form-grid.g3 { grid-template-columns: 1fr; }
+      .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
       .card        { padding: 16px; }
       .chart-wrap  { height: 190px !important; }
-      input[type=text],
-      input[type=number],
-      input[type=date],
-      select       { font-size: 16px; }
+      input[type=text], input[type=number], input[type=date], select { font-size: 16px; }
       .btn         { min-height: 42px; }
       #sync-label  { display: none; }
     }
@@ -909,9 +857,6 @@
 
 <body>
 
-  <!-- ================================================================
-       HEADER
-  ================================================================ -->
   <header>
     <div class="logo">💰 <em>Meu</em>Financeiro</div>
     <div class="header-actions">
@@ -926,9 +871,6 @@
     </div>
   </header>
 
-  <!-- ================================================================
-       NAVEGAÇÃO
-  ================================================================ -->
   <nav id="main-nav">
     <button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
     <button onclick="showPage('receitas',this)">Receitas</button>
@@ -939,12 +881,8 @@
     <button onclick="showPage('previsao',this)">Previsão</button>
   </nav>
 
-  <!-- ================================================================
-       CONTEÚDO PRINCIPAL
-  ================================================================ -->
   <main>
 
-    <!-- ── DASHBOARD ── -->
     <div id="page-dashboard" class="page active">
 
       <div class="page-head">
@@ -970,6 +908,11 @@
       <div id="dash-alerts"></div>
       <div class="metrics" id="dash-metrics"></div>
 
+      <div class="card">
+        <div class="card-title">💳 Controle de Faturas do Mês</div>
+        <div id="faturas-list"></div>
+      </div>
+
       <div class="two-col">
         <div class="card">
           <div class="card-title">Gastos por categoria</div>
@@ -986,10 +929,7 @@
         <div class="chart-wrap" style="height:180px"><canvas id="chartPay"></canvas></div>
       </div>
 
-    </div><!-- /dashboard -->
-
-    <!-- ── RECEITAS ── -->
-    <div id="page-receitas" class="page">
+    </div><div id="page-receitas" class="page">
 
       <div class="page-head">
         <div class="page-title">Receitas</div>
@@ -1026,10 +966,7 @@
         </div>
       </div>
 
-    </div><!-- /receitas -->
-
-    <!-- ── DESPESAS ── -->
-    <div id="page-despesas" class="page">
+    </div><div id="page-despesas" class="page">
 
       <div class="page-head"><div class="page-title">Despesas</div></div>
 
@@ -1038,7 +975,6 @@
         <button class="inner-tab"        onclick="switchTab('variaveis',this)">Variáveis / Parceladas</button>
       </div>
 
-      <!-- Despesas Fixas -->
       <div id="tab-fixas">
         <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
           <button class="btn btn-primary btn-sm" onclick="openFormFixa()">+ Nova despesa fixa</button>
@@ -1072,7 +1008,7 @@
             </div>
           </div>
           <div class="form-grid">
-            <div class="field">Data início           <input type="date" id="f-inicio"></div>
+            <div class="field">Data início            <input type="date" id="f-inicio"></div>
             <div class="field">Data fim (opcional)   <input type="date" id="f-fim"></div>
           </div>
           <div class="form-actions">
@@ -1095,10 +1031,7 @@
             </table>
           </div>
         </div>
-      </div><!-- /tab-fixas -->
-
-      <!-- Variáveis / Parceladas -->
-      <div id="tab-variaveis" style="display:none">
+      </div><div id="tab-variaveis" style="display:none">
         <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
           <button class="btn btn-primary btn-sm" onclick="openFormVariavel()">+ Nova compra / parcela</button>
         </div>
@@ -1158,12 +1091,7 @@
             </table>
           </div>
         </div>
-      </div><!-- /tab-variaveis -->
-
-    </div><!-- /despesas -->
-
-    <!-- ── PARCELAS ── -->
-    <div id="page-parcelas" class="page">
+      </div></div><div id="page-parcelas" class="page">
 
       <div class="page-head"><div class="page-title">Parcelas</div></div>
       <div class="metrics" id="metrics-parcelas" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
@@ -1194,10 +1122,7 @@
         </div>
       </div>
 
-    </div><!-- /parcelas -->
-
-    <!-- ── ECONOMIAS ── -->
-    <div id="page-economias" class="page">
+    </div><div id="page-economias" class="page">
 
       <div class="page-head">
         <div class="page-title">Economias</div>
@@ -1211,7 +1136,6 @@
         </div>
       </div>
 
-      <!-- Configuração -->
       <div class="card" id="eco-config-card">
         <div class="card-title">Configuração da poupança</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
@@ -1227,7 +1151,7 @@
           </div>
           <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm);font-size:12px;color:var(--green-dark)">
             <strong>Depósito automático</strong><br>
-            O valor depositado em cada mês é lido das despesas fixas com pagamento <em>Poupança</em> — respeitando o período de vigência de cada uma.
+            O valor depositado em cada mês é lido das despesas fixas com pagamento <em>Poupança</em> — respeitando o período de vigência.
           </div>
         </div>
       </div>
@@ -1265,10 +1189,7 @@
         </div>
       </div>
 
-    </div><!-- /economias -->
-
-    <!-- ── PREVISÃO ── -->
-    <div id="page-previsao" class="page">
+    </div><div id="page-previsao" class="page">
 
       <div class="page-head"><div class="page-title">Previsão Financeira</div></div>
 
@@ -1293,10 +1214,7 @@
         <div class="chart-wrap" style="height:240px"><canvas id="chartRvsD"></canvas></div>
       </div>
 
-    </div><!-- /previsao -->
-
-    <!-- ── GASTOS ── -->
-    <div id="page-gastos" class="page">
+    </div><div id="page-gastos" class="page">
 
       <div class="page-head">
         <div class="page-title">Gastos do Mês</div>
@@ -1318,13 +1236,10 @@
         </div>
       </div>
 
-      <!-- Resumo do mês -->
       <div class="metrics" id="g-metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
 
-      <!-- Cards de orçamento por categoria -->
       <div id="g-budget-cards"></div>
 
-      <!-- Lista de lançamentos -->
       <div class="card">
         <div class="card-title" id="g-lista-title">Lançamentos do mês</div>
         <div id="g-lista-empty" class="empty-state" style="display:none">
@@ -1334,41 +1249,15 @@
         <div id="g-lista"></div>
       </div>
 
-    </div><!-- /gastos -->
-
-    <!-- Botão + flutuante para lançar gasto (visível só na aba Gastos) -->
-    <button id="btn-novo-gasto" onclick="abrirModalGasto()" style="
-      display:none;
-      position:fixed;
-      bottom: max(24px, env(safe-area-inset-bottom));
-      right: 20px;
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: var(--blue-dark);
-      color: #fff;
-      border: none;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(24,95,165,.5);
-      z-index: 300;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform .15s, box-shadow .15s;
-    " aria-label="Lançar novo gasto">＋</button>
+    </div><button id="btn-novo-gasto" onclick="abrirModalGasto()" aria-label="Lançar novo gasto">＋</button>
 
   </main>
 
-  <!-- ================================================================
-       MODAL — Lançar gasto
-  ================================================================ -->
-  <div id="modal-gasto" class="modal-overlay" style="display:none"
-       onclick="if(event.target===this) fecharModalGasto()">
+  <div id="modal-gasto" class="modal-overlay" style="display:none" onclick="if(event.target===this) fecharModalGasto()">
     <div class="modal-box" style="max-width:440px">
       <div class="modal-title" id="modal-gasto-title">📝 Lançar gasto</div>
       <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
 
-        <!-- Valor — destaque grande, primeiro campo -->
         <div class="field">
           Valor (R$)
           <input type="number" id="mg-valor" placeholder="0,00" step="0.01"
@@ -1376,20 +1265,17 @@
                  inputmode="decimal">
         </div>
 
-        <!-- Descrição -->
         <div class="field">
           Descrição <span style="color:var(--text-t);font-weight:400">(opcional)</span>
           <input type="text" id="mg-desc" placeholder="ex: Remédio, café, gasolina...">
         </div>
 
-        <!-- Categoria — grade de chips -->
         <div class="field">
           Categoria
           <div id="mg-cat-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
           <input type="hidden" id="mg-cat">
         </div>
 
-        <!-- Pagamento -->
         <div class="field">
           Pagamento
           <select id="mg-pag">
@@ -1403,7 +1289,6 @@
           </select>
         </div>
 
-        <!-- Data -->
         <div class="field">
           Data
           <input type="date" id="mg-data">
@@ -1420,11 +1305,7 @@
     </div>
   </div>
 
-  <!-- ================================================================
-       MODAL — Configuração GitHub
-  ================================================================ -->
-  <div id="modal-config" class="modal-overlay" style="display:none"
-       onclick="if(event.target===this) hideConfig()">
+  <div id="modal-config" class="modal-overlay" style="display:none" onclick="if(event.target===this) hideConfig()">
     <div class="modal-box">
       <div class="modal-title">⚙ Sincronização com GitHub</div>
       <div class="modal-sub">
@@ -1471,140 +1352,76 @@
 
   <div id="toast"></div>
 
-  <!-- ================================================================
-       JAVASCRIPT
-  ================================================================ -->
   <script>
-
-    /* ================================================================
-       CONSTANTES GLOBAIS
-    ================================================================ */
 
     const MESES = [
       'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
       'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'
     ];
 
-    // ── ENUMS ──────────────────────────────────────────────────────
-    // Categorias e pagamentos são salvos como números no JSON.
-    // Isso evita problemas de encoding com acentos e facilita migrações.
-    // Retrocompatibilidade: se vier string (JSON antigo), mantém a string.
-
     const CATEGORIAS = {
-      1: 'Alimentação',
-      2: 'Saúde',
-      3: 'Educação',
-      4: 'Serviços',
-      5: 'Lazer',
-      6: 'Transporte',
-      7: 'Investimentos',
-      8: 'Moradia',
-      9: 'Crédito',
-      10: 'Compra',
-      11: 'Outros',
+      1: 'Alimentação', 2: 'Saúde', 3: 'Educação', 4: 'Serviços',
+      5: 'Lazer', 6: 'Transporte', 7: 'Investimentos', 8: 'Moradia',
+      9: 'Crédito', 10: 'Compra', 11: 'Outros',
     };
 
     const PAGAMENTOS = {
-      1: 'Cartão Sicredi',
-      2: 'Cartão M Pago',
-      3: 'Cartão Banri',
-      4: 'Dinheiro Vivo',
-      5: 'Pix',
-      6: 'Poupança',
-      7: 'Conta Corrente Banri',
-      8: 'Conta Corrente M Pago',
-      9: 'Cartão Santander',
+      1: 'Cartão Sicredi', 2: 'Cartão M Pago', 3: 'Cartão Banri',
+      4: 'Dinheiro Vivo', 5: 'Pix', 6: 'Poupança',
+      7: 'Conta Corrente Banri', 8: 'Conta Corrente M Pago', 9: 'Cartão Santander',
     };
 
-    // Traduz ID numérico → nome. String() garante que IDs sem mapeamento
-    // nunca quebrem .replace() ou outras operações de string.
     const getCatNome = c => (c != null) ? (CATEGORIAS[c] || String(c)) : '?';
     const getPagNome = p => (p != null) ? (PAGAMENTOS[p] || String(p)) : '?';
 
-    // Cores por nome de categoria (após tradução)
     const CAT_COLORS = {
-      Alimentação:  '#1D9E75',
-      Saúde:        '#E24B4A',
-      Educação:     '#378ADD',
-      Serviços:     '#BA7517',
-      Lazer:        '#D4537E',
-      Transporte:   '#7F77DD',
-      Investimentos:'#639922',
-      Moradia:      '#D85A30',
-      Crédito:      '#888780',
-      Compra:       '#5DCAA5',
-      Outros:       '#B4B2A9',
+      Alimentação:  '#1D9E75', Saúde:        '#E24B4A', Educação:     '#378ADD',
+      Serviços:     '#BA7517', Lazer:        '#D4537E', Transporte:   '#7F77DD',
+      Investimentos:'#639922', Moradia:      '#D85A30', Crédito:      '#888780',
+      Compra:       '#5DCAA5', Outros:       '#B4B2A9',
     };
 
-    // CSS class de tag por nome de pagamento (após tradução)
     const PAY_CLASS = {
-      'Cartão Sicredi':       'pt-sicredi',
-      'Cartão M Pago':        'pt-mpago',
-      'Cartão Banri':         'pt-banri',
-      'Dinheiro Vivo':        'pt-dinheiro',
-      'Pix':                  'pt-pix',
-      'Poupança':             'pt-poupanca',
-      'Conta Corrente Banri': 'pt-banri',
-      'Conta Corrente M Pago':'pt-mpago',
+      'Cartão Sicredi':       'pt-sicredi',  'Cartão M Pago':        'pt-mpago',
+      'Cartão Banri':         'pt-banri',    'Dinheiro Vivo':        'pt-dinheiro',
+      'Pix':                  'pt-pix',      'Poupança':             'pt-poupanca',
+      'Conta Corrente Banri': 'pt-banri',    'Conta Corrente M Pago':'pt-mpago',
       'Cartão Santander':     'pt-santander',
     };
 
-    // Cores dos gráficos por nome de pagamento (após tradução)
     const PAY_COLORS = {
-      'Cartão Sicredi':       '#1D9E75',
-      'Cartão M Pago':        '#00838F',
-      'Cartão Banri':         '#378ADD',
-      'Dinheiro Vivo':        '#888780',
-      'Pix':                  '#BA7517',
-      'Poupança':             '#639922',
-      'Conta Corrente Banri': '#5DCAA5',
-      'Conta Corrente M Pago':'#3BDAB0',
+      'Cartão Sicredi':       '#1D9E75', 'Cartão M Pago':        '#00838F',
+      'Cartão Banri':         '#378ADD', 'Dinheiro Vivo':        '#888780',
+      'Pix':                  '#BA7517', 'Poupança':             '#639922',
+      'Conta Corrente Banri': '#5DCAA5', 'Conta Corrente M Pago':'#3BDAB0',
       'Cartão Santander':     '#EC0000',
     };
 
-    // Mês e ano de referência — removido: parcelas agora calculadas por inicio+parcelas
-
-    /* ================================================================
-       HELPERS
-    ================================================================ */
-
-    // Formata valor em R$ com separador BR
-    const fmt = v =>
-      'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-    // Formata valor abreviado (ex: R$ 1,5k)
+    const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtK = v => {
       const a = Math.abs(v);
       return (v < 0 ? '-' : '') + (a >= 1000 ? 'R$ ' + Math.round(a / 100) / 10 + 'k' : fmt(v));
     };
 
-    // Formata data "yyyy-mm-dd" → "dd/mm/aaaa"
     const fmtDate = s => {
       if (!s) return '—';
       const [y, m, d] = s.split('-');
       return `${d}/${m}/${y}`;
     };
 
-    // Gera ID único
     const uid = () => Date.now() + Math.floor(Math.random() * 9999);
+    const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    // Escapa HTML
-    const escHtml = s =>
-      String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-    // Tag de pagamento colorida — traduz ID → nome antes de renderizar
     const payTag = p => {
       const nome = String(getPagNome(p) ?? p ?? '?');
       return `<span class="pay-tag ${PAY_CLASS[nome] || 'pt-dinheiro'}">${escHtml(nome.replace('Conta Corrente ', 'CC '))}</span>`;
     };
 
-    // Wrap de categoria com dot colorido — traduz ID → nome antes de renderizar
     const catWrap = c => {
       const nome = String(getCatNome(c) ?? c ?? '?');
       return `<span class="cat-wrap"><span class="cat-dot" style="background:${CAT_COLORS[nome]||'#888'}"></span>${escHtml(nome)}</span>`;
     };
 
-    // Toast de notificação
     function toast(msg, duration = 2500) {
       const el = document.getElementById('toast');
       el.textContent = msg;
@@ -1612,105 +1429,49 @@
       setTimeout(() => el.classList.remove('show'), duration);
     }
 
-    // Gerenciamento de gráficos Chart.js
     let charts = {};
     function destroyChart(id) {
       if (charts[id]) { charts[id].destroy(); delete charts[id]; }
     }
 
-    /* ================================================================
-       DADOS PADRÃO
-       Usados quando o dados.json ainda não existe no GitHub
-    ================================================================ */
-    const DEFAULT_STATE = {
-      receitas: [
-        // Salários indicativos de jan e fev (recebidos, não projetados)
-        { id: 1773773355486, desc: 'Salário', valor: 2550, inicio: '2026-01-01', fim: '2026-01-01' },
-        { id: 1773773427985, desc: 'Salário', valor: 1092, inicio: '2026-02-17', fim: '2026-02-17' },
-        // Recorrentes a partir de março
-        { id: 1,   desc: 'Salário',                valor: 2250, inicio: '2026-03-01', fim: '2026-12-31' },
-        { id: 2,   desc: 'Vale',                   valor:  750, inicio: '2026-01-01', fim: '2026-12-25' },
-        { id: 3,   desc: 'Pagamento de Férias',    valor: 2900, inicio: '2026-04-01', fim: '2026-04-01' },
-        { id: 4,   desc: '13º Salário (1ª Parc.)', valor: 1250, inicio: '2026-11-01', fim: '2026-11-01' },
-        { id: 5,   desc: '13º Salário (2ª Parc.)', valor: 1000, inicio: '2026-12-01', fim: '2026-12-01' },
-      ],
-      fixas: [
-        { id: 1, desc: 'Faculdade',    cat: 'Educação',     limite: 517, valor: 517, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
-        { id: 2, desc: 'Corte',        cat: 'Saúde',        limite: 100, valor: 100, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
-        { id: 3, desc: 'Streaming',    cat: 'Serviços',     limite: 183, valor: 183, pag: 'Cartão Sicredi', inicio: '2026-01-01', fim: '' },
-        { id: 4, desc: 'Poupança',     cat: 'Investimentos',limite: 500, valor: 500, pag: 'Poupança',       inicio: '2026-04-01', fim: '' },
-        { id: 5, desc: 'Mercado',      cat: 'Alimentação',  limite: 100, valor: 150, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
-        { id: 6, desc: 'Farmacia',     cat: 'Saúde',        limite:  50, valor:  60, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
-        { id: 7, desc: 'Lazer mensal', cat: 'Lazer',        limite: 450, valor: 500, pag: 'Cartão Sicredi', inicio: '2026-01-02', fim: '' },
-      ],
-      variaveis: [
-        { id: 11, nome: 'Nike',            cat: 'Compra',  total: 660, mensal: 110, parcelas: 6,  faltam: 6,  pag: 'Cartão Sicredi',       inicio: '2026-01-01', pago: false },
-        { id: 1,  nome: 'Mercado Livre 2', cat: 'Compra',  total:  52, mensal:  26, parcelas: 2,  faltam: 1,  pag: 'Cartão M Pago',         inicio: '2026-02-12', pago: false },
-        { id: 2,  nome: 'Airbnb',          cat: 'Lazer',   total: 438, mensal:  73, parcelas: 6,  faltam: 5,  pag: 'Cartão Banri',          inicio: '2026-02-12', pago: false },
-        { id: 3,  nome: 'Perfume',         cat: 'Compra',  total: 756, mensal:  63, parcelas: 12, faltam: 11, pag: 'Cartão M Pago',         inicio: '2026-02-12', pago: false },
-        { id: 4,  nome: 'Renner',          cat: 'Compra',  total: 180, mensal:  60, parcelas: 3,  faltam: 2,  pag: 'Cartão Sicredi',        inicio: '2026-02-20', pago: false },
-        { id: 5,  nome: 'C&A',             cat: 'Compra',  total: 326, mensal: 163, parcelas: 2,  faltam: 2,  pag: 'Cartão M Pago',         inicio: '2026-03-01', pago: false },
-        { id: 6,  nome: 'Credito Banri',   cat: 'Credito', total:  86, mensal:  86, parcelas: 3,  faltam: 2,  pag: 'Conta Corrente Banri',  inicio: '2026-03-01', pago: false },
-        { id: 7,  nome: 'H&M',             cat: 'Compra',  total: 348, mensal:  58, parcelas: 6,  faltam: 6,  pag: 'Cartão Sicredi',        inicio: '2026-03-01', pago: false },
-        { id: 8,  nome: 'Credito Mercado', cat: 'Credito', total: 610, mensal: 122, parcelas: 5,  faltam: 4,  pag: 'Conta Corrente M Pago', inicio: '2026-03-02', pago: false },
-        { id: 9,  nome: 'Amazon 1',        cat: 'Compra',  total: 288, mensal:  48, parcelas: 6,  faltam: 6,  pag: 'Cartão Banri',          inicio: '2026-03-09', pago: false },
-        { id: 12, nome: 'Hering',          cat: 'Compra',  total: 264, mensal:  66, parcelas: 4,  faltam: 2,  pag: 'Pix',                   inicio: '2026-04-01', pago: false },
-        { id: 10, nome: 'Aniversario Julia',cat:'Lazer',   total: 660, mensal: 110, parcelas: 6,  faltam: 6,  pag: 'Pix',                   inicio: '2026-09-01', pago: false },
-      ],
-      // gastos: lançamentos de gastos reais por mês
-      // cada item: { id, cat (número), desc, valor, pag (número), data: 'YYYY-MM-DD' }
-      gastos: [],
-    };
-
-    /* ================================================================
-       ESTADO DA APLICAÇÃO
-    ================================================================ */
+    const DEFAULT_STATE = { receitas: [], fixas: [], variaveis: [], gastos: [] };
     let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
-    /* ================================================================
-       GITHUB SYNC
-    ================================================================ */
     const GH_OWNER  = 'JoaoVuelma';
     const GH_REPO   = 'controle-financeiro';
     const GH_FILE   = 'dados.json';
     const GH_BRANCH = 'main';
     const TOKEN_KEY = 'mf_gh_token';
 
-    let ghFileSha  = null; // SHA atual do arquivo no GitHub (necessário para atualizar)
+    let ghFileSha  = null;
     let hasUnsaved = false;
 
-    // Atualiza o indicador visual de sincronização
     function setSyncStatus(type, msg) {
       document.getElementById('sync-dot').className   = 'sync-dot ' + type;
       document.getElementById('sync-label').textContent = msg;
     }
 
-    // Marca que há alterações não salvas
     function markUnsaved() {
       hasUnsaved = true;
       document.getElementById('btn-salvar').style.display = 'inline-flex';
       setSyncStatus('unsaved', 'Não salvo');
     }
 
-    // Marca como salvo
     function markSaved() {
       hasUnsaved = false;
       document.getElementById('btn-salvar').style.display = 'none';
       setSyncStatus('ok', 'Sincronizado ✓');
     }
 
-    // Abre modal de configuração
     function showConfig() {
       document.getElementById('cfg-token').value = localStorage.getItem(TOKEN_KEY) || '';
       document.getElementById('modal-config').style.display = 'flex';
     }
 
-    // Fecha modal de configuração
     function hideConfig() {
       document.getElementById('modal-config').style.display = 'none';
     }
 
-    // Salva token e carrega dados
     function saveConfig() {
       const token = document.getElementById('cfg-token').value.trim();
       if (!token) { toast('⚠ Cole o token do GitHub.'); return; }
@@ -1722,7 +1483,6 @@
 
     function getToken() { return localStorage.getItem(TOKEN_KEY); }
 
-    // Carrega dados do GitHub
     async function githubLoad() {
       const token = getToken();
 
@@ -1742,7 +1502,6 @@
         );
 
         if (res.status === 404) {
-          // Arquivo ainda não existe — primeira vez
           setSyncStatus('ok', 'Pronto (novo arquivo)');
           document.getElementById('btn-salvar').style.display = 'inline-flex';
           state = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -1754,15 +1513,15 @@
 
         const json      = await res.json();
         ghFileSha       = json.sha;
-        // Decodifica Base64 com suporte completo a UTF-8 (acentos, ç, ã, etc.)
         const b64clean  = json.content.replace(/\n/g, '');
         const decoded   = JSON.parse(decodeURIComponent(escape(atob(b64clean))));
         state = {
-          receitas:    decoded.receitas    || [],
-          fixas:       decoded.fixas       || [],
-          variaveis:   decoded.variaveis   || [],
-          gastos:      decoded.gastos      || [],
-          fechamentos: decoded.fechamentos || {},
+          receitas:      decoded.receitas    || [],
+          fixas:         decoded.fixas       || [],
+          variaveis:     decoded.variaveis   || [],
+          gastos:        decoded.gastos      || [],
+          fechamentos:   decoded.fechamentos || {},
+          faturasCustom: decoded.faturasCustom || {}
         };
 
         markSaved();
@@ -1778,7 +1537,6 @@
       }
     }
 
-    // Salva dados no GitHub
     async function githubSave() {
       const token = getToken();
       if (!token) { showConfig(); return; }
@@ -1827,7 +1585,6 @@
       }
     }
 
-    // Exporta backup local em JSON
     function exportJSONBackup() {
       const data = { _version: 1, _exportedAt: new Date().toISOString(), ...state };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1838,10 +1595,6 @@
       URL.revokeObjectURL(a.href);
       toast('Backup exportado!');
     }
-
-    /* ================================================================
-       NAVEGAÇÃO
-    ================================================================ */
 
     function showPage(p, btn) {
       document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
@@ -1858,25 +1611,18 @@
       if (btn) btn.classList.add('active');
     }
 
-    // Re-renderiza a página ativa (chamado após load, resize, etc.)
     function reRenderActive() {
       const pid = (document.querySelector('.page.active') || {}).id?.replace('page-', '');
       const renders = {
-        dashboard: renderDash,
-        receitas:  renderReceitas,
-        despesas:  renderDespesas,
-        parcelas:  renderParcelas,
-        gastos:    renderGastos,
-        economias: renderEconomias,
+        dashboard: renderDash, receitas:  renderReceitas, despesas:  renderDespesas,
+        parcelas:  renderParcelas, gastos:    renderGastos, economias: renderEconomias,
         previsao:  renderPrevisao,
       };
       if (pid && renders[pid]) renders[pid]();
-      // Botão flutuante só aparece na aba gastos
       const btn = document.getElementById('btn-novo-gasto');
       if (btn) btn.style.display = pid === 'gastos' ? 'flex' : 'none';
     }
 
-    // Abre / fecha formulários
     function closeForm(id) {
       document.getElementById(id).style.display = 'none';
       clearForm(id);
@@ -1890,45 +1636,13 @@
       });
     }
 
-    /* ================================================================
-       CÁLCULOS — LÓGICA DE PERÍODOS
+    function ultimoDia(m, y) { return new Date(y, m + 1, 0); }
+    function primeiroDia(m, y) { return new Date(y, m, 1); }
 
-       REGRAS CENTRAIS:
-       ─────────────────────────────────────────────────────────────────
-       1. RECEITA incide no mês M se:
-            inicio <= último dia de M  E  fim >= primeiro dia de M
-
-       2. DESPESA FIXA incide no mês M se:
-            inicio <= último dia de M  E  (fim vazio OU fim >= primeiro dia de M)
-
-       3. DESPESA VARIÁVEL (parcelada) incide no mês M se:
-            - Mês de início da parcela = mês de v.inicio
-            - Última parcela = mês de v.inicio + (v.parcelas - 1) meses
-            - Logo: incide se  mêsInicio <= M <= mêsInicio + (parcelas - 1)
-            Exemplo: inicio = março/2026, parcelas = 2, faltam = 2
-              → parcela 1 = março, parcela 2 = abril. Termina em abril.
-
-       4. SOBRA = Receita(M) − FixasPeriodo(M) − VariáveisPeriodo(M)
-    ================================================================ */
-
-    // Retorna o último dia do mês (Date)
-    function ultimoDia(m, y) {
-      return new Date(y, m + 1, 0);
-    }
-
-    // Retorna o primeiro dia do mês (Date)
-    function primeiroDia(m, y) {
-      return new Date(y, m, 1);
-    }
-
-    // Verifica se inicio/fim incide no mês M/Y
-    // IMPORTANTE: usa parseLocalDate para evitar o bug de timezone do JS.
-    // new Date('2026-04-01') interpreta como UTC e em fuso BR vira 31/03 às 21h,
-    // fazendo comparações de datas falharem. parseLocalDate força hora local.
     function parseLocalDate(str) {
       if (!str) return null;
       const [y, m, d] = str.split('-').map(Number);
-      return new Date(y, m - 1, d); // mês 0-indexed, sem conversão UTC
+      return new Date(y, m - 1, d);
     }
 
     function incideNoMes(inicioStr, fimStr, m, y) {
@@ -1939,75 +1653,17 @@
       return s <= d2 && e >= d1;
     }
 
-    // Parcelas restantes de uma variável no mês M/Y
-    // Usa inicio + parcelas diretamente — sem depender de nenhum mês de referência fixo.
-    // Retorna > 0 se o mês M ainda está dentro da janela de parcelas.
-    function parcelasRestantesEm(v, m, y) {
-      // Agora pegamos o início real considerando o fechamento do cartão
-      const inicioReal = getMesCobranca(v.inicio, v.pag);
-      if (!inicioReal) return 0;
-      
-      const inicioAbs = inicioReal.y * 12 + inicioReal.m;
-      const mAbs      = y * 12 + m;
-      const jaPassaram = mAbs - inicioAbs;
-      
-      if (jaPassaram < 0) return 0; // Ainda não chegou na fatura
-      return v.parcelas - jaPassaram;
-    }
-
-    // Janeiro (0) e Fevereiro (1) de 2026 são zerados — controle começa em março
-    const MESES_ZERADOS = { ano: 2026, meses: [0, 1] };
-    function mesZerado(m, y) {
-      return y === MESES_ZERADOS.ano && MESES_ZERADOS.meses.includes(m);
-    }
-
-    // Soma das RECEITAS que incidem no mês M/Y
-    function getReceitaMes(m, y) {
-      if (mesZerado(m, y)) return 0;
-      return state.receitas
-        .filter(r => incideNoMes(r.inicio, r.fim, m, y))
-        .reduce((acc, r) => acc + r.valor, 0);
-    }
-
-    // Soma das DESPESAS FIXAS que incidem no mês M/Y
-    function getDespesaFixaMes(m, y) {
-      if (mesZerado(m, y)) return 0;
-      return state.fixas
-        .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-        .reduce((acc, f) => {
-          const real = gastoRealCat(f.cat, m, y);
-          return acc + (real > 0 ? real : f.limite);
-        }, 0);
-    }
-
-    // Soma das DESPESAS VARIÁVEIS que incidem no mês M/Y
-    function getDespesaVariavelMes(m, y) {
-      if (mesZerado(m, y)) return 0;
-      return state.variaveis
-        .filter(v => parcelasRestantesEm(v, m, y) > 0)
-        .reduce((acc, v) => acc + v.mensal, 0);
-    }
-
-    // Sobra = receita − fixas − variáveis
-    function getSaldoMes(m, y) {
-      if (mesZerado(m, y)) return 0;
-      return getReceitaMes(m, y) - getDespesaFixaMes(m, y) - getDespesaVariavelMes(m, y);
-    }
-
-   function getMesCobranca(dataStr, pagId) {
+    function getMesCobranca(dataStr, pagId) {
       const d = parseLocalDate(dataStr);
       if (!d) return null;
 
       const fech = state.fechamentos ? parseInt(state.fechamentos[pagId]) : NaN;
       
-      // Se não tem data de fechamento configurada, fica no mês real da compra
       if (!fech || isNaN(fech)) return { m: d.getMonth(), y: d.getFullYear() };
 
-      // 1. Descobre o mês em que a fatura efetivamente FECHA
       let mFech = d.getMonth();
       let yFech = d.getFullYear();
 
-      // Se passou do dia de fechamento, cai na fatura que fecha no mês seguinte
       if (d.getDate() > fech) {
         mFech++;
         if (mFech > 11) {
@@ -2016,10 +1672,7 @@
         }
       }
 
-      // 2. ALINHAMENTO COM O SALÁRIO (A Mágica)
-      // Se o cartão fecha no início do mês (dia 15 ou antes, como o seu dia 5), 
-      // ele vence nesse mesmo mês e é pago com o salário do mês ANTERIOR.
-      // Então, subtraímos 1 mês para ele aparecer no painel correto (ex: Maio -> Abril).
+      // Alinhamento com o Salário
       if (fech <= 15) {
         mFech--;
         if (mFech < 0) {
@@ -2030,8 +1683,53 @@
 
       return { m: mFech, y: yFech };
     }
-    
-    // Gastos filtrados pelo mês de COBRANÇA (usado no orçamento/budget cards)
+
+    function parcelasRestantesEm(v, m, y) {
+      const inicioReal = getMesCobranca(v.inicio, v.pag);
+      if (!inicioReal) return 0;
+      
+      const inicioAbs = inicioReal.y * 12 + inicioReal.m;
+      const mAbs      = y * 12 + m;
+      const jaPassaram = mAbs - inicioAbs;
+      
+      if (jaPassaram < 0) return 0; 
+      return v.parcelas - jaPassaram;
+    }
+
+    const MESES_ZERADOS = { ano: 2026, meses: };
+    function mesZerado(m, y) {
+      return y === MESES_ZERADOS.ano && MESES_ZERADOS.meses.includes(m);
+    }
+
+    function getReceitaMes(m, y) {
+      if (mesZerado(m, y)) return 0;
+      return state.receitas
+        .filter(r => incideNoMes(r.inicio, r.fim, m, y))
+        .reduce((acc, r) => acc + r.valor, 0);
+    }
+
+    function getDespesaFixaMes(m, y) {
+      if (mesZerado(m, y)) return 0;
+      return state.fixas
+        .filter(f => incideNoMes(f.inicio, f.fim, m, y))
+        .reduce((acc, f) => {
+          const real = gastoRealCat(f.cat, m, y);
+          return acc + (real > 0 ? real : f.limite);
+        }, 0);
+    }
+
+    function getDespesaVariavelMes(m, y) {
+      if (mesZerado(m, y)) return 0;
+      return state.variaveis
+        .filter(v => parcelasRestantesEm(v, m, y) > 0)
+        .reduce((acc, v) => acc + v.mensal, 0);
+    }
+
+    function getSaldoMes(m, y) {
+      if (mesZerado(m, y)) return 0;
+      return getReceitaMes(m, y) - getDespesaFixaMes(m, y) - getDespesaVariavelMes(m, y);
+    }
+
     function gastosCobrancaMes(m, y) {
       if (!state.gastos) return [];
       return state.gastos.filter(g => {
@@ -2042,7 +1740,6 @@
       });
     }
     
-    // Valor real gasto em uma categoria num mês (por cobrança)
     function gastoRealCat(catId, m, y) {
       return gastosCobrancaMes(m, y)
         .filter(g => g.cat === catId || getCatNome(g.cat) === getCatNome(catId))
@@ -2057,12 +1754,13 @@
       const y     = parseInt(document.getElementById('dash-ano').value);
       const zero  = mesZerado(m, y);
 
+      renderFaturasPanel(m, y);
+
       const rec   = getReceitaMes(m, y);
       const fix   = getDespesaFixaMes(m, y);
       const vari  = getDespesaVariavelMes(m, y);
       const saldo = getSaldoMes(m, y);
 
-      // Métricas
       document.getElementById('dash-metrics').innerHTML = `
         <div class="metric">
           <div class="metric-label">Receita do mês</div>
@@ -2086,43 +1784,39 @@
         </div>
       `;
 
-      // Alertas
       const icons  = { danger:'⚠', warn:'⚡', info:'ℹ', success:'✓' };
       const alerts = [];
 
       if (zero) {
         alerts.push({ t: 'info', msg: `${MESES[m]} é um mês anterior ao início do controle — todos os valores estão zerados. O controle começa em março de ${y}.` });
       } else {
-        // Alertas de fechamento de fatura
         const hoje = new Date();
         if (hoje.getMonth() === m && hoje.getFullYear() === y && state.fechamentos) {
           Object.entries(state.fechamentos).forEach(([cidStr, fech]) => {
             const cid = parseInt(cidStr);
             const diasRest = fech - hoje.getDate();
             
-            if (diasRest >= 0 && diasRest <= 10) { // Expandido para avisar com 10 dias de antecedência
-              // Pega gastos avulsos da fatura
-              const gAvulsos = (state.gastos || [])
-                .filter(g => g.pag === cid)
-                .filter(g => {
-                   const mc = getMesCobranca(g.data, g.pag);
-                   return mc && mc.m === m && mc.y === y;
-                }).reduce((a, g) => a + g.valor, 0);
+            if (diasRest >= 0 && diasRest <= 10) {
+              const keyCustom = `${y}-${m}-${cid}`;
+              const valorManual = state.faturasCustom && state.faturasCustom[keyCustom];
 
-              // Pega parcelas ativas caindo nesta fatura
-              const gVar = (state.variaveis || [])
-                .filter(v => v.pag === cid && parcelasRestantesEm(v, m, y) > 0)
-                .reduce((a, v) => a + v.mensal, 0);
-
-              const totalCartao = gAvulsos + gVar;
+              let totalCartao = 0;
+              if (valorManual !== undefined) {
+                 totalCartao = valorManual;
+              } else {
+                 const gAvulsos = (state.gastos || []).filter(g => g.pag === cid && getMesCobranca(g.data, g.pag)?.m === m && getMesCobranca(g.data, g.pag)?.y === y).reduce((a, g) => a + g.valor, 0);
+                 const gVar = (state.variaveis || []).filter(v => v.pag === cid && parcelasRestantesEm(v, m, y) > 0).reduce((a, v) => a + v.mensal, 0);
+                 totalCartao = gAvulsos + gVar;
+              }
 
               if (totalCartao > 0) {
                 const nd = diasRest === 0 ? 'hoje' : diasRest === 1 ? 'amanhã' : `em ${diasRest} dias`;
-                alerts.push({ t: diasRest <= 2 ? 'danger' : 'warn', msg: `💳 Fatura ${getPagNome(cid)} fecha ${nd} — Valor: ${fmt(totalCartao)}` });
+                alerts.push({ t: diasRest <= 2 ? 'danger' : 'warn', msg: `💳 Fatura ${getPagNome(cid)} fecha ${nd} — Valor: ${fmt(totalCartao)} ${valorManual !== undefined ? '(Ajustado)' : ''}` });
               }
             }
           });
         }
+
         if (saldo < 0)
           alerts.push({ t: 'danger', msg: `Despesas superam a receita em ${fmt(Math.abs(saldo))} em ${MESES[m]}.` });
 
@@ -2141,26 +1835,52 @@
         .map(a => `<div class="alert alert-${a.t}"><span class="alert-icon">${icons[a.t]}</span><span>${a.msg}</span></div>`)
         .join('');
 
-      // Gráfico de categorias (doughnut) — usa getCatNome para traduzir ID → nome
       const isMobile = window.innerWidth <= 430;
       const catT = {};
+      const payT = {};
+
       if (!zero) {
-        state.fixas   .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-                      .forEach(f => { const k = getCatNome(f.cat); catT[k] = (catT[k] || 0) + f.valor; });
-        state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0)
-                      .forEach(v => { const k = getCatNome(v.cat); catT[k] = (catT[k] || 0) + v.mensal; });
+        state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0).forEach(v => {
+            const kCat = getCatNome(v.cat);
+            const kPay = getPagNome(v.pag);
+            catT[kCat] = (catT[kCat] || 0) + v.mensal;
+            payT[kPay] = (payT[kPay] || 0) + v.mensal;
+        });
+
+        (state.gastos || []).forEach(g => {
+            const mc = getMesCobranca(g.data, g.pag);
+            if (mc && mc.m === m && mc.y === y) {
+                const kCat = getCatNome(g.cat);
+                const kPay = getPagNome(g.pag);
+                catT[kCat] = (catT[kCat] || 0) + g.valor;
+                payT[kPay] = (payT[kPay] || 0) + g.valor;
+            }
+        });
+
+        if (state.faturasCustom) {
+           Object.keys(state.fechamentos || {}).forEach(cidStr => {
+              const cid = parseInt(cidStr);
+              const key = `${y}-${m}-${cid}`;
+              if (state.faturasCustom[key] !== undefined) {
+                  const nome = getPagNome(cid);
+                  payT[nome] = state.faturasCustom[key];
+              }
+           });
+        }
       }
-      const catE = Object.entries(catT).sort((a, b) => b[1] - a[1]);
+      
+      const catE = Object.entries(catT).sort((a, b) => b - a);
+      const payE = Object.entries(payT).sort((a, b) => b - a);
 
       document.getElementById('chart-cat-wrap').style.height = isMobile ? '280px' : '220px';
       destroyChart('chartCat');
       charts.chartCat = new Chart(document.getElementById('chartCat'), {
         type: 'doughnut',
         data: {
-          labels:   catE.map(c => c[0]),
+          labels:   catE.map(c => c),
           datasets: [{
-            data:            catE.map(c => Math.round(c[1])),
-            backgroundColor: catE.map(c => CAT_COLORS[c[0]] || '#888'),
+            data:            catE.map(c => Math.round(c)),
+            backgroundColor: catE.map(c => CAT_COLORS[c] || '#888'),
             borderWidth: 2,
             borderColor: 'transparent',
           }],
@@ -2168,16 +1888,10 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: isMobile ? 'bottom' : 'right',
-              labels: { boxWidth: 10, font: { size: 10 }, padding: isMobile ? 6 : 8 },
-            },
-          },
+          plugins: { legend: { position: isMobile ? 'bottom' : 'right', labels: { boxWidth: 10, font: { size: 10 }, padding: isMobile ? 6 : 8 } } },
         },
       });
 
-      // Gráfico de sobra acumulada no ano
       let acc = 0;
       const saldosAno = MESES.map((_, i) => {
         acc += getSaldoMes(i, y);
@@ -2198,8 +1912,7 @@
           }],
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
             y: { ticks: { callback: v => fmtK(v), font: { size: 10 } }, grid: { color: 'rgba(128,128,128,.1)' } },
@@ -2208,32 +1921,20 @@
         },
       });
 
-      // Gráfico de pagamentos — usa getPagNome para traduzir ID → nome
-      const payT = {};
-      if (!zero) {
-        state.fixas   .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-                      .forEach(f => { const k = getPagNome(f.pag); payT[k] = (payT[k] || 0) + f.valor; });
-        state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0)
-                      .forEach(v => { const k = getPagNome(v.pag); payT[k] = (payT[k] || 0) + v.mensal; });
-      }
-      const payE = Object.entries(payT).sort((a, b) => b[1] - a[1]);
-
       destroyChart('chartPay');
       charts.chartPay = new Chart(document.getElementById('chartPay'), {
         type: 'bar',
         data: {
-          labels:   payE.map(p => p[0].replace('Conta Corrente ', 'CC ')),
+          labels:   payE.map(p => p.replace('Conta Corrente ', 'CC ')),
           datasets: [{
-            data:            payE.map(p => Math.round(p[1])),
-            backgroundColor: payE.map(p => PAY_COLORS[p[0]] || '#888'),
+            data:            payE.map(p => Math.round(p)),
+            backgroundColor: payE.map(p => PAY_COLORS[p] || '#888'),
             borderWidth: 0,
             borderRadius: 4,
           }],
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          indexAxis: 'y',
+          responsive: true, maintainAspectRatio: false, indexAxis: 'y',
           plugins: { legend: { display: false } },
           scales: {
             x: { ticks: { callback: v => fmt(v), font: { size: 10 } }, grid: { color: 'rgba(128,128,128,.1)' } },
@@ -2297,8 +1998,7 @@
       if (!desc || !valor) { toast('⚠ Preencha descrição e valor.'); return; }
 
       const obj = {
-        desc,
-        valor,
+        desc, valor,
         inicio: document.getElementById('r-inicio').value,
         fim:    document.getElementById('r-fim').value,
       };
@@ -2329,22 +2029,17 @@
        DESPESAS FIXAS
     ================================================================ */
     function renderDespesas() {
-      // Lê o mês selecionado no Dashboard para filtrar corretamente
       const m = parseInt(document.getElementById('dash-mes').value);
       const y = parseInt(document.getElementById('dash-ano').value);
 
-      // ── Fixas ──
       const tbF     = document.getElementById('tbody-fixas');
       const sortedF = [...state.fixas].sort((a, b) => a.inicio.localeCompare(b.inicio));
 
       if (!sortedF.length) {
         tbF.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa</p></div></td></tr>';
       } else {
-        // Totais calculados APENAS para o mês selecionado (respeitando inicio/fim)
         const totalGastoMes  = getDespesaFixaMes(m, y);
-        const totalLimiteMes = sortedF
-          .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-          .reduce((acc, f) => acc + f.limite, 0);
+        const totalLimiteMes = sortedF.filter(f => incideNoMes(f.inicio, f.fim, m, y)).reduce((acc, f) => acc + f.limite, 0);
 
         tbF.innerHTML = sortedF.map(f => {
           const diff   = f.limite - f.valor;
@@ -2352,9 +2047,7 @@
           const ativa  = incideNoMes(f.inicio, f.fim, m, y);
           const status = !ativa
             ? '<span class="badge badge-neutral">Fora do período</span>'
-            : f.valor === 0
-              ? '<span class="badge badge-neutral">Não usado</span>'
-              : diff < 0
+            : f.valor === 0 ? '<span class="badge badge-neutral">Não usado</span>' : diff < 0
                 ? `<span class="badge badge-over">Estourou ${fmt(Math.abs(diff))}</span>`
                 : '<span class="badge badge-ok">OK</span>';
 
@@ -2390,13 +2083,9 @@
         `;
       }
 
-      // ── Variáveis ──
       const tbV     = document.getElementById('tbody-variaveis');
       const sortedV = [...state.variaveis].sort((a, b) => a.inicio.localeCompare(b.inicio));
-
-      // Total ativo no mês selecionado (apenas parcelas que incidem em M/Y)
       const totMensalMes = getDespesaVariavelMes(m, y);
-      // Total restante global (quanto ainda falta pagar de todas as parcelas)
       const totRestGlobal = sortedV.reduce((acc, v) => acc + v.mensal * v.faltam, 0);
 
       if (!sortedV.length) {
@@ -2457,13 +2146,11 @@
       document.getElementById('f-fim').value    = f.fim    || '';
       document.getElementById('f-id').value     = f.id;
 
-      // Popula o select de categoria: tenta por valor numérico, depois por texto
       const fCat = document.getElementById('f-cat');
       const catNome = getCatNome(f.cat);
       const catOpt  = Array.from(fCat.options).find(o => o.value == f.cat || o.text === catNome);
       if (catOpt) fCat.value = catOpt.value;
 
-      // Popula o select de pagamento: tenta por valor numérico, depois por texto
       const fPag = document.getElementById('f-pag');
       const pagNome = getPagNome(f.pag);
       const pagOpt  = Array.from(fPag.options).find(o => o.value == f.pag || o.text === pagNome);
@@ -2478,7 +2165,6 @@
       const desc = document.getElementById('f-desc').value.trim();
       if (!desc) { toast('⚠ Preencha a descrição.'); return; }
 
-      // Salva como número (ID do enum). Retrocompat: se não for numérico, salva string.
       const catRaw = document.getElementById('f-cat').value;
       const pagRaw = document.getElementById('f-pag').value;
 
@@ -2542,13 +2228,11 @@
       document.getElementById('v-pago').checked   = v.pago;
       document.getElementById('v-id').value       = v.id;
 
-      // Popula o select de categoria: tenta por valor numérico, depois por texto
       const vCat = document.getElementById('v-cat');
       const catNome = getCatNome(v.cat);
       const catOpt  = Array.from(vCat.options).find(o => o.value == v.cat || o.text === catNome);
       if (catOpt) vCat.value = catOpt.value;
 
-      // Popula o select de pagamento: tenta por valor numérico, depois por texto
       const vPag = document.getElementById('v-pag');
       const pagNome = getPagNome(v.pag);
       const pagOpt  = Array.from(vPag.options).find(o => o.value == v.pag || o.text === pagNome);
@@ -2563,7 +2247,6 @@
       const nome = document.getElementById('v-nome').value.trim();
       if (!nome) { toast('⚠ Preencha o nome.'); return; }
 
-      // Salva como número (ID do enum). Retrocompat: se não for numérico, salva string.
       const catRaw = document.getElementById('v-cat').value;
       const pagRaw = document.getElementById('v-pag').value;
 
@@ -2623,16 +2306,13 @@
        PARCELAS
     ================================================================ */
     function renderParcelas() {
-      // Lê o mês selecionado no Dashboard
       const m = parseInt(document.getElementById('dash-mes').value);
       const y = parseInt(document.getElementById('dash-ano').value);
 
-      // Parcelas que ainda têm saldo a partir do mês selecionado
       const ativas = state.variaveis
         .filter(v => parcelasRestantesEm(v, m, y) > 0 && parseLocalDate(v.inicio) <= ultimoDia(m, y))
         .sort((a, b) => a.inicio.localeCompare(b.inicio));
 
-      // Comprometimento = o que realmente cai no mês selecionado
       const totMensalMes = getDespesaVariavelMes(m, y);
       const totRestGlobal = ativas.reduce((acc, v) => acc + v.mensal * v.faltam, 0);
       const maxP = ativas.length ? Math.max(...ativas.map(v => v.faltam)) : 0;
@@ -2682,23 +2362,22 @@
           }).join('')
         : '<tr><td colspan="7"><div class="empty-state"><div class="es-icon">🎉</div><p>Nenhuma parcela ativa em ' + MESES[m] + '!</p></div></td></tr>';
 
-      // Gráfico: comprometimento por cartão (parcelas ativas no mês)
       const cartT = {};
       ativas.forEach(v => {
         const nomePag = getPagNome(v.pag);
         cartT[nomePag] = (cartT[nomePag] || 0) + v.mensal;
       });
-      const cE = Object.entries(cartT).sort((a, b) => b[1] - a[1]);
+      const cE = Object.entries(cartT).sort((a, b) => b - a);
 
       destroyChart('chartCartoes');
       if (cE.length) {
         charts.chartCartoes = new Chart(document.getElementById('chartCartoes'), {
           type: 'bar',
           data: {
-            labels:   cE.map(k => k[0].replace('Conta Corrente ', 'CC ')),
+            labels:   cE.map(k => k.replace('Conta Corrente ', 'CC ')),
             datasets: [{
-              data:            cE.map(k => Math.round(k[1])),
-              backgroundColor: cE.map(k => PAY_COLORS[k[0]] || '#888'),
+              data:            cE.map(k => Math.round(k)),
+              backgroundColor: cE.map(k => PAY_COLORS[k] || '#888'),
               borderWidth: 0,
               borderRadius: 4,
             }],
@@ -2714,7 +2393,6 @@
         });
       }
 
-      // Gráfico: liberação por mês (quando cada parcela termina)
       const libT = {};
       ativas.forEach(v => {
         const fim = parseLocalDate(v.inicio);
@@ -2729,10 +2407,10 @@
         charts.chartLiberacao = new Chart(document.getElementById('chartLiberacao'), {
           type: 'bar',
           data: {
-            labels:   lE.map(k => k[0]),
+            labels:   lE.map(k => k),
             datasets: [{
               label: 'Valor liberado',
-              data:  lE.map(k => Math.round(k[1])),
+              data:  lE.map(k => Math.round(k)),
               backgroundColor: 'rgba(29,158,117,.4)',
               borderColor:     '#1D9E75',
               borderWidth: 1.5,
@@ -2753,21 +2431,12 @@
 
     /* ================================================================
        ECONOMIAS
-
-       Lógica:
-       - Sobra do Mês  = receita(M) − fixas_período(M) − variáveis_período(M)
-       - Rendimento    = acumPoupança_anterior × taxa_mensal
-       - Depósito      = valor fixo configurado (só incide nos meses com sobra)
-       - acumPoupança  = acumPoupança_anterior + rendimento + depósito
-       - acumCaixa     = soma das sobras mensais
-       - Patrimônio    = acumCaixa + acumPoupança
     ================================================================ */
     function calcEconomias(y) {
       const taxaCDI    = (parseFloat(document.getElementById('eco-taxa-cdi').value)    || 120) / 100;
       const saldoIni   = parseFloat(document.getElementById('eco-saldo-inicial').value)|| 0;
 
-      // Taxa mensal equivalente: CDI_anual × percentual_CDI → mensal composto
-      const CDI_ANUAL  = 0.105; // CDI referência ~10,5% a.a.
+      const CDI_ANUAL  = 0.105; 
       const taxaMensal = Math.pow(1 + CDI_ANUAL * taxaCDI, 1 / 12) - 1;
 
       const rows       = [];
@@ -2776,12 +2445,7 @@
 
       for (let m = 0; m < 12; m++) {
         const sobraMes = getSaldoMes(m, y);
-
-        // Rendimento sobre o saldo atual antes do depósito
         const rendimento = acumPoupanca * taxaMensal;
-
-        // Depósito = soma das despesas fixas com pagamento Poupança (pag === 6)
-        // vigentes neste mês, respeitando inicio/fim de cada uma
         const depositoMes = mesZerado(m, y) ? 0 : state.fixas
           .filter(f => (f.pag === 6 || f.pag === 'Poupança') && incideNoMes(f.inicio, f.fim, m, y))
           .reduce((acc, f) => acc + f.valor, 0);
@@ -2790,13 +2454,13 @@
         acumCaixa   += sobraMes;
 
         rows.push({
-          mes:            MESES[m],
-          sobraMes:       Math.round(sobraMes       * 100) / 100,
-          deposito:       depositoMes,
-          acumPoupanca:   Math.round(acumPoupanca   * 100) / 100,
-          patrimonioTotal:Math.round((acumCaixa + acumPoupanca) * 100) / 100,
-          rendimento:     Math.round(rendimento     * 100) / 100,
-          acumCaixa:      Math.round(acumCaixa      * 100) / 100,
+          mes:             MESES[m],
+          sobraMes:        Math.round(sobraMes        * 100) / 100,
+          deposito:        depositoMes,
+          acumPoupanca:    Math.round(acumPoupanca    * 100) / 100,
+          patrimonioTotal: Math.round((acumCaixa + acumPoupanca) * 100) / 100,
+          rendimento:      Math.round(rendimento      * 100) / 100,
+          acumCaixa:       Math.round(acumCaixa       * 100) / 100,
         });
       }
 
@@ -2810,9 +2474,8 @@
       const totalRendimento = rows.reduce((acc, r) => acc + r.rendimento, 0);
       const patrimonioFinal = rows[rows.length - 1].patrimonioTotal;
       const totalSobras     = rows.reduce((acc, r) => acc + r.sobraMes, 0);
-      const melhorMes       = rows.reduce((b, r) => r.sobraMes > b.sobraMes ? r : b, rows[0]);
+      const melhorMes       = rows.reduce((b, r) => r.sobraMes > b.sobraMes ? r : b, rows);
 
-      // Métricas
       document.getElementById('eco-metrics').innerHTML = `
         <div class="metric">
           <div class="metric-label">Patrimônio em dez/${String(y).slice(-2)}</div>
@@ -2836,7 +2499,6 @@
         </div>
       `;
 
-      // Gráfico empilhado: poupança (vermelho) + caixa (azul)
       destroyChart('chartEcoBar');
       charts.chartEcoBar = new Chart(document.getElementById('chartEcoBar'), {
         type: 'bar',
@@ -2869,7 +2531,6 @@
         },
       });
 
-      // Gráfico linha: patrimônio total
       destroyChart('chartEcoPatrimonio');
       charts.chartEcoPatrimonio = new Chart(document.getElementById('chartEcoPatrimonio'), {
         type: 'line',
@@ -2893,7 +2554,6 @@
         },
       });
 
-      // Gráfico barras: rendimento mensal
       destroyChart('chartEcoRendimento');
       charts.chartEcoRendimento = new Chart(document.getElementById('chartEcoRendimento'), {
         type: 'bar',
@@ -2917,7 +2577,6 @@
         },
       });
 
-      // Tabela detalhada
       document.getElementById('tbody-economias').innerHTML =
         rows.map((r, i) => `
           <tr style="${i % 2 === 1 ? 'background:var(--bg2)' : ''}">
@@ -2971,7 +2630,6 @@
         saldosAcc.push(Math.round(acc));
       }
 
-      // Gráfico linha: caixa acumulado
       destroyChart('chartPrevisao');
       charts.chartPrevisao = new Chart(document.getElementById('chartPrevisao'), {
         type: 'line',
@@ -2999,7 +2657,6 @@
         },
       });
 
-      // Gráfico barras: receita vs despesas
       destroyChart('chartRvsD');
       charts.chartRvsD = new Chart(document.getElementById('chartRvsD'), {
         type: 'bar',
@@ -3020,7 +2677,6 @@
         },
       });
 
-      // Indicadores
       const recMed    = Math.round(recs.reduce((a, v) => a + v, 0)  / 12);
       const despMed   = Math.round(desps.reduce((a, v) => a + v, 0) / 12);
       const sobraMed  = recMed - despMed;
@@ -3071,7 +2727,6 @@
         </div>
       `;
 
-      // Alertas automáticos
       const melhorIdx       = sobras.indexOf(Math.max(...sobras));
       const piorIdx         = sobras.indexOf(Math.min(...sobras));
       const quaseAcab       = state.variaveis.filter(v => v.faltam > 0 && v.faltam <= 3);
@@ -3100,21 +2755,11 @@
 
     /* ================================================================
        GASTOS — LANÇAMENTOS REAIS
-
-       Estrutura de cada gasto:
-         { id, cat (int enum), desc (string), valor (float),
-           pag (int enum), data (string 'YYYY-MM-DD') }
-
-       O orçamento de cada categoria vem das despesas fixas daquele mês
-       (limite). O gasto real é a soma dos lançamentos do mês.
     ================================================================ */
-
-    // Garante que state.gastos existe (retrocompatibilidade com dados antigos)
     function ensureGastos() {
       if (!state.gastos) state.gastos = [];
     }
 
-    // Retorna os gastos do mês M/Y
     function gastosDoMes(m, y) {
       ensureGastos();
       return state.gastos.filter(g => {
@@ -3123,175 +2768,160 @@
       });
     }
 
-    // Soma dos gastos de uma categoria no mês
     function gastosCatMes(catId, m, y) {
       return gastosDoMes(m, y)
         .filter(g => g.cat === catId || getCatNome(g.cat) === getCatNome(catId))
         .reduce((acc, g) => acc + g.valor, 0);
     }
 
-    /* ── RENDER ──────────────────────────────────────────────────── */
     function renderGastos() {
-  const m = parseInt(document.getElementById('g-mes').value);
-  const y = parseInt(document.getElementById('g-ano').value);
-  ensureGastos();
+      const m = parseInt(document.getElementById('g-mes').value);
+      const y = parseInt(document.getElementById('g-ano').value);
+      ensureGastos();
 
-  // Lista exibe gastos pela DATA REAL do lançamento
-  const gastosMes = gastosDoMes(m, y);
-  // Orçamento usa gastos pelo MÊS DE COBRANÇA (considera fechamento)
-  const gastosOrc = gastosCobrancaMes(m, y);
+      const gastosMes = gastosDoMes(m, y);
+      const gastosOrc = gastosCobrancaMes(m, y);
 
-  const fixasVigentes = state.fixas.filter(f =>
-    incideNoMes(f.inicio, f.fim, m, y) &&
-    f.pag !== 6 && f.pag !== 'Poupança'
-  );
+      const fixasVigentes = state.fixas.filter(f =>
+        incideNoMes(f.inicio, f.fim, m, y) &&
+        f.pag !== 6 && f.pag !== 'Poupança'
+      );
 
-  const orcamentoTotal = fixasVigentes.reduce((acc, f) => acc + f.limite, 0);
-  const gastoTotal     = gastosOrc.reduce((acc, g) => acc + g.valor, 0);
-  const saldoLivre     = orcamentoTotal - gastoTotal;
+      const orcamentoTotal = fixasVigentes.reduce((acc, f) => acc + f.limite, 0);
+      const gastoTotal     = gastosOrc.reduce((acc, g) => acc + g.valor, 0);
+      const saldoLivre     = orcamentoTotal - gastoTotal;
 
-  const hoje      = new Date();
-  const ultimoMes = new Date(y, m + 1, 0);
-  const diasRest  = (hoje.getFullYear() === y && hoje.getMonth() === m)
-      ? ultimoMes.getDate() - hoje.getDate()
-      : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
-  
-    document.getElementById('g-metrics').innerHTML = `
-      <div class="metric">
-        <div class="metric-label">Orçamento total</div>
-        <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
-        <div class="metric-sub">${fixasVigentes.length} categorias</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Gasto real</div>
-        <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
-        <div class="metric-sub">${gastosOrc.length} lançamentos</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
-        <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
-        <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
-      </div>
-    `;
-  
-    // Budget cards por categoria (usa cobrança)
-    const budgetCards = document.getElementById('g-budget-cards');
-    if (!fixasVigentes.length) {
-      budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
-    } else {
-      const catMap = {};
-      fixasVigentes.forEach(f => {
-        const k = f.cat;
-        if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
-        catMap[k].limite += f.limite;
-      });
-  
-      budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
-        const gasto  = gastoRealCat(parseInt(catId) || catId, m, y);
-        const limite = info.limite;
-        const resto  = limite - gasto;
-        const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
-        const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
-        const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
-        const nomecat = info.desc;
-        const corDot  = CAT_COLORS[nomecat] || '#888';
-  
-        return `
-          <div class="budget-card">
-            <div class="budget-card-head">
-              <div class="budget-cat-name">
-                <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
-                ${escHtml(nomecat)}
+      const hoje      = new Date();
+      const ultimoMes = new Date(y, m + 1, 0);
+      const diasRest  = (hoje.getFullYear() === y && hoje.getMonth() === m)
+        ? ultimoMes.getDate() - hoje.getDate()
+        : (hoje < new Date(y, m, 1) ? ultimoMes.getDate() : 0);
+
+      document.getElementById('g-metrics').innerHTML = `
+        <div class="metric">
+          <div class="metric-label">Orçamento total</div>
+          <div class="metric-value mv-blue">${fmt(orcamentoTotal)}</div>
+          <div class="metric-sub">${fixasVigentes.length} categorias</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Gasto real</div>
+          <div class="metric-value ${gastoTotal > orcamentoTotal ? 'mv-red' : 'mv-amber'}">${fmt(gastoTotal)}</div>
+          <div class="metric-sub">${gastosOrc.length} lançamentos</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">${saldoLivre >= 0 ? 'Disponível' : 'Estourou'}</div>
+          <div class="metric-value ${saldoLivre >= 0 ? 'mv-green' : 'mv-red'}">${fmt(Math.abs(saldoLivre))}</div>
+          <div class="metric-sub">${diasRest > 0 ? diasRest + ' dias restantes' : diasRest === 0 ? 'último dia' : 'mês encerrado'}</div>
+        </div>
+      `;
+
+      const budgetCards = document.getElementById('g-budget-cards');
+      if (!fixasVigentes.length) {
+        budgetCards.innerHTML = '<div class="empty-state"><div class="es-icon">📋</div><p>Nenhuma despesa fixa configurada para este mês.</p></div>';
+      } else {
+        const catMap = {};
+        fixasVigentes.forEach(f => {
+          const k = f.cat;
+          if (!catMap[k]) catMap[k] = { limite: 0, desc: getCatNome(f.cat) };
+          catMap[k].limite += f.limite;
+        });
+
+        budgetCards.innerHTML = Object.entries(catMap).map(([catId, info]) => {
+          const gasto  = gastoRealCat(parseInt(catId) || catId, m, y);
+          const limite = info.limite;
+          const resto  = limite - gasto;
+          const pct    = limite > 0 ? Math.min(100, Math.round(gasto / limite * 100)) : 0;
+          const cor    = gasto > limite ? '#E24B4A' : pct >= 80 ? '#BA7517' : '#1D9E75';
+          const cor2   = gasto > limite ? 'over' : pct >= 80 ? 'warn' : 'ok';
+          const nomecat = info.desc;
+          const corDot  = CAT_COLORS[nomecat] || '#888';
+
+          return `
+            <div class="budget-card">
+              <div class="budget-card-head">
+                <div class="budget-cat-name">
+                  <span class="cat-dot" style="background:${corDot};width:10px;height:10px;border-radius:3px"></span>
+                  ${escHtml(nomecat)}
+                </div>
+                <div class="budget-values">
+                  <strong style="color:${cor}">${fmt(gasto)}</strong>
+                  <span> / ${fmt(limite)}</span>
+                </div>
               </div>
-              <div class="budget-values">
-                <strong style="color:${cor}">${fmt(gasto)}</strong>
-                <span> / ${fmt(limite)}</span>
+              <div class="budget-prog-bar">
+                <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
+              </div>
+              <div class="budget-footer">
+                <span>${pct}% usado</span>
+                <span class="restante-${cor2}">
+                  ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
+                </span>
               </div>
             </div>
-            <div class="budget-prog-bar">
-              <div class="budget-prog-fill" style="width:${pct}%;background:${cor}"></div>
-            </div>
-            <div class="budget-footer">
-              <span>${pct}% usado</span>
-              <span class="restante-${cor2}">
-                ${resto >= 0 ? 'Faltam ' + fmt(resto) : 'Estourou ' + fmt(Math.abs(resto))}
-              </span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-  
-    // Lista de lançamentos mesclada (Orçamento do mês + Lançamentos literais do calendário)
-    const lista  = document.getElementById('g-lista');
-    const empty  = document.getElementById('g-lista-empty');
-    document.getElementById('g-lista-title').textContent = `Lançamentos (Fatura e Avulsos de ${MESES[m]})`;
-  
-    const setIds = new Set();
-    const gastosParaMostrar = [];
-  
-    // 1. Puxa tudo que compõe a fatura deste mês
-    gastosOrc.forEach(g => { setIds.add(g.id); gastosParaMostrar.push(g); });
-    // 2. Puxa tudo que foi comprado neste mês, para não sumir da tela
-    gastosMes.forEach(g => {
-      if (!setIds.has(g.id)) {
-        setIds.add(g.id);
-        gastosParaMostrar.push(g);
+          `;
+        }).join('');
       }
-    });
-  
-    if (!gastosParaMostrar.length) {
-      lista.innerHTML = '';
-      empty.style.display = 'block';
-    } else {
-      empty.style.display = 'none';
-      const sorted = gastosParaMostrar.sort((a, b) => b.data.localeCompare(a.data));
-      lista.innerHTML = sorted.map(g => {
-        const nomeCat = getCatNome(g.cat);
-        const nomePag = getPagNome(g.pag);
-        const corCat  = CAT_COLORS[nomeCat] || '#888';
-        
-        let faturaTag = '';
-        const mc = getMesCobranca(g.data, g.pag);
-        const dg = parseLocalDate(g.data);
-  
-        // Regra visual das tags
-        if (mc && (mc.m !== dg.getMonth() || mc.y !== dg.getFullYear())) {
-          if (mc.m === m && mc.y === y) {
-             // Pertence a esta fatura, mas foi comprado mês passado
-             faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--blue-light);color:var(--blue-dark);margin-left:4px">compra de ${MESES[dg.getMonth()].slice(0,3)}</span>`;
-          } else {
-             // Comprado neste mês, mas já foi para a próxima fatura
-             faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--amber-light);color:var(--amber);margin-left:4px">fatura ${MESES[mc.m].slice(0,3)}/${String(mc.y).slice(-2)}</span>`;
-          }
-        }
-  
-        return `
-          <div class="gasto-item">
-            <span class="gasto-dot" style="background:${corCat}"></span>
-            <div class="gasto-info">
-              <div class="gasto-desc">${escHtml(g.desc || nomeCat)}${faturaTag}</div>
-              <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${fmtDate(g.data)}</div>
-            </div>
-            <span class="gasto-valor">− ${fmt(g.valor)}</span>
-            <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
-          </div>
-        `;
-      }).join('');
-    }
-  }
 
-    /* ── MODAL DE LANÇAMENTO ─────────────────────────────────────── */
+      const lista  = document.getElementById('g-lista');
+      const empty  = document.getElementById('g-lista-empty');
+      document.getElementById('g-lista-title').textContent = `Lançamentos (Fatura e Avulsos de ${MESES[m]})`;
+
+      const setIds = new Set();
+      const gastosParaMostrar = [];
+
+      gastosOrc.forEach(g => { setIds.add(g.id); gastosParaMostrar.push(g); });
+      gastosMes.forEach(g => {
+        if (!setIds.has(g.id)) {
+          setIds.add(g.id);
+          gastosParaMostrar.push(g);
+        }
+      });
+
+      if (!gastosParaMostrar.length) {
+        lista.innerHTML = '';
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        const sorted = gastosParaMostrar.sort((a, b) => b.data.localeCompare(a.data));
+        lista.innerHTML = sorted.map(g => {
+          const nomeCat = getCatNome(g.cat);
+          const nomePag = getPagNome(g.pag);
+          const corCat  = CAT_COLORS[nomeCat] || '#888';
+          
+          let faturaTag = '';
+          const mc = getMesCobranca(g.data, g.pag);
+          const dg = parseLocalDate(g.data);
+
+          if (mc && (mc.m !== dg.getMonth() || mc.y !== dg.getFullYear())) {
+            if (mc.m === m && mc.y === y) {
+               faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--blue-light);color:var(--blue-dark);margin-left:4px">compra de ${MESES[dg.getMonth()].slice(0,3)}</span>`;
+            } else {
+               faturaTag = `<span style="font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;background:var(--amber-light);color:var(--amber);margin-left:4px">fatura ${MESES[mc.m].slice(0,3)}/${String(mc.y).slice(-2)}</span>`;
+            }
+          }
+
+          return `
+            <div class="gasto-item">
+              <span class="gasto-dot" style="background:${corCat}"></span>
+              <div class="gasto-info">
+                <div class="gasto-desc">${escHtml(g.desc || nomeCat)}${faturaTag}</div>
+                <div class="gasto-meta">${escHtml(nomeCat)} · ${escHtml(nomePag.replace('Conta Corrente ','CC '))} · ${fmtDate(g.data)}</div>
+              </div>
+              <span class="gasto-valor">− ${fmt(g.valor)}</span>
+              <button class="gasto-del" onclick="delGasto(${g.id})" title="Remover">×</button>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
     function abrirModalGasto(idEdicao) {
-      // Constrói os chips de categoria com base nas fixas vigentes do mês atual
       const m = parseInt(document.getElementById('g-mes').value);
       const y = parseInt(document.getElementById('g-ano').value);
 
-      // Coleta categorias únicas das fixas vigentes no mês + todas as fixas (para outros meses)
       const catsSet = new Set();
       state.fixas.forEach(f => catsSet.add(f.cat));
-      // Adiciona categorias padrão sempre disponíveis
-      [1,2,3,4,5,6,7,8,9,10,11].forEach(c => catsSet.add(c));
+     .forEach(c => catsSet.add(c));
 
       const chips = document.getElementById('mg-cat-chips');
       chips.innerHTML = [...catsSet].map(catId => {
@@ -3307,7 +2937,6 @@
         `;
       }).join('');
 
-      // Data padrão = hoje
       const hoje = new Date();
       document.getElementById('mg-data').value =
         `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
@@ -3328,10 +2957,8 @@
           document.getElementById('mg-cat').value   = g.cat;
           document.getElementById('mg-id').value    = g.id;
           document.getElementById('modal-gasto-title').textContent = '✏️ Editar gasto';
-          // Seleciona o chip correto
           const chipEl = chips.querySelector(`[data-cat="${g.cat}"]`);
           if (chipEl) selecionarCatChip(chipEl, g.cat);
-          // Pagamento
           const pagSel = document.getElementById('mg-pag');
           const pagOpt = Array.from(pagSel.options).find(o => o.value == g.pag || o.text === getPagNome(g.pag));
           if (pagOpt) pagSel.value = pagOpt.value;
@@ -3339,18 +2966,15 @@
       }
 
       document.getElementById('modal-gasto').style.display = 'flex';
-      // Foca no campo de valor após animação
       setTimeout(() => document.getElementById('mg-valor').focus(), 120);
     }
 
     function selecionarCatChip(el, catId) {
-      // Desmarca todos
       document.querySelectorAll('#mg-cat-chips .cat-chip').forEach(c => {
         c.classList.remove('selected');
         c.style.background = '';
         c.style.color = '';
       });
-      // Marca o clicado
       const nome = getCatNome(catId);
       const cor  = CAT_COLORS[nome] || '#888';
       el.classList.add('selected');
@@ -3405,24 +3029,82 @@
     }
 
     /* ================================================================
+       PAINEL DE FATURAS
+    ================================================================ */
+    function renderFaturasPanel(m, y) {
+       const container = document.getElementById('faturas-list');
+       if (!container) return; 
+       
+       if (!state.fechamentos || Object.keys(state.fechamentos).length === 0) {
+           container.innerHTML = '<p style="font-size:12px; color:var(--text-t)">Nenhum cartão configurado.</p>';
+           return;
+       }
+
+       if (!state.faturasCustom) state.faturasCustom = {};
+
+       let html = '<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:10px;">';
+
+       Object.entries(state.fechamentos).forEach(([cidStr, fech]) => {
+          const cid = parseInt(cidStr);
+          
+          const gVar = (state.variaveis || [])
+              .filter(v => v.pag === cid && parcelasRestantesEm(v, m, y) > 0)
+              .reduce((a, v) => a + v.mensal, 0);
+              
+          const gAvulsos = (state.gastos || [])
+              .filter(g => g.pag === cid && getMesCobranca(g.data, g.pag)?.m === m && getMesCobranca(g.data, g.pag)?.y === y)
+              .reduce((a, g) => a + g.valor, 0);
+
+          const calculado = gVar + gAvulsos;
+          const key = `${y}-${m}-${cid}`;
+          const valorManual = state.faturasCustom[key];
+
+          html += `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--bg2); border: 1px solid var(--border); border-radius:var(--radius-sm)">
+               <div>
+                  <div style="font-weight:600; font-size:13px; margin-bottom:2px">${getPagNome(cid)}</div>
+                  <div style="font-size:11px; color:var(--text-t)">Soma do sistema: ${fmt(calculado)}</div>
+               </div>
+               <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px">
+                  <input type="number" step="0.01" placeholder="Ajustar fatura" value="${valorManual !== undefined ? valorManual : ''}"
+                         onchange="salvarFaturaManual(${y}, ${m}, ${cid}, this.value)"
+                         style="width:110px; padding:6px 8px; font-size:12px; font-weight:600; color:var(--blue); border-color:var(--blue-light)">
+               </div>
+            </div>
+          `;
+       });
+       html += '</div>';
+       container.innerHTML = html;
+    }
+
+    window.salvarFaturaManual = function(y, m, cid, val) {
+        if (!state.faturasCustom) state.faturasCustom = {};
+        const key = `${y}-${m}-${cid}`;
+        if (val.trim() === '') {
+            delete state.faturasCustom[key]; 
+        } else {
+            state.faturasCustom[key] = parseFloat(val);
+        }
+        markUnsaved();
+        renderDash(); 
+    }
+
+    /* ================================================================
        INICIALIZAÇÃO
     ================================================================ */
     (function init() {
-      // Define o mês inicial como o mês atual
       const now = new Date();
       document.getElementById('dash-mes').value = now.getMonth();
       document.getElementById('dash-ano').value = now.getFullYear();
       document.getElementById('g-mes').value = now.getMonth();
       document.getElementById('g-ano').value = now.getFullYear();
 
-      // Re-renderiza os gráficos ao rotacionar o dispositivo
       let resizeTimer;
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => reRenderActive(), 200);
       });
 
-      // Carrega dados do GitHub (ou usa DEFAULT_STATE se não tiver token)
       githubLoad();
     })();
 
