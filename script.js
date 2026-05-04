@@ -497,8 +497,12 @@ function getDespesaFixaMes(m, y) {
   return state.fixas
     .filter(f => incideNoMes(f.inicio, f.fim, m, y))
     .reduce((acc, f) => {
-      const real = gastoRealCat(f.cat, m, y);
-      return acc + (real > 0 ? real : f.limite);
+      // Se o pagamento está preenchido, usa o valor fixo. Se não, usa o real lançado.
+      if (f.pag !== "" && f.pag !== null && f.pag !== undefined) {
+        return acc + (f.valor || 0);
+      } else {
+        return acc + gastoRealCat(f.cat, m, y);
+      }
     }, 0);
 }
 
@@ -666,11 +670,42 @@ function renderDash() {
   // Gráfico de categorias (doughnut) — usa getCatNome para traduzir ID → nome
   const isMobile = window.innerWidth <= 430;
   const catT = {};
+  const payT = {};
+  
   if (!zero) {
-    state.fixas   .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-                  .forEach(f => { const k = getCatNome(f.cat); catT[k] = (catT[k] || 0) + f.valor; });
+    // 1. Variáveis (Parcelas)
     state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0)
-                  .forEach(v => { const k = getCatNome(v.cat); catT[k] = (catT[k] || 0) + v.mensal; });
+                  .forEach(v => { 
+                     const kCat = getCatNome(v.cat); 
+                     const kPag = getPagNome(v.pag);
+                     catT[kCat] = (catT[kCat] || 0) + v.mensal; 
+                     payT[kPag] = (payT[kPag] || 0) + v.mensal; 
+                  });
+
+    // Criamos um set para saber quais categorias JÁ FORAM contabilizadas pelas fixas preenchidas
+    const catsFixasPreenchidas = new Set();
+
+    // 2. Fixas COM pagamento preenchido
+    state.fixas.filter(f => incideNoMes(f.inicio, f.fim, m, y)).forEach(f => {
+      if (f.pag !== "" && f.pag !== null && f.pag !== undefined) {
+        const kCat = getCatNome(f.cat);
+        const kPag = getPagNome(f.pag);
+        catT[kCat] = (catT[kCat] || 0) + f.valor;
+        payT[kPag] = (payT[kPag] || 0) + f.valor;
+        catsFixasPreenchidas.add(f.cat);
+      }
+    });
+
+    // 3. Gastos Reais Lançados (Já filtrados pelo Mês Contábil e Fechamento do Cartão!)
+    gastosCobrancaMes(m, y).forEach(g => {
+      // Adiciona o gasto ao dashboard APENAS se a categoria dele NÃO estiver coberta por uma fixa com pagamento
+      if (!catsFixasPreenchidas.has(g.cat)) {
+        const kCat = getCatNome(g.cat);
+        const kPag = getPagNome(g.pag);
+        catT[kCat] = (catT[kCat] || 0) + g.valor;
+        payT[kPag] = (payT[kPag] || 0) + g.valor;
+      }
+    });
   }
   const catE = Object.entries(catT).sort((a, b) => b[1] - a[1]);
 
@@ -731,13 +766,13 @@ function renderDash() {
   });
 
   // Gráfico de pagamentos — usa getPagNome para traduzir ID → nome
-  const payT = {};
-  if (!zero) {
-    state.fixas   .filter(f => incideNoMes(f.inicio, f.fim, m, y))
-                  .forEach(f => { const k = getPagNome(f.pag); payT[k] = (payT[k] || 0) + f.valor; });
-    state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0)
-                  .forEach(v => { const k = getPagNome(v.pag); payT[k] = (payT[k] || 0) + v.mensal; });
-  }
+  // const payT = {};
+  // if (!zero) {
+  //   state.fixas   .filter(f => incideNoMes(f.inicio, f.fim, m, y))
+  //                 .forEach(f => { const k = getPagNome(f.pag); payT[k] = (payT[k] || 0) + f.valor; });
+  //   state.variaveis.filter(v => parcelasRestantesEm(v, m, y) > 0)
+  //                 .forEach(v => { const k = getPagNome(v.pag); payT[k] = (payT[k] || 0) + v.mensal; });
+  // }
   const payE = Object.entries(payT).sort((a, b) => b[1] - a[1]);
 
   destroyChart('chartPay');
@@ -1009,7 +1044,7 @@ function saveFixa() {
     cat:    parseInt(catRaw) || catRaw,
     limite: parseFloat(document.getElementById('f-limite').value) || 0,
     valor:  parseFloat(document.getElementById('f-valor').value)  || 0,
-    pag:    parseInt(pagRaw) || pagRaw,
+    pag:    pagRaw ? (parseInt(pagRaw) || pagRaw) : "",
     inicio: document.getElementById('f-inicio').value,
     fim:    document.getElementById('f-fim').value,
   };
