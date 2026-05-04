@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1A1A18"  media="(prefers-color-scheme: dark)">
+  <title>Meu Financeiro</title>
+  
+  <!-- Dependências -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  
+  <!-- Estilos (Aponte para o arquivo CSS compilado do seu SCSS) -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ================================================================
+       HEADER
+  ================================================================ -->
+  <header>
+    <div class="logo">💰 <em>Meu</em>Financeiro</div>
+    <div class="header-actions">
+      <span id="sync-status" class="sync-status">
+        <span class="sync-dot" id="sync-dot"></span>
+        <span id="sync-label">Carregando...</span>
+      </span>
+      <button class="btn btn-primary btn-sm" id="btn-salvar" onclick="githubSave()" style="display:none">
+        ☁ Salvar
+      </button>
+      <button class="btn btn-ghost btn-sm" onclick="showConfig()" title="Configurar token GitHub">⚙</button>
+    </div>
+  </header>
+
+  <!-- ================================================================
+       NAVEGAÇÃO
+  ================================================================ -->
+  <nav id="main-nav">
+    <button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
+    <button onclick="showPage('receitas',this)">Receitas</button>
+    <button onclick="showPage('despesas',this)">Despesas</button>
+    <button onclick="showPage('parcelas',this)">Parcelas</button>
+    <button onclick="showPage('gastos',this)">Gastos</button>
+    <button onclick="showPage('economias',this)">Economias</button>
+    <button onclick="showPage('previsao',this)">Previsão</button>
+  </nav>
+
+  <!-- ================================================================
+       CONTEÚDO PRINCIPAL
+  ================================================================ -->
+  <main>
+
+    <!-- ── DASHBOARD ── -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-head">
+        <div class="page-title">Dashboard</div>
+        <div class="month-sel">
+          <label>Mês</label>
+          <select id="dash-mes" onchange="renderDash()" style="width:auto">
+            <option value="0">Janeiro</option>  <option value="1">Fevereiro</option>
+            <option value="2">Março</option>    <option value="3">Abril</option>
+            <option value="4">Maio</option>     <option value="5">Junho</option>
+            <option value="6">Julho</option>    <option value="7">Agosto</option>
+            <option value="8">Setembro</option> <option value="9">Outubro</option>
+            <option value="10">Novembro</option><option value="11">Dezembro</option>
+          </select>
+          <select id="dash-ano" onchange="renderDash()" style="width:auto">
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="dash-alerts"></div>
+      <div class="metrics" id="dash-metrics"></div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Gastos por categoria</div>
+          <div class="chart-wrap" id="chart-cat-wrap"><canvas id="chartCat"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sobra acumulada no ano</div>
+          <div class="chart-wrap"><canvas id="chartSaldo"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Por forma de pagamento</div>
+        <div class="chart-wrap" style="height:180px"><canvas id="chartPay"></canvas></div>
+      </div>
+    </div><!-- /dashboard -->
+
+    <!-- ── RECEITAS ── -->
+    <div id="page-receitas" class="page">
+      <div class="page-head">
+        <div class="page-title">Receitas</div>
+        <button class="btn btn-primary btn-sm" onclick="openFormReceita()">+ Nova receita</button>
+      </div>
+
+      <div class="form-section" id="form-receita" style="display:none">
+        <div class="form-section-title" id="form-receita-title">Nova receita</div>
+        <div class="form-grid">
+          <div class="field">Descrição   <input type="text"   id="r-desc"  placeholder="ex: Salário"></div>
+          <div class="field">Valor (R$)  <input type="number" id="r-valor" placeholder="0,00" step="0.01"></div>
+        </div>
+        <div class="form-grid">
+          <div class="field">Data início        <input type="date" id="r-inicio"></div>
+          <div class="field">Data fim prevista  <input type="date" id="r-fim"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="saveReceita()">Salvar</button>
+          <button class="btn btn-ghost"   onclick="closeForm('form-receita')">Cancelar</button>
+        </div>
+        <input type="hidden" id="r-id">
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Descrição</th><th>Valor</th><th>Início</th><th>Fim</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-receitas"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /receitas -->
+
+    <!-- ── DESPESAS ── -->
+    <div id="page-despesas" class="page">
+      <div class="page-head"><div class="page-title">Despesas</div></div>
+
+      <div class="inner-tabs">
+        <button class="inner-tab active" onclick="switchTab('fixas',this)">Despesas Fixas</button>
+        <button class="inner-tab"        onclick="switchTab('variaveis',this)">Variáveis / Parceladas</button>
+      </div>
+
+      <!-- Despesas Fixas -->
+      <div id="tab-fixas">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+          <button class="btn btn-primary btn-sm" onclick="openFormFixa()">+ Nova despesa fixa</button>
+        </div>
+
+        <div class="form-section" id="form-fixa" style="display:none">
+          <div class="form-section-title" id="form-fixa-title">Nova despesa fixa</div>
+          <div class="form-grid">
+            <div class="field">Descrição <input type="text" id="f-desc"></div>
+            <div class="field">Categoria
+              <select id="f-cat">
+                <option value="1">Alimentação</option><option value="2">Saúde</option>
+                <option value="3">Educação</option><option value="4">Serviços</option>
+                <option value="5">Lazer</option><option value="6">Transporte</option>
+                <option value="7">Investimentos</option><option value="8">Moradia</option>
+                <option value="9">Crédito</option><option value="10">Compra</option>
+                <option value="11">Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid g3">
+            <div class="field">Limite (R$)  <input type="number" id="f-limite" step="0.01"></div>
+            <div class="field">Gasto (R$)   <input type="number" id="f-valor"  step="0.01"></div>
+            <div class="field">Pagamento
+              <select id="f-pag">
+                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option><option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">Data início            <input type="date" id="f-inicio"></div>
+            <div class="field">Data fim (opcional)   <input type="date" id="f-fim"></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveFixa()">Salvar</button>
+            <button class="btn btn-ghost"   onclick="closeForm('form-fixa')">Cancelar</button>
+          </div>
+          <input type="hidden" id="f-id">
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Descrição</th><th>Categoria</th><th>Limite</th><th>Gasto</th>
+                  <th>Status</th><th>Pagamento</th><th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-fixas"></tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /tab-fixas -->
+
+      <!-- Variáveis / Parceladas -->
+      <div id="tab-variaveis" style="display:none">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+          <button class="btn btn-primary btn-sm" onclick="openFormVariavel()">+ Nova compra / parcela</button>
+        </div>
+
+        <div class="form-section" id="form-variavel" style="display:none">
+          <div class="form-section-title" id="form-variavel-title">Nova compra / parcela</div>
+          <div class="form-grid">
+            <div class="field">Nome <input type="text" id="v-nome"></div>
+            <div class="field">Categoria
+              <select id="v-cat">
+                <option value="1">Alimentação</option><option value="2">Saúde</option>
+                <option value="3">Educação</option><option value="4">Serviços</option>
+                <option value="5">Lazer</option><option value="6">Transporte</option>
+                <option value="7">Investimentos</option><option value="8">Moradia</option>
+                <option value="9">Crédito</option><option value="10">Compra</option>
+                <option value="11">Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid g3">
+            <div class="field">Valor total (R$)   <input type="number" id="v-total"    oninput="calcParcela()" step="0.01"></div>
+            <div class="field">Nº parcelas        <input type="number" id="v-parcelas" oninput="calcParcela()" min="1"></div>
+            <div class="field">Valor mensal (R$)  <input type="number" id="v-mensal"   step="0.01" placeholder="auto"></div>
+          </div>
+          <div class="form-grid g3">
+            <div class="field">Parcelas restantes <input type="number" id="v-faltam" min="0"></div>
+            <div class="field">Pagamento
+              <select id="v-pag">
+                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option><option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+              </select>
+            </div>
+            <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
+          </div>
+          <label class="checkbox-row" style="margin-bottom:12px">
+            <input type="checkbox" id="v-pago"> Parcela atual já paga
+          </label>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveVariavel()">Salvar</button>
+            <button class="btn btn-ghost"   onclick="closeForm('form-variavel')">Cancelar</button>
+          </div>
+          <input type="hidden" id="v-id">
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th><th>Categoria</th><th>Total</th><th>Mensal</th>
+                  <th>Parcelas</th><th>Faltam</th><th>Pagamento</th><th>Pago</th><th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-variaveis"></tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /tab-variaveis -->
+
+    </div><!-- /despesas -->
+
+    <!-- ── PARCELAS ── -->
+    <div id="page-parcelas" class="page">
+      <div class="page-head"><div class="page-title">Parcelas</div></div>
+      <div class="metrics" id="metrics-parcelas" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+
+      <div class="card">
+        <div class="card-title">Parcelas em aberto</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th><th>Pagamento</th><th>Mensal</th><th>Faltam</th>
+                <th>Restante</th><th>Término</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-parcelas"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Comprometimento por cartão (mês)</div>
+          <div class="chart-wrap"><canvas id="chartCartoes"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Liberação por mês (parcelas que terminam)</div>
+          <div class="chart-wrap"><canvas id="chartLiberacao"></canvas></div>
+        </div>
+      </div>
+    </div><!-- /parcelas -->
+
+    <!-- ── ECONOMIAS ── -->
+    <div id="page-economias" class="page">
+      <div class="page-head">
+        <div class="page-title">Economias</div>
+        <div class="month-sel">
+          <label>Ano</label>
+          <select id="eco-ano" onchange="renderEconomias()" style="width:auto">
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Configuração -->
+      <div class="card" id="eco-config-card">
+        <div class="card-title">Configuração da poupança</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+          <div class="field">
+            Taxa anual (% CDI)
+            <input type="number" id="eco-taxa-cdi" value="120" step="1" oninput="renderEconomias()">
+            <span style="font-size:11px;color:var(--text-t)">Ex: 120 = 120% do CDI ≈ 10,5% a.a.</span>
+          </div>
+          <div class="field">
+            Saldo inicial da poupança (R$)
+            <input type="number" id="eco-saldo-inicial" value="0" step="100" oninput="renderEconomias()">
+            <span style="font-size:11px;color:var(--text-t)">Informe se já tem dinheiro guardado</span>
+          </div>
+          <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm);font-size:12px;color:var(--green-dark)">
+            <strong>Depósito automático</strong><br>
+            O valor depositado em cada mês é lido das despesas fixas com pagamento <em>Poupança</em> — respeitando o período de vigência de cada uma.
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics" id="eco-metrics" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+
+      <div class="card">
+        <div class="card-title">Caixa acumulado + poupança — mês a mês</div>
+        <div class="chart-wrap" style="height:260px"><canvas id="chartEcoBar"></canvas></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Crescimento do patrimônio</div>
+          <div class="chart-wrap"><canvas id="chartEcoPatrimonio"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Rendimento mensal da poupança</div>
+          <div class="chart-wrap"><canvas id="chartEcoRendimento"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Detalhamento mensal</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Mês</th><th>Sobra do Mês</th><th>Depósito</th>
+                <th>Acum. Poupança</th><th>Patrimônio Total</th><th>Rendimento</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-economias"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /economias -->
+
+    <!-- ── PREVISÃO ── -->
+    <div id="page-previsao" class="page">
+      <div class="page-head"><div class="page-title">Previsão Financeira</div></div>
+
+      <div class="card">
+        <div class="card-title">Sobra acumulada — próximos 12 meses</div>
+        <div class="chart-wrap" style="height:260px"><canvas id="chartPrevisao"></canvas></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Indicadores</div>
+          <div id="div-indicadores"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Análise automática</div>
+          <div id="div-analise"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Receita vs. despesas — mês a mês</div>
+        <div class="chart-wrap" style="height:240px"><canvas id="chartRvsD"></canvas></div>
+      </div>
+    </div><!-- /previsao -->
+
+    <!-- ── GASTOS ── -->
+    <div id="page-gastos" class="page">
+      <div class="page-head">
+        <div class="page-title">Gastos do Mês</div>
+        <div class="month-sel">
+          <label>Mês</label>
+          <select id="g-mes" onchange="renderGastos()" style="width:auto">
+            <option value="0">Janeiro</option>  <option value="1">Fevereiro</option>
+            <option value="2">Março</option>    <option value="3">Abril</option>
+            <option value="4">Maio</option>     <option value="5">Junho</option>
+            <option value="6">Julho</option>    <option value="7">Agosto</option>
+            <option value="8">Setembro</option> <option value="9">Outubro</option>
+            <option value="10">Novembro</option><option value="11">Dezembro</option>
+          </select>
+          <select id="g-ano" onchange="renderGastos()" style="width:auto">
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Resumo do mês -->
+      <div class="metrics" id="g-metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+
+      <!-- Cards de orçamento por categoria -->
+      <div id="g-budget-cards"></div>
+
+      <!-- Lista de lançamentos -->
+      <div class="card">
+        <div class="card-title" id="g-lista-title">Lançamentos do mês</div>
+        <div id="g-lista-empty" class="empty-state" style="display:none">
+          <div class="es-icon">📝</div>
+          <p>Nenhum gasto lançado ainda</p>
+        </div>
+        <div id="g-lista"></div>
+      </div>
+    </div><!-- /gastos -->
+
+    <!-- Botão + flutuante para lançar gasto (visível só na aba Gastos) -->
+    <button id="btn-novo-gasto" onclick="abrirModalGasto()" aria-label="Lançar novo gasto">＋</button>
+
+  </main>
+
+  <!-- ================================================================
+       MODAL — Lançar gasto
+  ================================================================ -->
+  <div id="modal-gasto" class="modal-overlay" style="display:none"
+       onclick="if(event.target===this) fecharModalGasto()">
+    <div class="modal-box" style="max-width:440px">
+      <div class="modal-title" id="modal-gasto-title">📝 Lançar gasto</div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+
+        <!-- Valor — destaque grande, primeiro campo -->
+        <div class="field">
+          Valor (R$)
+          <input type="number" id="mg-valor" placeholder="0,00" step="0.01"
+                 style="font-size:24px;font-weight:700;text-align:center;padding:14px"
+                 inputmode="decimal">
+        </div>
+
+        <!-- Descrição -->
+        <div class="field">
+          Descrição <span style="color:var(--text-t);font-weight:400">(opcional)</span>
+          <input type="text" id="mg-desc" placeholder="ex: Remédio, café, gasolina...">
+        </div>
+
+        <!-- Categoria — grade de chips -->
+        <div class="field">
+          Categoria
+          <div id="mg-cat-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+          <input type="hidden" id="mg-cat">
+        </div>
+
+        <!-- Pagamento -->
+        <div class="field">
+          Pagamento
+          <select id="mg-pag">
+            <option value="1">Cartão Sicredi</option>
+            <option value="2">Cartão M Pago</option>
+            <option value="3">Cartão Banri</option>
+            <option value="4">Dinheiro Vivo</option>
+            <option value="5">Pix</option>
+            <option value="7">Conta Corrente Banri</option>
+            <option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+          </select>
+        </div>
+
+        <!-- Data -->
+        <div class="field">
+          Data
+          <input type="date" id="mg-data">
+        </div>
+
+      </div>
+      <div class="modal-actions" style="margin-top:20px">
+        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="salvarGasto()">
+          Salvar gasto
+        </button>
+        <button class="btn btn-ghost" onclick="fecharModalGasto()">Cancelar</button>
+      </div>
+      <input type="hidden" id="mg-id">
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MODAL — Configuração GitHub
+  ================================================================ -->
+  <div id="modal-config" class="modal-overlay" style="display:none"
+       onclick="if(event.target===this) hideConfig()">
+    <div class="modal-box">
+      <div class="modal-title">⚙ Sincronização com GitHub</div>
+      <div class="modal-sub">
+        Seus dados são salvos diretamente no seu repositório GitHub.
+        O token fica guardado <strong>só neste navegador</strong> — nunca é enviado para
+        nenhum servidor além do GitHub.
+      </div>
+
+      <div style="margin-bottom:16px">
+        <div class="step-item">
+          <span class="step-num">1</span>
+          <span>Acesse <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">2</span>
+          <span>Clique <strong>Generate new token (classic)</strong>, marque a permissão <strong>repo</strong></span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">3</span>
+          <span>Copie o token gerado e cole abaixo</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:12px">
+        Token do GitHub
+        <input type="password" id="cfg-token" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <span style="font-size:11px;color:var(--text-t)">Começa com ghp_ — salvo apenas neste navegador</span>
+      </div>
+
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm);font-size:12px;color:var(--text-s)">
+        <strong>Repositório:</strong> JoaoVuelma/controle-financeiro<br>
+        <strong>Arquivo de dados:</strong> dados.json
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="saveConfig()">Salvar configuração</button>
+        <button class="btn btn-ghost"   onclick="hideConfig()">Cancelar</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportJSONBackup()" style="margin-left:auto">
+          ⬇ Backup local
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <!-- Script da aplicação -->
+  <script src="script.js"></script>
+</body>
+</html>
