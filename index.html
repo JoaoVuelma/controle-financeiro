@@ -60,12 +60,18 @@
         <div class="month-sel">
           <label>Mês</label>
           <select id="dash-mes" onchange="renderDash()" style="width:auto">
-            <option value="0">Janeiro</option>  <option value="1">Fevereiro</option>
-            <option value="2">Março</option>    <option value="3">Abril</option>
-            <option value="4">Maio</option>     <option value="5">Junho</option>
-            <option value="6">Julho</option>    <option value="7">Agosto</option>
-            <option value="8">Setembro</option> <option value="9">Outubro</option>
-            <option value="10">Novembro</option><option value="11">Dezembro</option>
+            <option value="0">Janeiro</option>
+            <option value="1">Fevereiro</option>
+            <option value="2">Março</option>   
+            <option value="3">Abril</option>
+            <option value="4">Maio</option>
+            <option value="5">Junho</option>
+            <option value="6">Julho</option>
+            <option value="7">Agosto</option>
+            <option value="8">Setembro</option>
+            <option value="9">Outubro</option>
+            <option value="10">Novembro</option>
+            <option value="11">Dezembro</option>
           </select>
           <select id="dash-ano" onchange="renderDash()" style="width:auto">
             <option value="2025">2025</option>
@@ -154,11 +160,16 @@
             <div class="field">Descrição <input type="text" id="f-desc"></div>
             <div class="field">Categoria
               <select id="f-cat">
-                <option value="1">Alimentação</option><option value="2">Saúde</option>
-                <option value="3">Educação</option><option value="4">Serviços</option>
-                <option value="5">Lazer</option><option value="6">Transporte</option>
-                <option value="7">Investimentos</option><option value="8">Moradia</option>
-                <option value="9">Crédito</option><option value="10">Compra</option>
+                <option value="1">Alimentação</option>
+                <option value="2">Saúde</option>
+                <option value="3">Educação</option>
+                <option value="4">Serviços</option>
+                <option value="5">Lazer</option>
+                <option value="6">Transporte</option>
+                <option value="7">Investimentos</option>
+                <option value="8">Moradia</option>
+                <option value="9">Crédito</option>
+                <option value="10">Compra</option>
                 <option value="11">Outros</option>
               </select>
             </div>
@@ -168,10 +179,16 @@
             <div class="field">Gasto (R$)   <input type="number" id="f-valor"  step="0.01"></div>
             <div class="field">Pagamento
               <select id="f-pag">
-                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+                <option value="">Sem pagamento fixo (Soma os lançamentos)</option>
+                <option value="1">Cartão Sicredi</option>
+                <option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option>
+                <option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option>
+                <option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option>
+                <option value="8">Conta Corrente M Pago</option>
+                <option value="9">Cartão Santander</option>
               </select>
             </div>
           </div>
@@ -213,11 +230,16 @@
             <div class="field">Nome <input type="text" id="v-nome"></div>
             <div class="field">Categoria
               <select id="v-cat">
-                <option value="1">Alimentação</option><option value="2">Saúde</option>
-                <option value="3">Educação</option><option value="4">Serviços</option>
-                <option value="5">Lazer</option><option value="6">Transporte</option>
-                <option value="7">Investimentos</option><option value="8">Moradia</option>
-                <option value="9">Crédito</option><option value="10">Compra</option>
+                <option value="1">Alimentação</option>
+                <option value="2">Saúde</option>
+                <option value="3">Educação</option>
+                <option value="4">Serviços</option>
+                <option value="5">Lazer</option>
+                <option value="6">Transporte</option>
+                <option value="7">Investimentos</option>
+                <option value="8">Moradia</option>
+                <option value="9">Crédito</option>
+                <option value="10">Compra</option>
                 <option value="11">Outros</option>
               </select>
             </div>
@@ -231,10 +253,15 @@
             <div class="field">Parcelas restantes <input type="number" id="v-faltam" min="0"></div>
             <div class="field">Pagamento
               <select id="v-pag">
-                <option value="1">Cartão Sicredi</option><option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option><option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option><option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option><option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+                <option value="1">Cartão Sicredi</option>
+                <option value="2">Cartão M Pago</option>
+                <option value="3">Cartão Banri</option>
+                <option value="4">Dinheiro Vivo</option>
+                <option value="5">Pix</option>
+                <option value="6">Poupança</option>
+                <option value="7">Conta Corrente Banri</option>
+                <option value="8">Conta Corrente M Pago</option>
+                <option value="9">Cartão Santander</option>
               </select>
             </div>
             <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
@@ -254,8 +281,15 @@
             <table>
               <thead>
                 <tr>
-                  <th>Nome</th><th>Categoria</th><th>Total</th><th>Mensal</th>
-                  <th>Parcelas</th><th>Faltam</th><th>Pagamento</th><th>Pago</th><th>Ações</th>
+                  <th>Nome</th>
+                  <th>Categoria</th>
+                  <th>Total</th>
+                  <th>Mensal</th>
+                  <th>Parcelas</th>
+                  <th>Faltam</th>
+                  <th>Pagamento</th>
+                  <th>Pago</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody id="tbody-variaveis"></tbody>
@@ -277,8 +311,13 @@
           <table>
             <thead>
               <tr>
-                <th>Nome</th><th>Pagamento</th><th>Mensal</th><th>Faltam</th>
-                <th>Restante</th><th>Término</th><th>Status</th>
+                <th>Nome</th>
+                <th>Pagamento</th>
+                <th>Mensal</th>
+                <th>Faltam</th>
+                <th>Restante</th>
+                <th>Término</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody id="tbody-parcelas"></tbody>
@@ -357,8 +396,12 @@
           <table>
             <thead>
               <tr>
-                <th>Mês</th><th>Sobra do Mês</th><th>Depósito</th>
-                <th>Acum. Poupança</th><th>Patrimônio Total</th><th>Rendimento</th>
+                <th>Mês</th>
+                <th>Sobra do Mês</th>
+                <th>Depósito</th>
+                <th>Acum. Poupança</th>
+                <th>Patrimônio Total</th>
+                <th>Rendimento</th>
               </tr>
             </thead>
             <tbody id="tbody-economias"></tbody>
@@ -400,12 +443,18 @@
         <div class="month-sel">
           <label>Mês</label>
           <select id="g-mes" onchange="renderGastos()" style="width:auto">
-            <option value="0">Janeiro</option>  <option value="1">Fevereiro</option>
-            <option value="2">Março</option>    <option value="3">Abril</option>
-            <option value="4">Maio</option>     <option value="5">Junho</option>
-            <option value="6">Julho</option>    <option value="7">Agosto</option>
-            <option value="8">Setembro</option> <option value="9">Outubro</option>
-            <option value="10">Novembro</option><option value="11">Dezembro</option>
+            <option value="0">Janeiro</option>
+            <option value="1">Fevereiro</option>
+            <option value="2">Março</option>
+            <option value="3">Abril</option>
+            <option value="4">Maio</option>
+            <option value="5">Junho</option>
+            <option value="6">Julho</option>
+            <option value="7">Agosto</option>
+            <option value="8">Setembro</option>
+            <option value="9">Outubro</option>
+            <option value="10">Novembro</option>
+            <option value="11">Dezembro</option>
           </select>
           <select id="g-ano" onchange="renderGastos()" style="width:auto">
             <option value="2025">2025</option>
@@ -477,7 +526,8 @@
             <option value="4">Dinheiro Vivo</option>
             <option value="5">Pix</option>
             <option value="7">Conta Corrente Banri</option>
-            <option value="8">Conta Corrente M Pago</option><option value="9">Cartão Santander</option>
+            <option value="8">Conta Corrente M Pago</option>
+            <option value="9">Cartão Santander</option>
           </select>
         </div>
 
