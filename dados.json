@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:31:54.799Z",
+  "_savedAt": "2026-05-05T15:33:11.629Z",
   "receitas": [
     {
       "id": 1,
@@ -248,11 +248,11 @@
       "nome": "Amazon 1",
       "cat": 10,
       "total": 288,
-      "mensal": 48,
-      "parcelas": 6,
-      "faltam": 5,
+      "mensal": 72,
+      "parcelas": 4,
+      "faltam": 4,
       "pag": 3,
-      "inicio": "2026-03-09",
+      "inicio": "2026-05-05",
       "pago": true
     },
     {
