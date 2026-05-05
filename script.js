@@ -82,6 +82,7 @@ const PAY_COLORS = {
   'Conta Corrente Banri': '#5DCAA5',
   'Conta Corrente M Pago':'#3BDAB0',
   'Cartão Santander':     '#EC0000',
+  'A Realizar (Previsão)':'#D3D3D3',
 };
 
 // Mês e ano de referência — removido: parcelas agora calculadas por inicio+parcelas
@@ -497,11 +498,14 @@ function getDespesaFixaMes(m, y) {
   return state.fixas
     .filter(f => incideNoMes(f.inicio, f.fim, m, y))
     .reduce((acc, f) => {
-      // Se o pagamento está preenchido, usa o valor fixo. Se não, usa o real lançado.
+      // Se tem pagamento fixo definido, usa o valor fechado da despesa
       if (f.pag !== "" && f.pag !== null && f.pag !== undefined) {
-        return acc + (f.valor || 0);
+        return acc + (f.valor || f.limite || 0);
       } else {
-        return acc + gastoRealCat(f.cat, m, y);
+        // Se NÃO tem pagamento: pega o gasto real e compara com o limite
+        const real = gastoRealCat(f.cat, m, y);
+        // Retorna o maior valor (mantém a previsão alta se não gastou, ou assume o real se estourou)
+        return acc + Math.max(f.limite, real);
       }
     }, 0);
 }
@@ -682,28 +686,52 @@ function renderDash() {
                      payT[kPag] = (payT[kPag] || 0) + v.mensal; 
                   });
 
-    // Criamos um set para saber quais categorias JÁ FORAM contabilizadas pelas fixas preenchidas
+    // 2. Fixas COM pagamento preenchido + Mapeamento dos Limites
     const catsFixasPreenchidas = new Set();
+    const mapFixasSemPagamento = {};
 
     // 2. Fixas COM pagamento preenchido
     state.fixas.filter(f => incideNoMes(f.inicio, f.fim, m, y)).forEach(f => {
       if (f.pag !== "" && f.pag !== null && f.pag !== undefined) {
+        // É fixa "engessada", soma direto
         const kCat = getCatNome(f.cat);
         const kPag = getPagNome(f.pag);
-        catT[kCat] = (catT[kCat] || 0) + f.valor;
-        payT[kPag] = (payT[kPag] || 0) + f.valor;
+        const val = f.valor || f.limite || 0;
+        catT[kCat] = (catT[kCat] || 0) + val;
+        payT[kPag] = (payT[kPag] || 0) + val;
         catsFixasPreenchidas.add(f.cat);
+      } else {
+        // Não tem pagamento: Salva o limite para abater com os gastos reais da aba Gastos
+        mapFixasSemPagamento[f.cat] = (mapFixasSemPagamento[f.cat] || 0) + f.limite;
       }
     });
 
     // 3. Gastos Reais Lançados (Já filtrados pelo Mês Contábil e Fechamento do Cartão!)
     gastosCobrancaMes(m, y).forEach(g => {
-      // Adiciona o gasto ao dashboard APENAS se a categoria dele NÃO estiver coberta por uma fixa com pagamento
+      // Só processa se não for de uma categoria "engessada" do passo anterior
       if (!catsFixasPreenchidas.has(g.cat)) {
         const kCat = getCatNome(g.cat);
         const kPag = getPagNome(g.pag);
+        
+        // O gasto real assume seu respectivo método de pagamento
         catT[kCat] = (catT[kCat] || 0) + g.valor;
         payT[kPag] = (payT[kPag] || 0) + g.valor;
+        
+        // Abate esse valor do limite de previsão
+        if (mapFixasSemPagamento[g.cat] !== undefined) {
+          mapFixasSemPagamento[g.cat] -= g.valor;
+        }
+      }
+    });
+
+    Object.keys(mapFixasSemPagamento).forEach(cat => {
+      const gap = mapFixasSemPagamento[cat];
+      if (gap > 0) {
+        // Se a diferença é positiva, significa que ainda não estourou o limite.
+        // Adiciona a "gordura" de volta na categoria e num método "A Realizar"
+        const kCat = getCatNome(cat);
+        catT[kCat] = (catT[kCat] || 0) + gap;
+        payT["A Realizar (Previsão)"] = (payT["A Realizar (Previsão)"] || 0) + gap;
       }
     });
   }
