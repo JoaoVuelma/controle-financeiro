@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:18:54.366Z",
+  "_savedAt": "2026-05-05T15:19:03.765Z",
   "receitas": [
     {
       "id": 1,
@@ -278,18 +278,6 @@
       "pag": 3,
       "inicio": "2026-03-09",
       "pago": true
-    },
-    {
-      "id": 10,
-      "nome": "Aniversario Julia",
-      "cat": 5,
-      "total": 660,
-      "mensal": 110,
-      "parcelas": 6,
-      "faltam": 6,
-      "pag": 5,
-      "inicio": "2026-09-01",
-      "pago": false
     },
     {
       "id": 1773789812145,
