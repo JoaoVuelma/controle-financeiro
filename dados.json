@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:16:53.990Z",
+  "_savedAt": "2026-05-05T15:18:54.366Z",
   "receitas": [
     {
       "id": 1,
@@ -232,18 +232,6 @@
       "pago": true
     },
     {
-      "id": 5,
-      "nome": "C&A",
-      "cat": 10,
-      "total": 326,
-      "mensal": 163,
-      "parcelas": 2,
-      "faltam": 1,
-      "pag": 2,
-      "inicio": "2026-03-01",
-      "pago": true
-    },
-    {
       "id": 6,
       "nome": "Credito Banri",
       "cat": 9,
@@ -370,10 +358,10 @@
       "total": 600,
       "mensal": 100,
       "parcelas": 6,
-      "faltam": 5,
+      "faltam": 4,
       "pag": 5,
       "inicio": "2026-04-10",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1775484583322,
@@ -394,10 +382,10 @@
       "total": 1640,
       "mensal": 820,
       "parcelas": 2,
-      "faltam": 2,
+      "faltam": 1,
       "pag": 1,
       "inicio": "2026-04-08",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1775605220051,
