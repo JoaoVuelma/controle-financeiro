@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:11:53.750Z",
+  "_savedAt": "2026-05-05T15:12:26.133Z",
   "receitas": [
     {
       "id": 1,
@@ -43,13 +43,6 @@
       "valor": 750,
       "inicio": "2026-07-01",
       "fim": ""
-    },
-    {
-      "id": 1775603682366,
-      "desc": "Sobra + Restante do Vale",
-      "valor": 600,
-      "inicio": "2026-04-01",
-      "fim": "2026-04-01"
     }
   ],
   "fixas": [
