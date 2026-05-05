@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:30:07.670Z",
+  "_savedAt": "2026-05-05T15:31:54.799Z",
   "receitas": [
     {
       "id": 1,
@@ -200,11 +200,11 @@
       "nome": "Airbnb",
       "cat": 5,
       "total": 438,
-      "mensal": 73,
-      "parcelas": 6,
-      "faltam": 4,
+      "mensal": 146,
+      "parcelas": 3,
+      "faltam": 3,
       "pag": 3,
-      "inicio": "2026-02-12",
+      "inicio": "2026-05-05",
       "pago": true
     },
     {
