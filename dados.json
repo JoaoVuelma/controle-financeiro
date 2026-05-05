@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-05-05T15:24:19.782Z",
+  "_savedAt": "2026-05-05T15:27:10.118Z",
   "receitas": [
     {
       "id": 1,
@@ -220,27 +220,15 @@
       "pago": true
     },
     {
-      "id": 4,
-      "nome": "Renner",
-      "cat": 10,
-      "total": 180,
-      "mensal": 60,
-      "parcelas": 3,
-      "faltam": 1,
-      "pag": 1,
-      "inicio": "2026-02-20",
-      "pago": true
-    },
-    {
       "id": 7,
       "nome": "H&M",
       "cat": 10,
       "total": 348,
-      "mensal": 58,
-      "parcelas": 6,
-      "faltam": 5,
+      "mensal": 116,
+      "parcelas": 3,
+      "faltam": 3,
       "pag": 1,
-      "inicio": "2026-03-01",
+      "inicio": "2026-05-05",
       "pago": true
     },
     {
@@ -265,18 +253,6 @@
       "faltam": 5,
       "pag": 3,
       "inicio": "2026-03-09",
-      "pago": true
-    },
-    {
-      "id": 1773789812145,
-      "nome": "Amazon 2",
-      "cat": 10,
-      "total": 105,
-      "mensal": 35,
-      "parcelas": 3,
-      "faltam": 2,
-      "pag": 1,
-      "inicio": "2026-03-17",
       "pago": true
     },
     {
