@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:21:27.735Z",
+  "_savedAt": "2026-06-09T14:23:11.538Z",
   "receitas": [
     {
       "id": 1,
@@ -307,10 +307,10 @@
       "total": 1750,
       "mensal": 175,
       "parcelas": 10,
-      "faltam": 10,
+      "faltam": 9,
       "pag": 5,
       "inicio": "2026-05-01",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1774890631600,
