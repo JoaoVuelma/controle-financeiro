@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:33:11.917Z",
+  "_savedAt": "2026-06-09T14:34:32.895Z",
   "receitas": [
     {
       "id": 1,
@@ -862,6 +862,14 @@
       "desc": "Bio e sla o que",
       "valor": 37,
       "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015672716,
+      "cat": 1,
+      "desc": "Mercado",
+      "valor": 40,
+      "pag": 3,
       "data": "2026-06-09"
     }
   ],
