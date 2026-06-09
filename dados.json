@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:20:31.034Z",
+  "_savedAt": "2026-06-09T14:21:27.735Z",
   "receitas": [
     {
       "id": 1,
@@ -247,10 +247,10 @@
       "total": 348,
       "mensal": 116,
       "parcelas": 3,
-      "faltam": 3,
+      "faltam": 2,
       "pag": 1,
       "inicio": "2026-05-05",
-      "pago": false
+      "pago": true
     },
     {
       "id": 8,
@@ -391,10 +391,10 @@
       "total": 1350,
       "mensal": 150,
       "parcelas": 9,
-      "faltam": 9,
+      "faltam": 8,
       "pag": 5,
       "inicio": "2026-04-12",
-      "pago": false
+      "pago": true
     },
     {
       "id": 1777400261157,
@@ -415,10 +415,10 @@
       "total": 1190,
       "mensal": 170,
       "parcelas": 7,
-      "faltam": 7,
+      "faltam": 6,
       "pag": 9,
       "inicio": "2026-05-05",
-      "pago": false
+      "pago": true
     }
   ],
   "gastos": [
