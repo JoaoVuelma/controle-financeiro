@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:34:32.895Z",
+  "_savedAt": "2026-06-09T14:38:11.104Z",
   "receitas": [
     {
       "id": 1,
@@ -411,7 +411,7 @@
       "nome": "Parcelas Santander",
       "cat": 10,
       "total": 1190,
-      "mensal": 170,
+      "mensal": 173,
       "parcelas": 7,
       "faltam": 6,
       "pag": 9,
