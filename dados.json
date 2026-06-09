@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:44:10.865Z",
+  "_savedAt": "2026-06-09T14:44:50.180Z",
   "receitas": [
     {
       "id": 1,
@@ -464,6 +464,18 @@
       "faltam": 12,
       "pag": 2,
       "inicio": "2026-06-23",
+      "pago": false
+    },
+    {
+      "id": 1781016291651,
+      "nome": "Credito maior de todos",
+      "cat": 9,
+      "total": 3526,
+      "mensal": 146.92,
+      "parcelas": 24,
+      "faltam": 24,
+      "pag": 8,
+      "inicio": "2026-06-09",
       "pago": false
     }
   ],
