@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-09T14:41:37.553Z",
+  "_savedAt": "2026-06-09T14:44:10.865Z",
   "receitas": [
     {
       "id": 1,
@@ -399,7 +399,7 @@
       "nome": "Credito mercado final",
       "cat": 9,
       "total": 900,
-      "mensal": 112.5,
+      "mensal": 103,
       "parcelas": 8,
       "faltam": 7,
       "pag": 8,
@@ -462,7 +462,7 @@
       "mensal": 23.58,
       "parcelas": 12,
       "faltam": 12,
-      "pag": 8,
+      "pag": 2,
       "inicio": "2026-06-23",
       "pago": false
     }
