@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-10T23:06:21.332Z",
+  "_savedAt": "2026-06-10T23:07:32.429Z",
   "receitas": [
     {
       "id": 1,
@@ -71,6 +71,13 @@
       "valor": 606,
       "inicio": "2026-05-09",
       "fim": "2026-05-09"
+    },
+    {
+      "id": 1781132851729,
+      "desc": "Pagamento do casaco nick",
+      "valor": 110,
+      "inicio": "2026-06-10",
+      "fim": "2026-06-10"
     }
   ],
   "fixas": [
