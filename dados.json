@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-16T23:01:31.597Z",
+  "_savedAt": "2026-06-16T23:01:52.274Z",
   "receitas": [
     {
       "id": 1,
@@ -1032,6 +1032,14 @@
       "cat": 1,
       "desc": "Energético",
       "valor": 30,
+      "pag": 5,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650914374,
+      "cat": 5,
+      "desc": "Festa junina",
+      "valor": 35,
       "pag": 5,
       "data": "2026-06-16"
     }
