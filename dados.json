@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-06-14T18:58:12.373Z",
+  "_savedAt": "2026-06-16T23:01:31.597Z",
   "receitas": [
     {
       "id": 1,
@@ -1018,6 +1018,22 @@
       "valor": 6,
       "pag": 9,
       "data": "2026-06-14"
+    },
+    {
+      "id": 1781650873364,
+      "cat": 2,
+      "desc": "Minoxidil",
+      "valor": 70,
+      "pag": 1,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650890582,
+      "cat": 1,
+      "desc": "Energético",
+      "valor": 30,
+      "pag": 5,
+      "data": "2026-06-16"
     }
   ],
   "fechamentos": {
