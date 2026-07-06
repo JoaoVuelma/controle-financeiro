@@ -1,5 +1,22 @@
 {
-  "receitas": [],
+  "_version": 1,
+  "_savedAt": "2026-07-06T00:47:43.555Z",
+  "receitas": [
+    {
+      "id": 1783298849040,
+      "desc": "Salário",
+      "valor": 2400,
+      "inicio": "2026-07-01",
+      "fim": "2026-12-31"
+    },
+    {
+      "id": 1783298864307,
+      "desc": "Vale",
+      "valor": 750,
+      "inicio": "2026-07-01",
+      "fim": "2026-12-31"
+    }
+  ],
   "fixas": [],
   "variaveis": [],
   "gastos": [],
