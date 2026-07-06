@@ -225,10 +225,14 @@
     <div class="brand-logo">M</div>
     <div>
       <div class="brand-name">Meu Financeiro</div>
-      <div class="brand-sub"><span class="dot" style="display:inline-block;vertical-align:middle;margin-right:4px"></span>Sincronizado</div>
+      <div class="brand-sub" id="syncSubMobile"><span class="dot" style="display:inline-block;vertical-align:middle;margin-right:4px"></span><span id="syncTextMobile">Local</span></div>
     </div>
   </div>
-  <button class="btn-icon btn-ghost" onclick="openModal('settingsModal')">⚙</button>
+  <div class="row" style="gap:4px">
+    <button class="btn-icon btn-ghost" title="Sincronizar com GitHub" onclick="githubSave()">☁</button>
+    <button class="btn-icon btn-ghost" title="Configurar GitHub" onclick="openGhConfig()">⇅</button>
+    <button class="btn-icon btn-ghost" onclick="openModal('settingsModal')">⚙</button>
+  </div>
 </div>
 
 <div class="app">
@@ -250,7 +254,9 @@
     <button class="nav-item" data-page="previsao"><span class="ic">◐</span><span>Previsão 12m</span></button>
 
     <div class="sidebar-footer">
-      <div class="sync"><span class="dot"></span> Salvo localmente</div>
+      <div class="sync" id="syncBadge"><span class="dot"></span> <span id="syncText">Local</span></div>
+      <button class="nav-item" onclick="openGhConfig()"><span class="ic">⇅</span><span>Sincronizar GitHub</span></button>
+      <button class="nav-item" onclick="githubSave()"><span class="ic">☁</span><span>Salvar no GitHub</span></button>
       <button class="nav-item" onclick="openModal('settingsModal')"><span class="ic">⚙</span><span>Ajustes</span></button>
     </div>
   </aside>
@@ -539,6 +545,40 @@
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('settingsModal')">Fechar</button>
       <button class="btn btn-primary" onclick="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Sync Modal -->
+<div class="modal-overlay" id="ghModal" onclick="if(event.target===this)closeModal('ghModal')">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header"><h3>⇅ Sincronização GitHub</h3><button class="btn-icon btn-ghost" onclick="closeModal('ghModal')">✕</button></div>
+    <div class="modal-body">
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px">
+        Seus dados podem ser salvos em um repositório do GitHub como <code>dados.json</code>.
+        O token fica <strong>apenas neste navegador</strong> — nunca é enviado a outro servidor.
+      </p>
+      <div class="field"><label>Owner (usuário/org)</label><input id="ghOwner" placeholder="JoaoVuelma"></div>
+      <div class="field"><label>Repositório</label><input id="ghRepo" placeholder="controle-financeiro"></div>
+      <div class="row" style="gap:12px">
+        <div class="field" style="flex:1"><label>Branch</label><input id="ghBranch" placeholder="main"></div>
+        <div class="field" style="flex:2"><label>Arquivo</label><input id="ghFile" placeholder="dados.json"></div>
+      </div>
+      <div class="field">
+        <label>Personal Access Token (classic, escopo <code>repo</code>)</label>
+        <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+        <span style="font-size:11px;color:var(--muted)">github.com → Settings → Developer settings → Tokens (classic)</span>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+      <div class="row flex-wrap" style="gap:8px">
+        <button class="btn btn-primary" onclick="saveGhConfig()">Salvar configuração</button>
+        <button class="btn btn-outline" onclick="githubLoad()">⬇ Carregar do GitHub</button>
+        <button class="btn btn-outline" onclick="githubSave()">☁ Enviar ao GitHub</button>
+        <button class="btn btn-danger btn-sm" onclick="clearGhConfig()" style="margin-left:auto">Remover token</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ghModal')">Fechar</button>
     </div>
   </div>
 </div>
@@ -1016,15 +1056,128 @@ function drawBar(id,labels,data){
   });
 }
 
+/* ============== GITHUB SYNC ============== */
+const GH_CFG_KEY = 'meu-financeiro-gh-cfg';
+const GH_TOKEN_KEY = 'meu-financeiro-gh-token';
+let ghCfg = { owner:'', repo:'', branch:'main', file:'dados.json' };
+let ghSha = null;
+
+function loadGhCfg(){
+  try{ const s=localStorage.getItem(GH_CFG_KEY); if(s) ghCfg=Object.assign(ghCfg,JSON.parse(s)); }catch(e){}
+}
+function getGhToken(){ return localStorage.getItem(GH_TOKEN_KEY) || ''; }
+function openGhConfig(){
+  loadGhCfg();
+  document.getElementById('ghOwner').value = ghCfg.owner;
+  document.getElementById('ghRepo').value = ghCfg.repo;
+  document.getElementById('ghBranch').value = ghCfg.branch || 'main';
+  document.getElementById('ghFile').value = ghCfg.file || 'dados.json';
+  document.getElementById('ghToken').value = getGhToken();
+  openModal('ghModal');
+}
+function saveGhConfig(){
+  ghCfg = {
+    owner: document.getElementById('ghOwner').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+    file: document.getElementById('ghFile').value.trim() || 'dados.json',
+  };
+  const tk = document.getElementById('ghToken').value.trim();
+  if(!ghCfg.owner || !ghCfg.repo){ toast('Preencha owner e repositório'); return; }
+  if(!tk){ toast('Cole o token do GitHub'); return; }
+  localStorage.setItem(GH_CFG_KEY, JSON.stringify(ghCfg));
+  localStorage.setItem(GH_TOKEN_KEY, tk);
+  setSyncStatus('ok','Configurado');
+  toast('Configuração salva. Carregando dados...');
+  githubLoad();
+}
+function clearGhConfig(){
+  if(!confirm('Remover token e configuração do GitHub?')) return;
+  localStorage.removeItem(GH_TOKEN_KEY);
+  localStorage.removeItem(GH_CFG_KEY);
+  ghCfg = { owner:'', repo:'', branch:'main', file:'dados.json' };
+  ghSha = null;
+  setSyncStatus('idle','Local');
+  toast('Token removido');
+}
+function setSyncStatus(kind,label){
+  const map = { ok:'#10b981', syncing:'#f59e0b', error:'#ef4444', idle:'var(--muted)' };
+  ['syncText','syncTextMobile'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=label; });
+  document.querySelectorAll('#syncBadge .dot, #syncSubMobile .dot').forEach(d=>{ d.style.background=map[kind]||map.idle; });
+}
+async function githubLoad(){
+  loadGhCfg();
+  const token = getGhToken();
+  if(!token || !ghCfg.owner || !ghCfg.repo){ setSyncStatus('idle','Local'); return; }
+  setSyncStatus('syncing','Carregando...');
+  try{
+    const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/${encodeURIComponent(ghCfg.file)}?ref=${encodeURIComponent(ghCfg.branch)}&t=${Date.now()}`;
+    const res = await fetch(url,{ headers:{ Authorization:`token ${token}`, Accept:'application/vnd.github.v3+json' }});
+    if(res.status===404){ ghSha=null; setSyncStatus('ok','Pronto (novo)'); toast('Arquivo ainda não existe. Use "Enviar ao GitHub".'); return; }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json = await res.json();
+    ghSha = json.sha;
+    const b64 = json.content.replace(/\n/g,'');
+    const decoded = JSON.parse(decodeURIComponent(escape(atob(b64))));
+    state = Object.assign(state, {
+      receitas: decoded.receitas||[], fixas: decoded.fixas||[],
+      parcelas: decoded.parcelas||[], gastos: decoded.gastos||[],
+      config: Object.assign(state.config, decoded.config||{})
+    });
+    save(); render();
+    setSyncStatus('ok','Sincronizado');
+    toast('✓ Dados carregados do GitHub');
+    closeModal('ghModal');
+  }catch(err){
+    setSyncStatus('error','Erro');
+    toast('⚠ ' + err.message);
+  }
+}
+async function githubSave(){
+  loadGhCfg();
+  const token = getGhToken();
+  if(!token || !ghCfg.owner || !ghCfg.repo){ openGhConfig(); return; }
+  setSyncStatus('syncing','Salvando...');
+  try{
+    const payload = { _version:2, _savedAt:new Date().toISOString(), ...state };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
+    // Buscar SHA atual se não temos
+    if(!ghSha){
+      try{
+        const r = await fetch(`https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/${encodeURIComponent(ghCfg.file)}?ref=${encodeURIComponent(ghCfg.branch)}`,{ headers:{ Authorization:`token ${token}` }});
+        if(r.ok){ const j=await r.json(); ghSha=j.sha; }
+      }catch(e){}
+    }
+    const body = { message:`dados: ${new Date().toLocaleString('pt-BR')}`, content, branch:ghCfg.branch };
+    if(ghSha) body.sha = ghSha;
+    const res = await fetch(`https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/${encodeURIComponent(ghCfg.file)}`,{
+      method:'PUT',
+      headers:{ Authorization:`token ${token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.message||('HTTP '+res.status)); }
+    const j = await res.json();
+    ghSha = j.content.sha;
+    setSyncStatus('ok','Sincronizado');
+    toast('✓ Salvo no GitHub');
+  }catch(err){
+    setSyncStatus('error','Erro');
+    toast('⚠ ' + err.message);
+  }
+}
+
 /* ============== INIT ============== */
 document.addEventListener('DOMContentLoaded',()=>{
   load();
-  if(!state.receitas.length && !state.gastos.length){
-    // no-op: keep clean until user seeds
-  }
-  // Load settings on open
+  loadGhCfg();
   document.querySelectorAll('[onclick*="settingsModal"]').forEach(b=>b.addEventListener('click',openSettings));
   render();
+  if(getGhToken() && ghCfg.owner && ghCfg.repo){
+    setSyncStatus('syncing','Carregando...');
+    githubLoad();
+  } else {
+    setSyncStatus('idle','Local');
+  }
 });
 </script>
 </body>
