@@ -531,7 +531,11 @@
       <div class="field"><label>Meta de economia mensal (R$)</label><input id="sMeta" type="number" step="0.01"></div>
       <div class="field">
         <label>Categorias de gastos (separadas por vírgula)</label>
-        <input id="sCats" placeholder="Mercado, Transporte, Lazer...">
+        <input id="sCats" placeholder="Alimentação, Transporte, Lazer...">
+      </div>
+      <div class="field">
+        <label>Formas de pagamento (separadas por vírgula)</label>
+        <input id="sPags" placeholder="Nubank, Inter, Sicredi, Débito, Pix...">
       </div>
       <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
       <div class="row flex-wrap" style="gap:8px">
@@ -588,14 +592,19 @@
 <script>
 /* ============== STATE ============== */
 const LS_KEY = 'meu-financeiro-v2';
-const DEFAULT_CATS = ['Mercado','Transporte','Alimentação','Saúde','Lazer','Casa','Educação','Assinaturas','Outros'];
+// Ordem importa: índice+1 = ID legado
+const DEFAULT_CATS = ['Alimentação','Saúde','Educação','Assinaturas','Lazer','Transporte','Casa','Trabalho','Crédito','Compras','Diversos'];
+const DEFAULT_PAGS = ['Nubank','Inter','Sicredi','Cartão 4','Débito','Cartão 6','Cartão 7','Santander','Pix'];
+const LEGACY_CATS = {}; DEFAULT_CATS.forEach((c,i)=>LEGACY_CATS[i+1]=c);
+const LEGACY_PAGS = {}; DEFAULT_PAGS.forEach((p,i)=>LEGACY_PAGS[i+1]=p);
 let state = {
   receitas: [], fixas: [], parcelas: [], gastos: [],
-  config: { saldoInicial: 0, cdiAA: 10.5, metaMes: 500, categorias: [...DEFAULT_CATS] }
+  config: { saldoInicial: 0, cdiAA: 10.5, metaMes: 500,
+    categorias: [...DEFAULT_CATS], pagamentos: [...DEFAULT_PAGS], fechamentos: {} }
 };
 let currentMonth = new Date();
 let currentPage = 'dashboard';
-let selectedCat = 'Mercado';
+let selectedCat = DEFAULT_CATS[0];
 let charts = {};
 
 /* ============== UTILS ============== */
@@ -606,7 +615,7 @@ const ymKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}
 const parseYM = s => { if(!s)return null; const [y,m]=s.split('-').map(Number); return new Date(y,m-1,1); };
 
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-function load(){ try{ const s=localStorage.getItem(LS_KEY); if(s) state=Object.assign(state,JSON.parse(s)); }catch(e){} }
+function load(){ try{ const s=localStorage.getItem(LS_KEY); if(s){ state=Object.assign(state,JSON.parse(s)); state.config=Object.assign({categorias:[...DEFAULT_CATS],pagamentos:[...DEFAULT_PAGS],fechamentos:{}}, state.config||{}); if(!state.config.pagamentos||!state.config.pagamentos.length) state.config.pagamentos=[...DEFAULT_PAGS]; if(!state.config.categorias||!state.config.categorias.length) state.config.categorias=[...DEFAULT_CATS]; } }catch(e){} }
 
 function toast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
@@ -691,16 +700,21 @@ function saveReceita(){
 function delReceita(id){ if(confirm('Excluir?')){ state.receitas=state.receitas.filter(r=>r.id!==id); save(); render(); }}
 
 /* ============== FIXAS ============== */
+function fillSelect(id, options, current){
+  const sel=document.getElementById(id); if(!sel) return;
+  sel.innerHTML='';
+  options.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
+  if(current && !options.includes(current)){ const o=document.createElement('option'); o.value=current; o.textContent=current; sel.appendChild(o); }
+  sel.value = current || options[0] || '';
+}
 function openFixa(id){
   document.getElementById('fId').value=id||'';
   document.getElementById('fixaTitle').textContent = id?'Editar despesa':'Nova despesa fixa';
   const f = id ? state.fixas.find(x=>x.id===id) : {};
-  const sel = document.getElementById('fCat'); sel.innerHTML='';
-  state.config.categorias.forEach(c=>{ const o=document.createElement('option'); o.textContent=c; sel.appendChild(o); });
+  fillSelect('fCat', state.config.categorias, f.cat);
+  fillSelect('fPag', state.config.pagamentos, f.pag);
   document.getElementById('fDesc').value=f.desc||'';
   document.getElementById('fValor').value=f.valor||'';
-  sel.value = f.cat||state.config.categorias[0];
-  document.getElementById('fPag').value=f.pag||'Débito';
   openModal('fixaModal');
 }
 function saveFixa(){
@@ -722,9 +736,9 @@ function openParcela(id){
   document.getElementById('pId').value=id||'';
   document.getElementById('parcelaTitle').textContent = id?'Editar parcela':'Nova parcela';
   const p = id ? state.parcelas.find(x=>x.id===id) : {};
+  fillSelect('pCartao', state.config.pagamentos, p.cartao);
   document.getElementById('pDesc').value=p.desc||'';
   document.getElementById('pValor').value=p.valor||'';
-  document.getElementById('pCartao').value=p.cartao||'Nubank';
   document.getElementById('pIni').value=p.inicio||ymKey(currentMonth);
   document.getElementById('pTot').value=p.total||12;
   openModal('parcelaModal');
@@ -749,10 +763,10 @@ function openGasto(id){
   document.getElementById('gId').value=id||'';
   document.getElementById('gastoTitle').textContent = id?'Editar gasto':'Novo gasto';
   const g = id ? state.gastos.find(x=>x.id===id) : {};
+  fillSelect('gPag', state.config.pagamentos, g.pag);
   document.getElementById('gDesc').value=g.desc||'';
   document.getElementById('gValor').value=g.valor||'';
   document.getElementById('gData').value=g.data||new Date().toISOString().slice(0,10);
-  document.getElementById('gPag').value=g.pag||'Débito';
   selectedCat = g.cat||state.config.categorias[0];
   renderCatChips();
   openModal('gastoModal');
@@ -787,7 +801,8 @@ function openSettings(){
   document.getElementById('sSaldo').value=state.config.saldoInicial||0;
   document.getElementById('sCDI').value=state.config.cdiAA||10.5;
   document.getElementById('sMeta').value=state.config.metaMes||0;
-  document.getElementById('sCats').value=state.config.categorias.join(', ');
+  document.getElementById('sCats').value=(state.config.categorias||DEFAULT_CATS).join(', ');
+  document.getElementById('sPags').value=(state.config.pagamentos||DEFAULT_PAGS).join(', ');
   openModal('settingsModal');
 }
 function saveSettings(){
@@ -795,7 +810,9 @@ function saveSettings(){
   state.config.cdiAA = parseFloat(document.getElementById('sCDI').value)||0;
   state.config.metaMes = parseFloat(document.getElementById('sMeta').value)||0;
   const cats = document.getElementById('sCats').value.split(',').map(s=>s.trim()).filter(Boolean);
-  state.config.categorias = cats.length?cats:DEFAULT_CATS;
+  const pags = document.getElementById('sPags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  state.config.categorias = cats.length?cats:[...DEFAULT_CATS];
+  state.config.pagamentos = pags.length?pags:[...DEFAULT_PAGS];
   save(); closeModal('settingsModal'); render(); toast('Ajustes salvos');
 }
 function resetAll(){
@@ -811,8 +828,82 @@ function exportData(){
 function importData(ev){
   const f=ev.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=e=>{ try{ state=Object.assign(state,JSON.parse(e.target.result)); save(); render(); toast('Importado!'); }catch(err){toast('Arquivo inválido')} };
+  r.onload=e=>{ try{ applyImportedData(JSON.parse(e.target.result)); save(); render(); toast('✓ Importado ('+state.gastos.length+' gastos, '+state.fixas.length+' fixas, '+state.parcelas.length+' parcelas)'); }catch(err){ console.error(err); toast('⚠ Arquivo inválido'); } };
   r.readAsText(f);
+}
+
+/* ============== LEGACY IMPORT ============== */
+// Detecta e converte JSON antigo (cat/pag numéricos, chave "variaveis", "fechamentos")
+function mapCat(v){
+  if(v==null || v==='') return DEFAULT_CATS[0];
+  if(typeof v==='number') return LEGACY_CATS[v] || 'Diversos';
+  return String(v);
+}
+function mapPag(v){
+  if(v==null || v==='') return '';
+  if(typeof v==='number') return LEGACY_PAGS[v] || ('Cartão '+v);
+  return String(v);
+}
+function applyImportedData(d){
+  if(!d || typeof d!=='object') throw new Error('json inválido');
+  const isLegacy = Array.isArray(d.variaveis) || (d.gastos||[]).some(g=>typeof g.cat==='number');
+  const cfg = d.config || {};
+  const categorias = Array.isArray(cfg.categorias) && cfg.categorias.length ? cfg.categorias : [...DEFAULT_CATS];
+  const pagamentos = Array.isArray(cfg.pagamentos) && cfg.pagamentos.length ? cfg.pagamentos : [...DEFAULT_PAGS];
+
+  const receitas = (d.receitas||[]).map(r=>({
+    id: String(r.id||uid()),
+    desc: r.desc || '',
+    valor: Number(r.valor)||0,
+    inicio: (r.inicio||'').slice(0,7),  // yyyy-mm
+    fim: r.fim ? String(r.fim).slice(0,7) : null
+  }));
+
+  const fixas = (d.fixas||[]).map(f=>({
+    id: String(f.id||uid()),
+    desc: f.desc || '',
+    valor: Number(f.valor ?? f.limite)||0,
+    limite: Number(f.limite ?? f.valor)||0,
+    cat: mapCat(f.cat),
+    pag: mapPag(f.pag),
+    inicio: (f.inicio||'').slice(0,10),
+    fim: f.fim ? String(f.fim).slice(0,10) : ''
+  }));
+
+  const parcSrc = d.parcelas || d.variaveis || [];
+  const parcelas = parcSrc.map(p=>({
+    id: String(p.id||uid()),
+    desc: p.desc || p.nome || '',
+    valor: Number(p.valor ?? p.mensal)||0,      // valor da parcela mensal
+    cartao: mapPag(p.pag ?? p.cartao),
+    inicio: (p.inicio||'').slice(0,7),
+    total: Number(p.parcelas ?? p.total)||1,
+    faltam: p.faltam!=null ? Number(p.faltam) : null,
+    valorTotal: p.total!=null && p.mensal!=null ? Number(p.total) : null,
+    pago: !!p.pago
+  }));
+
+  const gastos = (d.gastos||[]).map(g=>({
+    id: String(g.id||uid()),
+    desc: g.desc || mapCat(g.cat),
+    valor: Number(g.valor)||0,
+    data: g.data,
+    cat: mapCat(g.cat),
+    pag: mapPag(g.pag)
+  }));
+
+  state.receitas = receitas;
+  state.fixas = fixas;
+  state.parcelas = parcelas;
+  state.gastos = gastos;
+  state.config = Object.assign({}, state.config, {
+    categorias, pagamentos,
+    fechamentos: d.fechamentos || cfg.fechamentos || state.config.fechamentos || {},
+    saldoInicial: cfg.saldoInicial ?? state.config.saldoInicial ?? 0,
+    cdiAA: cfg.cdiAA ?? state.config.cdiAA ?? 10.5,
+    metaMes: cfg.metaMes ?? state.config.metaMes ?? 0,
+  });
+  if(isLegacy) console.log('[import] JSON legado convertido');
 }
 
 /* ============== SEED ============== */
@@ -1119,11 +1210,7 @@ async function githubLoad(){
     ghSha = json.sha;
     const b64 = json.content.replace(/\n/g,'');
     const decoded = JSON.parse(decodeURIComponent(escape(atob(b64))));
-    state = Object.assign(state, {
-      receitas: decoded.receitas||[], fixas: decoded.fixas||[],
-      parcelas: decoded.parcelas||[], gastos: decoded.gastos||[],
-      config: Object.assign(state.config, decoded.config||{})
-    });
+    applyImportedData(decoded);
     save(); render();
     setSyncStatus('ok','Sincronizado');
     toast('✓ Dados carregados do GitHub');
