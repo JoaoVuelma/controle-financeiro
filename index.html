@@ -1,605 +1,1031 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1A1A18"  media="(prefers-color-scheme: dark)">
-  <title>Meu Financeiro</title>
-  
-  <!-- Dependências -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  
-  <!-- Estilos (Aponte para o arquivo CSS compilado do seu SCSS) -->
-  <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#064e3b" />
+<title>Meu Financeiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f6f8f7; --surface:#ffffff; --surface-2:#f1f5f4;
+    --border:#e5ebe9; --text:#0f1a17; --muted:#5d6b67;
+    --brand:#059669; --brand-600:#047857; --brand-50:#ecfdf5;
+    --danger:#dc2626; --warn:#d97706; --info:#0891b2;
+    --radius:16px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(15,26,23,.04), 0 8px 24px -12px rgba(15,26,23,.12);
+    --shadow-lg:0 10px 40px -10px rgba(4,120,87,.25);
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --display:'Outfit',var(--sans);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b1210; --surface:#111a17; --surface-2:#151f1c;
+      --border:#1e2c28; --text:#e7efec; --muted:#8a9994;
+      --brand:#10b981; --brand-600:#34d399; --brand-50:#052e24;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans); background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; min-height:100vh;
+    font-size:14px; line-height:1.5;
+  }
+  h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.02em;font-weight:700}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input,select,textarea{font-family:inherit;font-size:14px}
 
+  /* Layout */
+  .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+  .sidebar{
+    background:var(--surface); border-right:1px solid var(--border);
+    padding:24px 16px; position:sticky; top:0; height:100vh; overflow-y:auto;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;padding:4px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+  .brand-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-600));display:grid;place-items:center;color:#fff;font-weight:800;font-family:var(--display)}
+  .brand-name{font-family:var(--display);font-weight:700;font-size:16px}
+  .brand-sub{font-size:11px;color:var(--muted)}
+  .nav-item{
+    display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;
+    color:var(--muted);font-weight:500;transition:.15s;text-align:left;width:100%
+  }
+  .nav-item:hover{background:var(--surface-2);color:var(--text)}
+  .nav-item.active{background:var(--brand-50);color:var(--brand-600);font-weight:600}
+  .nav-item .ic{font-size:16px;width:20px;text-align:center}
+  .sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+  .sidebar-footer .sync{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:12px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px var(--brand-50)}
+
+  .main{padding:24px 32px 48px;max-width:100%;overflow-x:hidden}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+  .topbar h1{font-size:26px}
+  .topbar .subtitle{color:var(--muted);font-size:13px;margin-top:2px}
+  .month-picker{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:6px}
+  .month-picker button{padding:6px 10px;border-radius:8px;color:var(--muted)}
+  .month-picker button:hover{background:var(--surface-2);color:var(--text)}
+  .month-picker .label{font-weight:600;font-family:var(--display);padding:0 8px;min-width:140px;text-align:center}
+
+  /* Cards & UI */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .card-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .card-title h3{font-size:15px}
+  .card-title .muted{font-size:12px;color:var(--muted)}
+
+  .grid{display:grid;gap:16px}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand)}
+  .kpi.danger::before{background:var(--danger)}
+  .kpi.warn::before{background:var(--warn)}
+  .kpi.info::before{background:var(--info)}
+  .kpi-label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+  .kpi-value{font-family:var(--display);font-size:24px;font-weight:700;margin-top:8px;letter-spacing:-.02em}
+  .kpi-hint{font-size:12px;color:var(--muted);margin-top:4px}
+  .kpi-hint .up{color:var(--brand)} .kpi-hint .down{color:var(--danger)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;font-weight:600;font-size:13px;transition:.15s;border:1px solid transparent;white-space:nowrap}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-600)}
+  .btn-ghost{background:var(--surface-2);color:var(--text)}
+  .btn-ghost:hover{background:var(--border)}
+  .btn-outline{border-color:var(--border);color:var(--text);background:var(--surface)}
+  .btn-outline:hover{background:var(--surface-2)}
+  .btn-danger{background:transparent;color:var(--danger)}
+  .btn-danger:hover{background:#fee2e2}
+  .btn-sm{padding:6px 10px;font-size:12px}
+  .btn-icon{width:36px;height:36px;padding:0;justify-content:center;border-radius:10px}
+
+  input,select,textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;
+    background:var(--surface);color:var(--text);outline:none;transition:.15s
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-50)}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field{margin-bottom:14px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:12px 14px;text-align:left;font-size:13px;border-bottom:1px solid var(--border)}
+  th{font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:var(--surface-2)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--surface-2)}
+  .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
+
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:var(--surface-2);color:var(--muted)}
+  .badge-success{background:var(--brand-50);color:var(--brand-600)}
+  .badge-danger{background:#fee2e2;color:var(--danger)}
+  .badge-warn{background:#fef3c7;color:var(--warn)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .chip{padding:6px 12px;border-radius:20px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--brand)}
+  .chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+  .tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;margin-bottom:16px;width:fit-content}
+  .tab{padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted)}
+  .tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+
+  .empty{text-align:center;padding:40px 20px;color:var(--muted)}
+  .empty-ic{font-size:40px;margin-bottom:12px;opacity:.4}
+
+  /* Progress */
+  .progress{height:6px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+  .progress-bar{height:100%;background:var(--brand);border-radius:6px;transition:.3s}
+  .progress-bar.over{background:var(--danger)}
+  .progress-bar.warn{background:var(--warn)}
+
+  /* Chart wrap */
+  .chart-wrap{position:relative;height:280px}
+  .chart-wrap.sm{height:200px}
+
+  /* Modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;animation:fade .2s}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--surface);border-radius:var(--radius);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:slide .25s}
+  .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .modal-header h3{font-size:17px}
+  .modal-body{padding:24px}
+  .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes slide{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  /* Toast */
+  #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:200;opacity:0;pointer-events:none;transition:.25s;box-shadow:var(--shadow-lg)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
+
+  /* FAB */
+  .fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;font-size:24px;box-shadow:var(--shadow-lg);z-index:50;display:grid;place-items:center;transition:.2s}
+  .fab:hover{transform:scale(1.05);background:var(--brand-600)}
+
+  /* Mobile nav */
+  .mobile-header,.mobile-nav{display:none}
+  .page{display:none}
+  .page.active{display:block;animation:fade .2s}
+
+  .row{display:flex;align-items:center;gap:12px}
+  .between{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .flex-wrap{flex-wrap:wrap}
+
+  /* Alerts */
+  .alert{padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);font-size:13px;display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+  .alert-danger{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+  .alert-warn{background:#fffbeb;border-color:#fde68a;color:#92400e}
+  .alert-success{background:var(--brand-50);border-color:#a7f3d0;color:var(--brand-600)}
+
+  /* Responsive */
+  @media (max-width: 900px){
+    .grid-4{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:1fr}
+    .grid-2{grid-template-columns:1fr}
+  }
+  @media (max-width: 768px){
+    .app{grid-template-columns:1fr}
+    .sidebar{display:none}
+    .mobile-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:40;backdrop-filter:blur(12px)
+    }
+    .mobile-header .brand{border:none;padding:0;margin:0}
+    .mobile-nav{
+      display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--surface);
+      border-top:1px solid var(--border);z-index:40;padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+      justify-content:space-around
+    }
+    .mobile-nav .nav-item{flex-direction:column;padding:6px 4px;gap:2px;font-size:10px;min-width:0}
+    .mobile-nav .nav-item .ic{font-size:18px}
+    .mobile-nav .nav-item span:not(.ic){font-size:10px}
+    .main{padding:16px 16px 100px}
+    .topbar h1{font-size:22px}
+    .fab{bottom:80px}
+    .form-row{grid-template-columns:1fr}
+    .kpi-value{font-size:20px}
+    .modal{max-width:100%;border-radius:16px 16px 0 0;margin-top:auto;max-height:92vh}
+    .modal-overlay{align-items:flex-end}
+  }
+  @media (max-width:480px){
+    .grid-4{grid-template-columns:1fr 1fr}
+    .month-picker .label{min-width:110px;font-size:13px}
+  }
+</style>
+</head>
 <body>
 
-  <!-- ================================================================
-       HEADER
-  ================================================================ -->
-  <header>
-    <div class="logo">💰 <em>Meu</em>Financeiro</div>
-    <div class="header-actions">
-      <span id="sync-status" class="sync-status">
-        <span class="sync-dot" id="sync-dot"></span>
-        <span id="sync-label">Carregando...</span>
-      </span>
-      <button class="btn btn-primary btn-sm" id="btn-salvar" onclick="githubSave()" style="display:none">
-        ☁ Salvar
-      </button>
-      <button class="btn btn-ghost btn-sm" onclick="showConfig()" title="Configurar token GitHub">⚙</button>
+<!-- Mobile Header -->
+<div class="mobile-header">
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div>
+      <div class="brand-name">Meu Financeiro</div>
+      <div class="brand-sub"><span class="dot" style="display:inline-block;vertical-align:middle;margin-right:4px"></span>Sincronizado</div>
     </div>
-  </header>
+  </div>
+  <button class="btn-icon btn-ghost" onclick="openModal('settingsModal')">⚙</button>
+</div>
 
-  <!-- ================================================================
-       NAVEGAÇÃO
-  ================================================================ -->
-  <nav id="main-nav">
-    <button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
-    <button onclick="showPage('receitas',this)">Receitas</button>
-    <button onclick="showPage('despesas',this)">Despesas</button>
-    <button onclick="showPage('parcelas',this)">Parcelas</button>
-    <button onclick="showPage('gastos',this)">Gastos</button>
-    <button onclick="showPage('economias',this)">Economias</button>
-    <button onclick="showPage('previsao',this)">Previsão</button>
-  </nav>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">M</div>
+      <div>
+        <div class="brand-name">Meu Financeiro</div>
+        <div class="brand-sub">Controle pessoal</div>
+      </div>
+    </div>
+    <button class="nav-item active" data-page="dashboard"><span class="ic">◈</span><span>Dashboard</span></button>
+    <button class="nav-item" data-page="receitas"><span class="ic">↑</span><span>Receitas</span></button>
+    <button class="nav-item" data-page="despesas"><span class="ic">↓</span><span>Despesas fixas</span></button>
+    <button class="nav-item" data-page="parcelas"><span class="ic">◱</span><span>Parcelas</span></button>
+    <button class="nav-item" data-page="gastos"><span class="ic">✎</span><span>Gastos do mês</span></button>
+    <button class="nav-item" data-page="economias"><span class="ic">◆</span><span>Economias</span></button>
+    <button class="nav-item" data-page="previsao"><span class="ic">◐</span><span>Previsão 12m</span></button>
 
-  <!-- ================================================================
-       CONTEÚDO PRINCIPAL
-  ================================================================ -->
-  <main>
+    <div class="sidebar-footer">
+      <div class="sync"><span class="dot"></span> Salvo localmente</div>
+      <button class="nav-item" onclick="openModal('settingsModal')"><span class="ic">⚙</span><span>Ajustes</span></button>
+    </div>
+  </aside>
 
-    <!-- ── DASHBOARD ── -->
-    <div id="page-dashboard" class="page active">
-      <div class="page-head">
-        <div class="page-title">Dashboard</div>
-        <div class="month-sel">
-          <label>Mês</label>
-          <select id="dash-mes" onchange="renderDash()" style="width:auto">
-            <option value="0">Janeiro</option>
-            <option value="1">Fevereiro</option>
-            <option value="2">Março</option>   
-            <option value="3">Abril</option>
-            <option value="4">Maio</option>
-            <option value="5">Junho</option>
-            <option value="6">Julho</option>
-            <option value="7">Agosto</option>
-            <option value="8">Setembro</option>
-            <option value="9">Outubro</option>
-            <option value="10">Novembro</option>
-            <option value="11">Dezembro</option>
-          </select>
-          <select id="dash-ano" onchange="renderDash()" style="width:auto">
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
-            <option value="2027">2027</option>
-          </select>
+  <!-- Main -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <div class="subtitle" id="dashSubtitle">Resumo do mês</div>
+        </div>
+        <div class="month-picker">
+          <button onclick="changeMonth(-1)">‹</button>
+          <span class="label" id="monthLabel">—</span>
+          <button onclick="changeMonth(1)">›</button>
         </div>
       </div>
 
-      <div id="dash-alerts"></div>
-      <div class="metrics" id="dash-metrics"></div>
+      <div id="dashAlerts"></div>
 
-      <div class="two-col">
+      <div class="grid grid-4" style="margin-bottom:16px">
+        <div class="kpi info">
+          <div class="kpi-label">Receitas</div>
+          <div class="kpi-value" id="kpiReceitas">R$ 0</div>
+          <div class="kpi-hint" id="kpiReceitasHint">—</div>
+        </div>
+        <div class="kpi danger">
+          <div class="kpi-label">Despesas</div>
+          <div class="kpi-value" id="kpiDespesas">R$ 0</div>
+          <div class="kpi-hint" id="kpiDespesasHint">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Sobra</div>
+          <div class="kpi-value" id="kpiSobra">R$ 0</div>
+          <div class="kpi-hint" id="kpiSobraHint">—</div>
+        </div>
+        <div class="kpi warn">
+          <div class="kpi-label">% Economizado</div>
+          <div class="kpi-value" id="kpiPct">0%</div>
+          <div class="kpi-hint">Sobre a receita</div>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="margin-bottom:16px">
         <div class="card">
-          <div class="card-title">Gastos por categoria</div>
-          <div class="chart-wrap" id="chart-cat-wrap"><canvas id="chartCat"></canvas></div>
+          <div class="card-title"><h3>Gastos por categoria</h3><span class="muted" id="dashCatTotal"></span></div>
+          <div class="chart-wrap"><canvas id="chartCategorias"></canvas></div>
         </div>
         <div class="card">
-          <div class="card-title">Sobra acumulada no ano</div>
-          <div class="chart-wrap"><canvas id="chartSaldo"></canvas></div>
+          <div class="card-title"><h3>Sobra acumulada no ano</h3></div>
+          <div class="chart-wrap"><canvas id="chartSobra"></canvas></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">Por forma de pagamento</div>
-        <div class="chart-wrap" style="height:180px"><canvas id="chartPay"></canvas></div>
+        <div class="card-title"><h3>Formas de pagamento</h3></div>
+        <div class="chart-wrap sm"><canvas id="chartPagamentos"></canvas></div>
       </div>
-    </div><!-- /dashboard -->
+    </section>
 
-    <!-- ── RECEITAS ── -->
-    <div id="page-receitas" class="page">
-      <div class="page-head">
-        <div class="page-title">Receitas</div>
-        <button class="btn btn-primary btn-sm" onclick="openFormReceita()">+ Nova receita</button>
+    <!-- RECEITAS -->
+    <section class="page" id="page-receitas">
+      <div class="topbar">
+        <div><h1>Receitas</h1><div class="subtitle">Fontes de renda mensal</div></div>
+        <button class="btn btn-primary" onclick="openReceita()">+ Nova receita</button>
       </div>
-
-      <div class="form-section" id="form-receita" style="display:none">
-        <div class="form-section-title" id="form-receita-title">Nova receita</div>
-        <div class="form-grid">
-          <div class="field">Descrição   <input type="text"   id="r-desc"  placeholder="ex: Salário"></div>
-          <div class="field">Valor (R$)  <input type="number" id="r-valor" placeholder="0,00" step="0.01"></div>
-        </div>
-        <div class="form-grid">
-          <div class="field">Data início        <input type="date" id="r-inicio"></div>
-          <div class="field">Data fim prevista  <input type="date" id="r-fim"></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-primary" onclick="saveReceita()">Salvar</button>
-          <button class="btn btn-ghost"   onclick="closeForm('form-receita')">Cancelar</button>
-        </div>
-        <input type="hidden" id="r-id">
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Descrição</th><th>Valor</th><th>Início</th><th>Fim</th><th></th></tr></thead>
+          <tbody id="tbReceitas"></tbody>
+        </table></div>
       </div>
+    </section>
 
+    <!-- DESPESAS FIXAS -->
+    <section class="page" id="page-despesas">
+      <div class="topbar">
+        <div><h1>Despesas fixas</h1><div class="subtitle">Contas recorrentes</div></div>
+        <button class="btn btn-primary" onclick="openFixa()">+ Nova despesa</button>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Pagamento</th><th></th></tr></thead>
+          <tbody id="tbFixas"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- PARCELAS -->
+    <section class="page" id="page-parcelas">
+      <div class="topbar">
+        <div><h1>Parcelas</h1><div class="subtitle">Compromissos futuros</div></div>
+        <button class="btn btn-primary" onclick="openParcela()">+ Nova parcela</button>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div class="kpi info"><div class="kpi-label">Total ativo</div><div class="kpi-value" id="parcTotal">R$ 0</div></div>
+        <div class="kpi warn"><div class="kpi-label">Comprometido no mês</div><div class="kpi-value" id="parcMes">R$ 0</div></div>
+        <div class="kpi"><div class="kpi-label">Itens ativos</div><div class="kpi-value" id="parcQtd">0</div></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Descrição</th><th>Cartão</th><th>Valor/mês</th><th>Progresso</th><th></th></tr></thead>
+          <tbody id="tbParcelas"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- GASTOS -->
+    <section class="page" id="page-gastos">
+      <div class="topbar">
+        <div><h1>Gastos do mês</h1><div class="subtitle" id="gastosSubtitle">Lançamentos variáveis</div></div>
+        <button class="btn btn-primary" onclick="openGasto()">+ Novo gasto</button>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:16px" id="orcamentoCards"></div>
       <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Descrição</th><th>Valor</th><th>Início</th><th>Fim</th><th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-receitas"></tbody>
-          </table>
-        </div>
+        <div class="card-title"><h3>Lançamentos</h3><span class="muted" id="gastosTotal"></span></div>
+        <div id="listaGastos"></div>
       </div>
-    </div><!-- /receitas -->
+    </section>
 
-    <!-- ── DESPESAS ── -->
-    <div id="page-despesas" class="page">
-      <div class="page-head"><div class="page-title">Despesas</div></div>
-
-      <div class="inner-tabs">
-        <button class="inner-tab active" onclick="switchTab('fixas',this)">Despesas Fixas</button>
-        <button class="inner-tab"        onclick="switchTab('variaveis',this)">Variáveis / Parceladas</button>
+    <!-- ECONOMIAS -->
+    <section class="page" id="page-economias">
+      <div class="topbar">
+        <div><h1>Economias</h1><div class="subtitle">Poupança e patrimônio</div></div>
+        <button class="btn btn-outline" onclick="openModal('settingsModal')">⚙ Configurar</button>
       </div>
-
-      <!-- Despesas Fixas -->
-      <div id="tab-fixas">
-        <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-          <button class="btn btn-primary btn-sm" onclick="openFormFixa()">+ Nova despesa fixa</button>
-        </div>
-
-        <div class="form-section" id="form-fixa" style="display:none">
-          <div class="form-section-title" id="form-fixa-title">Nova despesa fixa</div>
-          <div class="form-grid">
-            <div class="field">Descrição <input type="text" id="f-desc"></div>
-            <div class="field">Categoria
-              <select id="f-cat">
-                <option value="1">Alimentação</option>
-                <option value="2">Saúde</option>
-                <option value="3">Educação</option>
-                <option value="4">Serviços</option>
-                <option value="5">Lazer</option>
-                <option value="6">Transporte</option>
-                <option value="7">Investimentos</option>
-                <option value="8">Moradia</option>
-                <option value="9">Crédito</option>
-                <option value="10">Compra</option>
-                <option value="11">Outros</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-grid g3">
-            <div class="field">Limite (R$)  <input type="number" id="f-limite" step="0.01"></div>
-            <div class="field">Gasto (R$)   <input type="number" id="f-valor"  step="0.01"></div>
-            <div class="field">Pagamento
-              <select id="f-pag">
-                <option value="">Sem pagamento fixo (Soma os lançamentos)</option>
-                <option value="1">Cartão Sicredi</option>
-                <option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option>
-                <option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option>
-                <option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option>
-                <option value="8">Conta Corrente M Pago</option>
-                <option value="9">Cartão Santander</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-grid">
-            <div class="field">Data início            <input type="date" id="f-inicio"></div>
-            <div class="field">Data fim (opcional)   <input type="date" id="f-fim"></div>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="saveFixa()">Salvar</button>
-            <button class="btn btn-ghost"   onclick="closeForm('form-fixa')">Cancelar</button>
-          </div>
-          <input type="hidden" id="f-id">
-        </div>
-
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Descrição</th><th>Categoria</th><th>Limite</th><th>Gasto</th>
-                  <th>Status</th><th>Pagamento</th><th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-fixas"></tbody>
-            </table>
-          </div>
-        </div>
-      </div><!-- /tab-fixas -->
-
-      <!-- Variáveis / Parceladas -->
-      <div id="tab-variaveis" style="display:none">
-        <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-          <button class="btn btn-primary btn-sm" onclick="openFormVariavel()">+ Nova compra / parcela</button>
-        </div>
-
-        <div class="form-section" id="form-variavel" style="display:none">
-          <div class="form-section-title" id="form-variavel-title">Nova compra / parcela</div>
-          <div class="form-grid">
-            <div class="field">Nome <input type="text" id="v-nome"></div>
-            <div class="field">Categoria
-              <select id="v-cat">
-                <option value="1">Alimentação</option>
-                <option value="2">Saúde</option>
-                <option value="3">Educação</option>
-                <option value="4">Serviços</option>
-                <option value="5">Lazer</option>
-                <option value="6">Transporte</option>
-                <option value="7">Investimentos</option>
-                <option value="8">Moradia</option>
-                <option value="9">Crédito</option>
-                <option value="10">Compra</option>
-                <option value="11">Outros</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-grid g3">
-            <div class="field">Valor total (R$)   <input type="number" id="v-total"    oninput="calcParcela()" step="0.01"></div>
-            <div class="field">Nº parcelas        <input type="number" id="v-parcelas" oninput="calcParcela()" min="1"></div>
-            <div class="field">Valor mensal (R$)  <input type="number" id="v-mensal"   step="0.01" placeholder="auto"></div>
-          </div>
-          <div class="form-grid g3">
-            <div class="field">Parcelas restantes <input type="number" id="v-faltam" min="0"></div>
-            <div class="field">Pagamento
-              <select id="v-pag">
-                <option value="1">Cartão Sicredi</option>
-                <option value="2">Cartão M Pago</option>
-                <option value="3">Cartão Banri</option>
-                <option value="4">Dinheiro Vivo</option>
-                <option value="5">Pix</option>
-                <option value="6">Poupança</option>
-                <option value="7">Conta Corrente Banri</option>
-                <option value="8">Conta Corrente M Pago</option>
-                <option value="9">Cartão Santander</option>
-              </select>
-            </div>
-            <div class="field">Data início (1ª parcela) <input type="date" id="v-inicio"></div>
-          </div>
-          <label class="checkbox-row" style="margin-bottom:12px">
-            <input type="checkbox" id="v-pago"> Parcela atual já paga
-          </label>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="saveVariavel()">Salvar</button>
-            <button class="btn btn-ghost"   onclick="closeForm('form-variavel')">Cancelar</button>
-          </div>
-          <input type="hidden" id="v-id">
-        </div>
-
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Categoria</th>
-                  <th>Total</th>
-                  <th>Mensal</th>
-                  <th>Parcelas</th>
-                  <th>Faltam</th>
-                  <th>Pagamento</th>
-                  <th>Pago</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-variaveis"></tbody>
-            </table>
-          </div>
-        </div>
-      </div><!-- /tab-variaveis -->
-
-    </div><!-- /despesas -->
-
-    <!-- ── PARCELAS ── -->
-    <div id="page-parcelas" class="page">
-      <div class="page-head"><div class="page-title">Parcelas</div></div>
-      <div class="metrics" id="metrics-parcelas" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
-
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-label">Saldo atual</div><div class="kpi-value" id="ecoSaldo">R$ 0</div><div class="kpi-hint" id="ecoSaldoHint">—</div></div>
+        <div class="kpi info"><div class="kpi-label">Rendimento mensal</div><div class="kpi-value" id="ecoRend">R$ 0</div><div class="kpi-hint" id="ecoRendHint">—</div></div>
+        <div class="kpi warn"><div class="kpi-label">Meta anual</div><div class="kpi-value" id="ecoMeta">R$ 0</div><div class="kpi-hint" id="ecoMetaHint">—</div></div>
+      </div>
       <div class="card">
-        <div class="card-title">Parcelas em aberto</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Pagamento</th>
-                <th>Mensal</th>
-                <th>Faltam</th>
-                <th>Restante</th>
-                <th>Término</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-parcelas"></tbody>
-          </table>
-        </div>
+        <div class="card-title"><h3>Projeção 12 meses</h3><span class="muted" id="ecoRateInfo"></span></div>
+        <div class="chart-wrap"><canvas id="chartEconomias"></canvas></div>
       </div>
+    </section>
 
-      <div class="two-col">
-        <div class="card">
-          <div class="card-title">Comprometimento por cartão (mês)</div>
-          <div class="chart-wrap"><canvas id="chartCartoes"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Liberação por mês (parcelas que terminam)</div>
-          <div class="chart-wrap"><canvas id="chartLiberacao"></canvas></div>
-        </div>
+    <!-- PREVISÃO -->
+    <section class="page" id="page-previsao">
+      <div class="topbar">
+        <div><h1>Previsão 12 meses</h1><div class="subtitle">Cenário automático baseado no seu histórico</div></div>
       </div>
-    </div><!-- /parcelas -->
-
-    <!-- ── ECONOMIAS ── -->
-    <div id="page-economias" class="page">
-      <div class="page-head">
-        <div class="page-title">Economias</div>
-        <div class="month-sel">
-          <label>Ano</label>
-          <select id="eco-ano" onchange="renderEconomias()" style="width:auto">
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
-            <option value="2027">2027</option>
-          </select>
-        </div>
+      <div id="previsaoAlerts"></div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Mês</th><th>Receitas</th><th>Despesas</th><th>Sobra</th><th>Status</th></tr></thead>
+          <tbody id="tbPrevisao"></tbody>
+        </table></div>
       </div>
-
-      <!-- Configuração -->
-      <div class="card" id="eco-config-card">
-        <div class="card-title">Configuração da poupança</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
-          <div class="field">
-            Taxa anual (% CDI)
-            <input type="number" id="eco-taxa-cdi" value="120" step="1" oninput="renderEconomias()">
-            <span style="font-size:11px;color:var(--text-t)">Ex: 120 = 120% do CDI ≈ 10,5% a.a.</span>
-          </div>
-          <div class="field">
-            Saldo inicial da poupança (R$)
-            <input type="number" id="eco-saldo-inicial" value="0" step="100" oninput="renderEconomias()">
-            <span style="font-size:11px;color:var(--text-t)">Informe se já tem dinheiro guardado</span>
-          </div>
-          <div style="padding:10px;background:var(--green-light);border-radius:var(--radius-sm);font-size:12px;color:var(--green-dark)">
-            <strong>Depósito automático</strong><br>
-            O valor depositado em cada mês é lido das despesas fixas com pagamento <em>Poupança</em> — respeitando o período de vigência de cada uma.
-          </div>
-        </div>
-      </div>
-
-      <div class="metrics" id="eco-metrics" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
-
-      <div class="card">
-        <div class="card-title">Caixa acumulado + poupança — mês a mês</div>
-        <div class="chart-wrap" style="height:260px"><canvas id="chartEcoBar"></canvas></div>
-      </div>
-
-      <div class="two-col">
-        <div class="card">
-          <div class="card-title">Crescimento do patrimônio</div>
-          <div class="chart-wrap"><canvas id="chartEcoPatrimonio"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Rendimento mensal da poupança</div>
-          <div class="chart-wrap"><canvas id="chartEcoRendimento"></canvas></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Detalhamento mensal</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Mês</th>
-                <th>Sobra do Mês</th>
-                <th>Depósito</th>
-                <th>Acum. Poupança</th>
-                <th>Patrimônio Total</th>
-                <th>Rendimento</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-economias"></tbody>
-          </table>
-        </div>
-      </div>
-    </div><!-- /economias -->
-
-    <!-- ── PREVISÃO ── -->
-    <div id="page-previsao" class="page">
-      <div class="page-head"><div class="page-title">Previsão Financeira</div></div>
-
-      <div class="card">
-        <div class="card-title">Sobra acumulada — próximos 12 meses</div>
-        <div class="chart-wrap" style="height:260px"><canvas id="chartPrevisao"></canvas></div>
-      </div>
-
-      <div class="two-col">
-        <div class="card">
-          <div class="card-title">Indicadores</div>
-          <div id="div-indicadores"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Análise automática</div>
-          <div id="div-analise"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Receita vs. despesas — mês a mês</div>
-        <div class="chart-wrap" style="height:240px"><canvas id="chartRvsD"></canvas></div>
-      </div>
-    </div><!-- /previsao -->
-
-    <!-- ── GASTOS ── -->
-    <div id="page-gastos" class="page">
-      <div class="page-head">
-        <div class="page-title">Gastos do Mês</div>
-        <div class="month-sel">
-          <label>Mês</label>
-          <select id="g-mes" onchange="renderGastos()" style="width:auto">
-            <option value="0">Janeiro</option>
-            <option value="1">Fevereiro</option>
-            <option value="2">Março</option>
-            <option value="3">Abril</option>
-            <option value="4">Maio</option>
-            <option value="5">Junho</option>
-            <option value="6">Julho</option>
-            <option value="7">Agosto</option>
-            <option value="8">Setembro</option>
-            <option value="9">Outubro</option>
-            <option value="10">Novembro</option>
-            <option value="11">Dezembro</option>
-          </select>
-          <select id="g-ano" onchange="renderGastos()" style="width:auto">
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
-            <option value="2027">2027</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Resumo do mês -->
-      <div class="metrics" id="g-metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
-
-      <!-- Cards de orçamento por categoria -->
-      <div id="g-budget-cards"></div>
-
-      <!-- Lista de lançamentos -->
-      <div class="card">
-        <div class="card-title" id="g-lista-title">Lançamentos do mês</div>
-        <div id="g-lista-empty" class="empty-state" style="display:none">
-          <div class="es-icon">📝</div>
-          <p>Nenhum gasto lançado ainda</p>
-        </div>
-        <div id="g-lista"></div>
-      </div>
-    </div><!-- /gastos -->
-
-    <!-- Botão + flutuante para lançar gasto (visível só na aba Gastos) -->
-    <button id="btn-novo-gasto" onclick="abrirModalGasto()" aria-label="Lançar novo gasto">＋</button>
+    </section>
 
   </main>
+</div>
 
-  <!-- ================================================================
-       MODAL — Lançar gasto
-  ================================================================ -->
-  <div id="modal-gasto" class="modal-overlay" style="display:none"
-       onclick="if(event.target===this) fecharModalGasto()">
-    <div class="modal-box" style="max-width:440px">
-      <div class="modal-title" id="modal-gasto-title">📝 Lançar gasto</div>
-      <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+  <button class="nav-item active" data-page="dashboard"><span class="ic">◈</span><span>Início</span></button>
+  <button class="nav-item" data-page="receitas"><span class="ic">↑</span><span>Receitas</span></button>
+  <button class="nav-item" data-page="gastos"><span class="ic">✎</span><span>Gastos</span></button>
+  <button class="nav-item" data-page="economias"><span class="ic">◆</span><span>Economias</span></button>
+  <button class="nav-item" data-page="previsao"><span class="ic">◐</span><span>Futuro</span></button>
+</nav>
 
-        <!-- Valor — destaque grande, primeiro campo -->
-        <div class="field">
-          Valor (R$)
-          <input type="number" id="mg-valor" placeholder="0,00" step="0.01"
-                 style="font-size:24px;font-weight:700;text-align:center;padding:14px"
-                 inputmode="decimal">
-        </div>
+<!-- FAB -->
+<button class="fab" onclick="openGasto()" title="Novo gasto">+</button>
 
-        <!-- Descrição -->
-        <div class="field">
-          Descrição <span style="color:var(--text-t);font-weight:400">(opcional)</span>
-          <input type="text" id="mg-desc" placeholder="ex: Remédio, café, gasolina...">
-        </div>
-
-        <!-- Categoria — grade de chips -->
-        <div class="field">
-          Categoria
-          <div id="mg-cat-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
-          <input type="hidden" id="mg-cat">
-        </div>
-
-        <!-- Pagamento -->
-        <div class="field">
-          Pagamento
-          <select id="mg-pag">
-            <option value="1">Cartão Sicredi</option>
-            <option value="2">Cartão M Pago</option>
-            <option value="3">Cartão Banri</option>
-            <option value="4">Dinheiro Vivo</option>
-            <option value="5">Pix</option>
-            <option value="7">Conta Corrente Banri</option>
-            <option value="8">Conta Corrente M Pago</option>
-            <option value="9">Cartão Santander</option>
-          </select>
-        </div>
-
-        <!-- Data -->
-        <div class="field">
-          Data
-          <input type="date" id="mg-data">
-        </div>
-
+<!-- MODAL: Receita -->
+<div class="modal-overlay" id="receitaModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="receitaTitle">Nova receita</h3><button class="btn-icon btn-ghost" onclick="closeModal('receitaModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="rId">
+      <div class="field"><label>Descrição</label><input id="rDesc" placeholder="Salário, freela..."></div>
+      <div class="form-row">
+        <div class="field"><label>Valor (R$)</label><input id="rValor" type="number" step="0.01" placeholder="0,00"></div>
+        <div class="field"><label>Data início</label><input id="rIni" type="month"></div>
       </div>
-      <div class="modal-actions" style="margin-top:20px">
-        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="salvarGasto()">
-          Salvar gasto
-        </button>
-        <button class="btn btn-ghost" onclick="fecharModalGasto()">Cancelar</button>
-      </div>
-      <input type="hidden" id="mg-id">
+      <div class="field"><label>Data fim (opcional)</label><input id="rFim" type="month"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('receitaModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveReceita()">Salvar</button>
     </div>
   </div>
+</div>
 
-  <!-- ================================================================
-       MODAL — Configuração GitHub
-  ================================================================ -->
-  <div id="modal-config" class="modal-overlay" style="display:none"
-       onclick="if(event.target===this) hideConfig()">
-    <div class="modal-box">
-      <div class="modal-title">⚙ Sincronização com GitHub</div>
-      <div class="modal-sub">
-        Seus dados são salvos diretamente no seu repositório GitHub.
-        O token fica guardado <strong>só neste navegador</strong> — nunca é enviado para
-        nenhum servidor além do GitHub.
-      </div>
-
-      <div style="margin-bottom:16px">
-        <div class="step-item">
-          <span class="step-num">1</span>
-          <span>Acesse <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></span>
-        </div>
-        <div class="step-item">
-          <span class="step-num">2</span>
-          <span>Clique <strong>Generate new token (classic)</strong>, marque a permissão <strong>repo</strong></span>
-        </div>
-        <div class="step-item">
-          <span class="step-num">3</span>
-          <span>Copie o token gerado e cole abaixo</span>
+<!-- MODAL: Fixa -->
+<div class="modal-overlay" id="fixaModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="fixaTitle">Nova despesa fixa</h3><button class="btn-icon btn-ghost" onclick="closeModal('fixaModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="fId">
+      <div class="field"><label>Descrição</label><input id="fDesc" placeholder="Aluguel, internet..."></div>
+      <div class="form-row">
+        <div class="field"><label>Valor (R$)</label><input id="fValor" type="number" step="0.01"></div>
+        <div class="field"><label>Categoria</label>
+          <select id="fCat"></select>
         </div>
       </div>
-
-      <div class="field" style="margin-bottom:12px">
-        Token do GitHub
-        <input type="password" id="cfg-token" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-        <span style="font-size:11px;color:var(--text-t)">Começa com ghp_ — salvo apenas neste navegador</span>
-      </div>
-
-      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius-sm);font-size:12px;color:var(--text-s)">
-        <strong>Repositório:</strong> JoaoVuelma/controle-financeiro<br>
-        <strong>Arquivo de dados:</strong> dados.json
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-primary" onclick="saveConfig()">Salvar configuração</button>
-        <button class="btn btn-ghost"   onclick="hideConfig()">Cancelar</button>
-        <button class="btn btn-ghost btn-sm" onclick="exportJSONBackup()" style="margin-left:auto">
-          ⬇ Backup local
-        </button>
+      <div class="field"><label>Forma de pagamento</label>
+        <select id="fPag"><option>Débito</option><option>Crédito</option><option>Pix</option><option>Boleto</option><option>Dinheiro</option></select>
       </div>
     </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('fixaModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveFixa()">Salvar</button>
+    </div>
   </div>
+</div>
 
-  <div id="toast"></div>
+<!-- MODAL: Parcela -->
+<div class="modal-overlay" id="parcelaModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="parcelaTitle">Nova parcela</h3><button class="btn-icon btn-ghost" onclick="closeModal('parcelaModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="pId">
+      <div class="field"><label>Descrição</label><input id="pDesc" placeholder="Celular, sofá..."></div>
+      <div class="form-row">
+        <div class="field"><label>Valor da parcela (R$)</label><input id="pValor" type="number" step="0.01"></div>
+        <div class="field"><label>Cartão</label>
+          <select id="pCartao"><option>Nubank</option><option>Inter</option><option>Itaú</option><option>Bradesco</option><option>Outro</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Início</label><input id="pIni" type="month"></div>
+        <div class="field"><label>Total de parcelas</label><input id="pTot" type="number" min="1" value="12"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('parcelaModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveParcela()">Salvar</button>
+    </div>
+  </div>
+</div>
 
-  <!-- Script da aplicação -->
-  <script src="script.js"></script>
+<!-- MODAL: Gasto -->
+<div class="modal-overlay" id="gastoModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="gastoTitle">Novo gasto</h3><button class="btn-icon btn-ghost" onclick="closeModal('gastoModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="gId">
+      <div class="field"><label>Descrição</label><input id="gDesc" placeholder="Mercado, uber, café..."></div>
+      <div class="form-row">
+        <div class="field"><label>Valor (R$)</label><input id="gValor" type="number" step="0.01"></div>
+        <div class="field"><label>Data</label><input id="gData" type="date"></div>
+      </div>
+      <div class="field">
+        <label>Categoria</label>
+        <div class="chips" id="gCatChips"></div>
+      </div>
+      <div class="field"><label>Forma de pagamento</label>
+        <select id="gPag"><option>Débito</option><option>Crédito</option><option>Pix</option><option>Dinheiro</option><option>Vale</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('gastoModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveGasto()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Settings -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Ajustes</h3><button class="btn-icon btn-ghost" onclick="closeModal('settingsModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Saldo inicial da poupança (R$)</label><input id="sSaldo" type="number" step="0.01"></div>
+      <div class="field"><label>Rendimento anual (% CDI aproximado)</label><input id="sCDI" type="number" step="0.1" placeholder="Ex: 10.5"></div>
+      <div class="field"><label>Meta de economia mensal (R$)</label><input id="sMeta" type="number" step="0.01"></div>
+      <div class="field">
+        <label>Categorias de gastos (separadas por vírgula)</label>
+        <input id="sCats" placeholder="Mercado, Transporte, Lazer...">
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
+      <div class="row flex-wrap" style="gap:8px">
+        <button class="btn btn-outline" onclick="exportData()">⬇ Exportar backup</button>
+        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">⬆ Importar backup</button>
+        <button class="btn btn-outline" onclick="seedDemo()">✨ Dados demo</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+      <button class="btn btn-danger btn-sm" style="margin-top:12px" onclick="resetAll()">🗑 Apagar todos os dados</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('settingsModal')">Fechar</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============== STATE ============== */
+const LS_KEY = 'meu-financeiro-v2';
+const DEFAULT_CATS = ['Mercado','Transporte','Alimentação','Saúde','Lazer','Casa','Educação','Assinaturas','Outros'];
+let state = {
+  receitas: [], fixas: [], parcelas: [], gastos: [],
+  config: { saldoInicial: 0, cdiAA: 10.5, metaMes: 500, categorias: [...DEFAULT_CATS] }
+};
+let currentMonth = new Date();
+let currentPage = 'dashboard';
+let selectedCat = 'Mercado';
+let charts = {};
+
+/* ============== UTILS ============== */
+const uid = () => Math.random().toString(36).slice(2,10);
+const brl = v => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+const mesNome = d => d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+const ymKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+const parseYM = s => { if(!s)return null; const [y,m]=s.split('-').map(Number); return new Date(y,m-1,1); };
+
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function load(){ try{ const s=localStorage.getItem(LS_KEY); if(s) state=Object.assign(state,JSON.parse(s)); }catch(e){} }
+
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._tT); window._tT=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+/* ============== CALC ============== */
+function receitasNoMes(d){
+  return state.receitas.filter(r=>{
+    const ini=parseYM(r.inicio); const fim=r.fim?parseYM(r.fim):null;
+    return (!ini||d>=ini) && (!fim||d<=fim);
+  }).reduce((s,r)=>s+Number(r.valor||0),0);
+}
+function fixasTotal(){ return state.fixas.reduce((s,f)=>s+Number(f.valor||0),0); }
+function parcelasNoMes(d){
+  return state.parcelas.filter(p=>{
+    const ini=parseYM(p.inicio); if(!ini) return false;
+    const fim = new Date(ini.getFullYear(), ini.getMonth()+Number(p.total)-1, 1);
+    return d>=ini && d<=fim;
+  });
+}
+function gastosNoMes(d){
+  const key=ymKey(d);
+  return state.gastos.filter(g=>g.data && g.data.startsWith(key));
+}
+function despesasTotal(d){
+  return fixasTotal()
+    + parcelasNoMes(d).reduce((s,p)=>s+Number(p.valor||0),0)
+    + gastosNoMes(d).reduce((s,g)=>s+Number(g.valor||0),0);
+}
+
+/* ============== NAV ============== */
+function goto(page){
+  currentPage=page;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(b=>{
+    b.classList.toggle('active', b.dataset.page===page);
+  });
+  render();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav-item[data-page]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.page)));
+
+function changeMonth(delta){
+  currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth()+delta, 1);
+  render();
+}
+
+/* ============== MODALS ============== */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+/* ============== RECEITAS ============== */
+function openReceita(id){
+  document.getElementById('rId').value=id||'';
+  document.getElementById('receitaTitle').textContent = id?'Editar receita':'Nova receita';
+  const r = id ? state.receitas.find(x=>x.id===id) : {};
+  document.getElementById('rDesc').value=r.desc||'';
+  document.getElementById('rValor').value=r.valor||'';
+  document.getElementById('rIni').value=r.inicio||ymKey(currentMonth);
+  document.getElementById('rFim').value=r.fim||'';
+  openModal('receitaModal');
+}
+function saveReceita(){
+  const id=document.getElementById('rId').value;
+  const data = {
+    id: id||uid(),
+    desc: document.getElementById('rDesc').value.trim(),
+    valor: parseFloat(document.getElementById('rValor').value)||0,
+    inicio: document.getElementById('rIni').value,
+    fim: document.getElementById('rFim').value||null
+  };
+  if(!data.desc || !data.valor){ toast('Preencha descrição e valor'); return; }
+  if(id){ state.receitas = state.receitas.map(r=>r.id===id?data:r); }
+  else state.receitas.push(data);
+  save(); closeModal('receitaModal'); render(); toast('Receita salva');
+}
+function delReceita(id){ if(confirm('Excluir?')){ state.receitas=state.receitas.filter(r=>r.id!==id); save(); render(); }}
+
+/* ============== FIXAS ============== */
+function openFixa(id){
+  document.getElementById('fId').value=id||'';
+  document.getElementById('fixaTitle').textContent = id?'Editar despesa':'Nova despesa fixa';
+  const f = id ? state.fixas.find(x=>x.id===id) : {};
+  const sel = document.getElementById('fCat'); sel.innerHTML='';
+  state.config.categorias.forEach(c=>{ const o=document.createElement('option'); o.textContent=c; sel.appendChild(o); });
+  document.getElementById('fDesc').value=f.desc||'';
+  document.getElementById('fValor').value=f.valor||'';
+  sel.value = f.cat||state.config.categorias[0];
+  document.getElementById('fPag').value=f.pag||'Débito';
+  openModal('fixaModal');
+}
+function saveFixa(){
+  const id=document.getElementById('fId').value;
+  const data={ id:id||uid(),
+    desc: document.getElementById('fDesc').value.trim(),
+    valor: parseFloat(document.getElementById('fValor').value)||0,
+    cat: document.getElementById('fCat').value,
+    pag: document.getElementById('fPag').value
+  };
+  if(!data.desc||!data.valor){ toast('Preencha os campos'); return; }
+  if(id) state.fixas=state.fixas.map(f=>f.id===id?data:f); else state.fixas.push(data);
+  save(); closeModal('fixaModal'); render(); toast('Despesa salva');
+}
+function delFixa(id){ if(confirm('Excluir?')){ state.fixas=state.fixas.filter(f=>f.id!==id); save(); render(); }}
+
+/* ============== PARCELAS ============== */
+function openParcela(id){
+  document.getElementById('pId').value=id||'';
+  document.getElementById('parcelaTitle').textContent = id?'Editar parcela':'Nova parcela';
+  const p = id ? state.parcelas.find(x=>x.id===id) : {};
+  document.getElementById('pDesc').value=p.desc||'';
+  document.getElementById('pValor').value=p.valor||'';
+  document.getElementById('pCartao').value=p.cartao||'Nubank';
+  document.getElementById('pIni').value=p.inicio||ymKey(currentMonth);
+  document.getElementById('pTot').value=p.total||12;
+  openModal('parcelaModal');
+}
+function saveParcela(){
+  const id=document.getElementById('pId').value;
+  const data={ id:id||uid(),
+    desc:document.getElementById('pDesc').value.trim(),
+    valor:parseFloat(document.getElementById('pValor').value)||0,
+    cartao:document.getElementById('pCartao').value,
+    inicio:document.getElementById('pIni').value,
+    total:parseInt(document.getElementById('pTot').value)||1
+  };
+  if(!data.desc||!data.valor){ toast('Preencha os campos'); return; }
+  if(id) state.parcelas=state.parcelas.map(p=>p.id===id?data:p); else state.parcelas.push(data);
+  save(); closeModal('parcelaModal'); render(); toast('Parcela salva');
+}
+function delParcela(id){ if(confirm('Excluir?')){ state.parcelas=state.parcelas.filter(p=>p.id!==id); save(); render(); }}
+
+/* ============== GASTOS ============== */
+function openGasto(id){
+  document.getElementById('gId').value=id||'';
+  document.getElementById('gastoTitle').textContent = id?'Editar gasto':'Novo gasto';
+  const g = id ? state.gastos.find(x=>x.id===id) : {};
+  document.getElementById('gDesc').value=g.desc||'';
+  document.getElementById('gValor').value=g.valor||'';
+  document.getElementById('gData').value=g.data||new Date().toISOString().slice(0,10);
+  document.getElementById('gPag').value=g.pag||'Débito';
+  selectedCat = g.cat||state.config.categorias[0];
+  renderCatChips();
+  openModal('gastoModal');
+}
+function renderCatChips(){
+  const c=document.getElementById('gCatChips'); c.innerHTML='';
+  state.config.categorias.forEach(cat=>{
+    const el=document.createElement('div');
+    el.className='chip'+(cat===selectedCat?' active':'');
+    el.textContent=cat;
+    el.onclick=()=>{ selectedCat=cat; renderCatChips(); };
+    c.appendChild(el);
+  });
+}
+function saveGasto(){
+  const id=document.getElementById('gId').value;
+  const data={ id:id||uid(),
+    desc:document.getElementById('gDesc').value.trim(),
+    valor:parseFloat(document.getElementById('gValor').value)||0,
+    data:document.getElementById('gData').value,
+    cat:selectedCat,
+    pag:document.getElementById('gPag').value
+  };
+  if(!data.desc||!data.valor){ toast('Preencha os campos'); return; }
+  if(id) state.gastos=state.gastos.map(g=>g.id===id?data:g); else state.gastos.push(data);
+  save(); closeModal('gastoModal'); render(); toast('Gasto salvo');
+}
+function delGasto(id){ if(confirm('Excluir?')){ state.gastos=state.gastos.filter(g=>g.id!==id); save(); render(); }}
+
+/* ============== SETTINGS ============== */
+function openSettings(){
+  document.getElementById('sSaldo').value=state.config.saldoInicial||0;
+  document.getElementById('sCDI').value=state.config.cdiAA||10.5;
+  document.getElementById('sMeta').value=state.config.metaMes||0;
+  document.getElementById('sCats').value=state.config.categorias.join(', ');
+  openModal('settingsModal');
+}
+function saveSettings(){
+  state.config.saldoInicial = parseFloat(document.getElementById('sSaldo').value)||0;
+  state.config.cdiAA = parseFloat(document.getElementById('sCDI').value)||0;
+  state.config.metaMes = parseFloat(document.getElementById('sMeta').value)||0;
+  const cats = document.getElementById('sCats').value.split(',').map(s=>s.trim()).filter(Boolean);
+  state.config.categorias = cats.length?cats:DEFAULT_CATS;
+  save(); closeModal('settingsModal'); render(); toast('Ajustes salvos');
+}
+function resetAll(){
+  if(!confirm('Apagar TODOS os dados?')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='meu-financeiro-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+}
+function importData(ev){
+  const f=ev.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{ try{ state=Object.assign(state,JSON.parse(e.target.result)); save(); render(); toast('Importado!'); }catch(err){toast('Arquivo inválido')} };
+  r.readAsText(f);
+}
+
+/* ============== SEED ============== */
+function seedDemo(){
+  state.receitas=[{id:uid(),desc:'Salário',valor:5500,inicio:'2025-01',fim:null},{id:uid(),desc:'Freela',valor:1200,inicio:'2025-06',fim:null}];
+  state.fixas=[
+    {id:uid(),desc:'Aluguel',valor:1800,cat:'Casa',pag:'Boleto'},
+    {id:uid(),desc:'Internet',valor:120,cat:'Casa',pag:'Débito'},
+    {id:uid(),desc:'Streaming',valor:65,cat:'Assinaturas',pag:'Crédito'},
+    {id:uid(),desc:'Academia',valor:99,cat:'Saúde',pag:'Débito'}
+  ];
+  state.parcelas=[
+    {id:uid(),desc:'Celular novo',valor:250,cartao:'Nubank',inicio:'2025-08',total:10},
+    {id:uid(),desc:'Sofá',valor:180,cartao:'Inter',inicio:'2025-05',total:12}
+  ];
+  const hoje=new Date().toISOString().slice(0,10);
+  state.gastos=[
+    {id:uid(),desc:'Mercado semanal',valor:320,data:hoje,cat:'Mercado',pag:'Débito'},
+    {id:uid(),desc:'Uber',valor:28,data:hoje,cat:'Transporte',pag:'Pix'},
+    {id:uid(),desc:'Café',valor:15,data:hoje,cat:'Alimentação',pag:'Crédito'}
+  ];
+  state.config = {saldoInicial:8500, cdiAA:11, metaMes:800, categorias:[...DEFAULT_CATS]};
+  save(); render(); closeModal('settingsModal'); toast('Dados demo carregados!');
+}
+
+/* ============== RENDER ============== */
+function render(){
+  document.getElementById('monthLabel').textContent = mesNome(currentMonth);
+  renderDashboard(); renderReceitas(); renderFixas(); renderParcelas(); renderGastos(); renderEconomias(); renderPrevisao();
+}
+
+function renderDashboard(){
+  const rec=receitasNoMes(currentMonth);
+  const des=despesasTotal(currentMonth);
+  const sobra=rec-des;
+  const pct= rec>0 ? (sobra/rec*100) : 0;
+  document.getElementById('kpiReceitas').textContent=brl(rec);
+  document.getElementById('kpiDespesas').textContent=brl(des);
+  document.getElementById('kpiSobra').textContent=brl(sobra);
+  document.getElementById('kpiSobra').style.color = sobra<0 ? 'var(--danger)' : '';
+  document.getElementById('kpiPct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('dashSubtitle').textContent = 'Resumo de '+mesNome(currentMonth);
+
+  // Alerts
+  const alerts=document.getElementById('dashAlerts'); alerts.innerHTML='';
+  if(sobra<0) alerts.innerHTML+=`<div class="alert alert-danger">⚠ Você está no vermelho este mês (${brl(Math.abs(sobra))} negativo).</div>`;
+  else if(pct<10) alerts.innerHTML+=`<div class="alert alert-warn">⚠ Sua taxa de economia está baixa (${pct.toFixed(1)}%). Ideal ≥ 20%.</div>`;
+  else alerts.innerHTML+=`<div class="alert alert-success">✓ Ótimo! Você está economizando ${pct.toFixed(1)}% da receita.</div>`;
+
+  // Categorias chart
+  const catData={};
+  gastosNoMes(currentMonth).forEach(g=>catData[g.cat]=(catData[g.cat]||0)+Number(g.valor));
+  state.fixas.forEach(f=>catData[f.cat]=(catData[f.cat]||0)+Number(f.valor));
+  drawDoughnut('chartCategorias', Object.keys(catData), Object.values(catData));
+  document.getElementById('dashCatTotal').textContent=brl(Object.values(catData).reduce((s,v)=>s+v,0));
+
+  // Sobra acumulada
+  const labels=[], vals=[]; let acc=0;
+  for(let i=0;i<12;i++){
+    const d=new Date(currentMonth.getFullYear(),i,1);
+    const s = receitasNoMes(d)-despesasTotal(d);
+    acc+=s; labels.push(d.toLocaleDateString('pt-BR',{month:'short'})); vals.push(acc);
+  }
+  drawLine('chartSobra', labels, vals);
+
+  // Pagamentos
+  const pagData={};
+  [...state.fixas,...gastosNoMes(currentMonth)].forEach(x=>pagData[x.pag]=(pagData[x.pag]||0)+Number(x.valor));
+  drawBar('chartPagamentos', Object.keys(pagData), Object.values(pagData));
+}
+
+function renderReceitas(){
+  const tb=document.getElementById('tbReceitas');
+  if(!state.receitas.length){ tb.innerHTML=`<tr><td colspan="5"><div class="empty"><div class="empty-ic">↑</div>Nenhuma receita ainda</div></td></tr>`; return; }
+  tb.innerHTML=state.receitas.map(r=>`
+    <tr><td><strong>${r.desc}</strong></td><td>${brl(r.valor)}</td><td>${r.inicio||'-'}</td><td>${r.fim||'—'}</td>
+    <td style="text-align:right;white-space:nowrap">
+      <button class="btn btn-ghost btn-sm" onclick="openReceita('${r.id}')">✎</button>
+      <button class="btn btn-danger btn-sm" onclick="delReceita('${r.id}')">🗑</button>
+    </td></tr>`).join('');
+}
+
+function renderFixas(){
+  const tb=document.getElementById('tbFixas');
+  if(!state.fixas.length){ tb.innerHTML=`<tr><td colspan="5"><div class="empty"><div class="empty-ic">↓</div>Nenhuma despesa fixa</div></td></tr>`; return; }
+  tb.innerHTML=state.fixas.map(f=>`
+    <tr><td><strong>${f.desc}</strong></td><td><span class="badge">${f.cat}</span></td><td>${brl(f.valor)}</td><td>${f.pag}</td>
+    <td style="text-align:right;white-space:nowrap">
+      <button class="btn btn-ghost btn-sm" onclick="openFixa('${f.id}')">✎</button>
+      <button class="btn btn-danger btn-sm" onclick="delFixa('${f.id}')">🗑</button>
+    </td></tr>`).join('');
+}
+
+function renderParcelas(){
+  const ativas = parcelasNoMes(currentMonth);
+  const total = state.parcelas.reduce((s,p)=>s+Number(p.valor)*Number(p.total),0);
+  const mes = ativas.reduce((s,p)=>s+Number(p.valor),0);
+  document.getElementById('parcTotal').textContent=brl(total);
+  document.getElementById('parcMes').textContent=brl(mes);
+  document.getElementById('parcQtd').textContent=ativas.length;
+  const tb=document.getElementById('tbParcelas');
+  if(!state.parcelas.length){ tb.innerHTML=`<tr><td colspan="5"><div class="empty"><div class="empty-ic">◱</div>Nenhuma parcela cadastrada</div></td></tr>`; return; }
+  tb.innerHTML=state.parcelas.map(p=>{
+    const ini=parseYM(p.inicio); if(!ini) return '';
+    const monthsElapsed = (currentMonth.getFullYear()-ini.getFullYear())*12 + (currentMonth.getMonth()-ini.getMonth()) + 1;
+    const paidCount = Math.max(0, Math.min(p.total, monthsElapsed));
+    const pct = (paidCount/p.total)*100;
+    return `<tr><td><strong>${p.desc}</strong></td><td>${p.cartao}</td><td>${brl(p.valor)}</td>
+      <td style="min-width:160px">
+        <div class="row" style="gap:8px">
+          <div class="progress" style="flex:1"><div class="progress-bar" style="width:${pct}%"></div></div>
+          <span class="badge">${paidCount}/${p.total}</span>
+        </div>
+      </td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="openParcela('${p.id}')">✎</button>
+        <button class="btn btn-danger btn-sm" onclick="delParcela('${p.id}')">🗑</button>
+      </td></tr>`;
+  }).join('');
+}
+
+function renderGastos(){
+  document.getElementById('gastosSubtitle').textContent = 'Lançamentos de '+mesNome(currentMonth);
+  const gs = gastosNoMes(currentMonth);
+  const total = gs.reduce((s,g)=>s+Number(g.valor),0);
+  document.getElementById('gastosTotal').textContent = brl(total);
+
+  // orçamento por categoria
+  const oc=document.getElementById('orcamentoCards'); oc.innerHTML='';
+  const byCat={};
+  gs.forEach(g=>byCat[g.cat]=(byCat[g.cat]||0)+Number(g.valor));
+  const rec=receitasNoMes(currentMonth);
+  const budget = rec>0 ? rec*0.1 : 500; // 10% por categoria como referência
+  state.config.categorias.forEach(cat=>{
+    const spent=byCat[cat]||0;
+    const pct=Math.min(200,(spent/budget)*100);
+    const cls = pct>100?'over':pct>75?'warn':'';
+    oc.innerHTML+=`<div class="card" style="padding:14px">
+      <div class="between" style="margin-bottom:8px"><strong style="font-size:13px">${cat}</strong><span class="badge">${brl(spent)}</span></div>
+      <div class="progress"><div class="progress-bar ${cls}" style="width:${Math.min(100,pct)}%"></div></div>
+      <div class="kpi-hint" style="margin-top:6px">Ref: ${brl(budget)}</div>
+    </div>`;
+  });
+
+  const lst=document.getElementById('listaGastos');
+  if(!gs.length){ lst.innerHTML=`<div class="empty"><div class="empty-ic">✎</div>Nenhum lançamento neste mês</div>`; return; }
+  const byDay={};
+  gs.sort((a,b)=>b.data.localeCompare(a.data)).forEach(g=>{ (byDay[g.data]=byDay[g.data]||[]).push(g); });
+  lst.innerHTML=Object.entries(byDay).map(([d,items])=>{
+    const dayLbl = new Date(d+'T00:00').toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'short'});
+    const dayTotal = items.reduce((s,x)=>s+Number(x.valor),0);
+    return `<div style="margin-bottom:16px">
+      <div class="between" style="padding:6px 0;border-bottom:1px solid var(--border);margin-bottom:8px">
+        <span style="font-weight:600;text-transform:capitalize;font-size:12px;color:var(--muted)">${dayLbl}</span>
+        <span class="badge">${brl(dayTotal)}</span>
+      </div>
+      ${items.map(g=>`
+        <div class="between" style="padding:10px 4px">
+          <div style="min-width:0;flex:1">
+            <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${g.desc}</div>
+            <div style="font-size:12px;color:var(--muted)"><span class="badge">${g.cat}</span> · ${g.pag}</div>
+          </div>
+          <div style="text-align:right;white-space:nowrap">
+            <div style="font-weight:600">${brl(g.valor)}</div>
+            <div style="margin-top:2px">
+              <button class="btn btn-ghost btn-sm" onclick="openGasto('${g.id}')">✎</button>
+              <button class="btn btn-danger btn-sm" onclick="delGasto('${g.id}')">🗑</button>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderEconomias(){
+  const cdi=state.config.cdiAA/100;
+  const rateM=Math.pow(1+cdi,1/12)-1;
+  let saldo=state.config.saldoInicial||0;
+  const labels=[],vals=[];
+  const today=new Date();
+  for(let i=0;i<12;i++){
+    const d=new Date(today.getFullYear(),today.getMonth()+i,1);
+    const rendimento=saldo*rateM;
+    const sobra=Math.max(0, receitasNoMes(d)-despesasTotal(d));
+    saldo=saldo+rendimento+sobra;
+    labels.push(d.toLocaleDateString('pt-BR',{month:'short'}));
+    vals.push(saldo);
+  }
+  const rendMes = (state.config.saldoInicial||0)*rateM;
+  document.getElementById('ecoSaldo').textContent=brl(state.config.saldoInicial||0);
+  document.getElementById('ecoRend').textContent=brl(rendMes);
+  document.getElementById('ecoRendHint').textContent = state.config.cdiAA+'% a.a.';
+  document.getElementById('ecoMeta').textContent=brl((state.config.metaMes||0)*12);
+  document.getElementById('ecoMetaHint').textContent = brl(state.config.metaMes||0)+' /mês';
+  document.getElementById('ecoRateInfo').textContent = 'Rendimento '+state.config.cdiAA+'% a.a.';
+  drawLine('chartEconomias', labels, vals, true);
+}
+
+function renderPrevisao(){
+  const tb=document.getElementById('tbPrevisao');
+  const alerts=document.getElementById('previsaoAlerts'); alerts.innerHTML='';
+  let negs=0;
+  const rows=[];
+  for(let i=0;i<12;i++){
+    const d=new Date(currentMonth.getFullYear(),currentMonth.getMonth()+i,1);
+    const r=receitasNoMes(d), de=despesasTotal(d), s=r-de;
+    if(s<0) negs++;
+    const status = s<0?'<span class="badge badge-danger">Vermelho</span>':s<(r*0.1)?'<span class="badge badge-warn">Apertado</span>':'<span class="badge badge-success">OK</span>';
+    rows.push(`<tr><td style="text-transform:capitalize">${mesNome(d)}</td><td>${brl(r)}</td><td>${brl(de)}</td><td style="color:${s<0?'var(--danger)':'var(--brand)'};font-weight:600">${brl(s)}</td><td>${status}</td></tr>`);
+  }
+  tb.innerHTML=rows.join('');
+  if(negs>0) alerts.innerHTML=`<div class="alert alert-danger">⚠ ${negs} ${negs===1?'mês':'meses'} com saldo negativo nos próximos 12 meses.</div>`;
+  else alerts.innerHTML=`<div class="alert alert-success">✓ Nenhum mês negativo previsto. Bom trabalho!</div>`;
+}
+
+/* ============== CHARTS ============== */
+const chartColors=['#059669','#0891b2','#d97706','#dc2626','#7c3aed','#db2777','#65a30d','#0284c7','#ea580c'];
+function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+function drawDoughnut(id,labels,data){
+  destroyChart(id);
+  const el=document.getElementById(id); if(!el) return;
+  charts[id]=new Chart(el,{ type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:chartColors,borderWidth:0}]},
+    options:{plugins:{legend:{position:'bottom',labels:{padding:12,font:{family:'Inter',size:11}}}},cutout:'65%',maintainAspectRatio:false}
+  });
+}
+function drawLine(id,labels,data,fill){
+  destroyChart(id);
+  const el=document.getElementById(id); if(!el) return;
+  charts[id]=new Chart(el,{type:'line',
+    data:{labels,datasets:[{data,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.1)',fill:fill!==false,tension:.35,pointRadius:3,borderWidth:2}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>brl(v).replace('R$','R$ ')}}},maintainAspectRatio:false}
+  });
+}
+function drawBar(id,labels,data){
+  destroyChart(id);
+  const el=document.getElementById(id); if(!el) return;
+  charts[id]=new Chart(el,{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:chartColors,borderRadius:6}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false}},maintainAspectRatio:false}
+  });
+}
+
+/* ============== INIT ============== */
+document.addEventListener('DOMContentLoaded',()=>{
+  load();
+  if(!state.receitas.length && !state.gastos.length){
+    // no-op: keep clean until user seeds
+  }
+  // Load settings on open
+  document.querySelectorAll('[onclick*="settingsModal"]').forEach(b=>b.addEventListener('click',openSettings));
+  render();
+});
+</script>
 </body>
 </html>
