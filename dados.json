@@ -1,6 +1,6 @@
 {
-  "_version": 1,
-  "_savedAt": "2026-07-06T00:47:43.555Z",
+  "_version": 2,
+  "_savedAt": "2026-07-06T01:15:09.966Z",
   "receitas": [
     {
       "id": 1783298849040,
@@ -15,10 +15,32 @@
       "valor": 750,
       "inicio": "2026-07-01",
       "fim": "2026-12-31"
+    },
+    {
+      "id": "j8p8z3xo",
+      "desc": "Aluguel do Carro",
+      "valor": 825.15,
+      "inicio": "2026-07",
+      "fim": "2026-07"
     }
   ],
   "fixas": [],
-  "variaveis": [],
+  "parcelas": [],
   "gastos": [],
-  "fechamentos": {}
+  "config": {
+    "saldoInicial": 0,
+    "cdiAA": 10.5,
+    "metaMes": 500,
+    "categorias": [
+      "Mercado",
+      "Transporte",
+      "Alimentação",
+      "Saúde",
+      "Lazer",
+      "Casa",
+      "Educação",
+      "Assinaturas",
+      "Outros"
+    ]
+  }
 }
