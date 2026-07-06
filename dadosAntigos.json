@@ -1,0 +1,1077 @@
+{
+  "_version": 1,
+  "_savedAt": "2026-06-16T23:04:08.642Z",
+  "receitas": [
+    {
+      "id": 1,
+      "desc": "Salário",
+      "valor": 2250,
+      "inicio": "2026-03-01",
+      "fim": "2026-04-05"
+    },
+    {
+      "id": 2,
+      "desc": "Vale",
+      "valor": 750,
+      "inicio": "2026-01-01",
+      "fim": "2026-06-25"
+    },
+    {
+      "id": 3,
+      "desc": "Pagamento de Ferias",
+      "valor": 900,
+      "inicio": "2026-05-18",
+      "fim": "2026-05-15"
+    },
+    {
+      "id": 4,
+      "desc": "13 Salario (1a Parcela)",
+      "valor": 1250,
+      "inicio": "2026-11-01",
+      "fim": "2026-11-01"
+    },
+    {
+      "id": 5,
+      "desc": "13 Salario (2a Parcela)",
+      "valor": 1000,
+      "inicio": "2026-12-01",
+      "fim": "2026-12-01"
+    },
+    {
+      "id": 1774962406665,
+      "desc": "Vale",
+      "valor": 750,
+      "inicio": "2026-07-01",
+      "fim": ""
+    },
+    {
+      "id": 1777994200162,
+      "desc": "Valor",
+      "valor": 1131,
+      "inicio": "2026-03-05",
+      "fim": "2026-03-05"
+    },
+    {
+      "id": 1777995604370,
+      "desc": "Extra",
+      "valor": 1161,
+      "inicio": "2026-04-06",
+      "fim": "2026-04-06"
+    },
+    {
+      "id": 1780683109407,
+      "desc": "Salário",
+      "valor": 2370,
+      "inicio": "2026-05-01",
+      "fim": ""
+    },
+    {
+      "id": 1781014813049,
+      "desc": "Extra",
+      "valor": 606,
+      "inicio": "2026-05-09",
+      "fim": "2026-05-09"
+    },
+    {
+      "id": 1781132851729,
+      "desc": "Pagamento do casaco nick",
+      "valor": 110,
+      "inicio": "2026-06-10",
+      "fim": "2026-06-10"
+    }
+  ],
+  "fixas": [
+    {
+      "id": 1,
+      "desc": "Faculdade",
+      "cat": 3,
+      "limite": 517,
+      "valor": 517,
+      "pag": "",
+      "inicio": "2026-01-01",
+      "fim": "2026-06-17"
+    },
+    {
+      "id": 3,
+      "desc": "Streaming",
+      "cat": 4,
+      "limite": 183,
+      "valor": 183,
+      "pag": "",
+      "inicio": "2026-01-01",
+      "fim": ""
+    },
+    {
+      "id": 5,
+      "desc": "Mercado",
+      "cat": 1,
+      "limite": 80,
+      "valor": 80,
+      "pag": "",
+      "inicio": "2026-01-02",
+      "fim": ""
+    },
+    {
+      "id": 6,
+      "desc": "Farmacia",
+      "cat": 2,
+      "limite": 50,
+      "valor": 50,
+      "pag": "",
+      "inicio": "2026-01-02",
+      "fim": ""
+    },
+    {
+      "id": 7,
+      "desc": "Lazer mensal",
+      "cat": 5,
+      "limite": 250,
+      "valor": 250,
+      "pag": "",
+      "inicio": "2026-01-02",
+      "fim": ""
+    },
+    {
+      "id": 1773789667362,
+      "desc": "Viagem Ferias Maio",
+      "cat": 5,
+      "limite": 1000,
+      "valor": 1000,
+      "pag": 5,
+      "inicio": "2026-05-17",
+      "fim": "2026-05-18"
+    },
+    {
+      "id": 1773789710617,
+      "desc": "Faculdade",
+      "cat": 3,
+      "limite": 800,
+      "valor": 800,
+      "pag": "",
+      "inicio": "2026-07-01",
+      "fim": "2026-12-17"
+    },
+    {
+      "id": 1774957543930,
+      "desc": "Corte",
+      "cat": 2,
+      "limite": 100,
+      "valor": 100,
+      "pag": "",
+      "inicio": "2026-04-01",
+      "fim": ""
+    },
+    {
+      "id": 1775603460661,
+      "desc": "Rombo de março",
+      "cat": 9,
+      "limite": 1267,
+      "valor": 1267,
+      "pag": 5,
+      "inicio": "2026-03-01",
+      "fim": "2026-03-31"
+    },
+    {
+      "id": 1775604499293,
+      "desc": "Restante do clareamento Primo",
+      "cat": 2,
+      "limite": 400,
+      "valor": 400,
+      "pag": 5,
+      "inicio": "2026-11-10",
+      "fim": "2026-11-10"
+    },
+    {
+      "id": 1775605540466,
+      "desc": "Restante crédito mercado 3",
+      "cat": 9,
+      "limite": 400,
+      "valor": 400,
+      "pag": 5,
+      "inicio": "2026-11-10",
+      "fim": "2026-11-10"
+    },
+    {
+      "id": 1775605790868,
+      "desc": "Restante crédito mercado 2",
+      "cat": 9,
+      "limite": 350,
+      "valor": 350,
+      "pag": 5,
+      "inicio": "2026-11-10",
+      "fim": "2026-11-10"
+    },
+    {
+      "id": 1777994173585,
+      "desc": "Março",
+      "cat": 11,
+      "limite": 1078,
+      "valor": 1078,
+      "pag": 5,
+      "inicio": "2026-03-05",
+      "fim": "2026-03-05"
+    },
+    {
+      "id": 1777995338235,
+      "desc": "Custo de Março",
+      "cat": 11,
+      "limite": 487,
+      "valor": 487,
+      "pag": 5,
+      "inicio": "2026-03-05",
+      "fim": "2026-03-05"
+    },
+    {
+      "id": 1781015596460,
+      "desc": "Despesa",
+      "cat": 9,
+      "limite": 175,
+      "valor": 175,
+      "pag": 5,
+      "inicio": "2026-05-05",
+      "fim": "2026-05-12"
+    },
+    {
+      "id": 1781050937159,
+      "desc": "Casaco Olympikus",
+      "cat": 10,
+      "limite": 210,
+      "valor": 210,
+      "pag": 5,
+      "inicio": "2026-06-09",
+      "fim": "2026-06-09"
+    },
+    {
+      "id": 1781132782014,
+      "desc": "Devolução do noks",
+      "cat": 11,
+      "limite": 45,
+      "valor": 45,
+      "pag": 5,
+      "inicio": "2026-06-10",
+      "fim": "2026-06-10"
+    }
+  ],
+  "variaveis": [
+    {
+      "id": 2,
+      "nome": "Airbnb",
+      "cat": 5,
+      "total": 438,
+      "mensal": 146,
+      "parcelas": 3,
+      "faltam": 3,
+      "pag": 3,
+      "inicio": "2026-05-05",
+      "pago": true
+    },
+    {
+      "id": 3,
+      "nome": "Perfume",
+      "cat": 10,
+      "total": 756,
+      "mensal": 63,
+      "parcelas": 12,
+      "faltam": 10,
+      "pag": 2,
+      "inicio": "2026-02-12",
+      "pago": true
+    },
+    {
+      "id": 7,
+      "nome": "H&M",
+      "cat": 10,
+      "total": 348,
+      "mensal": 116,
+      "parcelas": 3,
+      "faltam": 2,
+      "pag": 1,
+      "inicio": "2026-05-05",
+      "pago": true
+    },
+    {
+      "id": 8,
+      "nome": "Credito Mercado",
+      "cat": 9,
+      "total": 610,
+      "mensal": 122,
+      "parcelas": 5,
+      "faltam": 2,
+      "pag": 8,
+      "inicio": "2026-04-02",
+      "pago": true
+    },
+    {
+      "id": 9,
+      "nome": "Amazon 1",
+      "cat": 10,
+      "total": 288,
+      "mensal": 72,
+      "parcelas": 4,
+      "faltam": 4,
+      "pag": 3,
+      "inicio": "2026-05-05",
+      "pago": true
+    },
+    {
+      "id": 1773789860361,
+      "nome": "Quadros",
+      "cat": 10,
+      "total": 156,
+      "mensal": 52,
+      "parcelas": 3,
+      "faltam": 2,
+      "pag": 3,
+      "inicio": "2026-03-17",
+      "pago": true
+    },
+    {
+      "id": 1773789924962,
+      "nome": "Mercado Livre Cama e banho",
+      "cat": 10,
+      "total": 500,
+      "mensal": 41.67,
+      "parcelas": 12,
+      "faltam": 11,
+      "pag": 2,
+      "inicio": "2026-03-17",
+      "pago": true
+    },
+    {
+      "id": 1774890631600,
+      "nome": "Mercado Livre Extra",
+      "cat": 10,
+      "total": 150,
+      "mensal": 30,
+      "parcelas": 5,
+      "faltam": 4,
+      "pag": 2,
+      "inicio": "2026-03-30",
+      "pago": true
+    },
+    {
+      "id": 1775219127238,
+      "nome": "Parcela dentista primo",
+      "cat": 2,
+      "total": 600,
+      "mensal": 100,
+      "parcelas": 6,
+      "faltam": 4,
+      "pag": 5,
+      "inicio": "2026-04-10",
+      "pago": true
+    },
+    {
+      "id": 1775484583322,
+      "nome": "Mercado Livre Cama",
+      "cat": 10,
+      "total": 285,
+      "mensal": 31.67,
+      "parcelas": 9,
+      "faltam": 8,
+      "pag": 2,
+      "inicio": "2026-03-06",
+      "pago": true
+    },
+    {
+      "id": 1775602754786,
+      "nome": "Parcela cartão sicredi",
+      "cat": 9,
+      "total": 1640,
+      "mensal": 820,
+      "parcelas": 2,
+      "faltam": 1,
+      "pag": 1,
+      "inicio": "2026-04-08",
+      "pago": true
+    },
+    {
+      "id": 1775605220051,
+      "nome": "Crédito mercado 2",
+      "cat": 9,
+      "total": 735,
+      "mensal": 105,
+      "parcelas": 7,
+      "faltam": 6,
+      "pag": 8,
+      "inicio": "2026-04-10",
+      "pago": true
+    },
+    {
+      "id": 1775605336437,
+      "nome": "Crédito mercado 3",
+      "cat": 9,
+      "total": 260,
+      "mensal": 43.33,
+      "parcelas": 6,
+      "faltam": 5,
+      "pag": 8,
+      "inicio": "2026-04-10",
+      "pago": true
+    },
+    {
+      "id": 1775772499548,
+      "nome": "Academia",
+      "cat": 2,
+      "total": 1350,
+      "mensal": 150,
+      "parcelas": 9,
+      "faltam": 8,
+      "pag": 5,
+      "inicio": "2026-04-12",
+      "pago": true
+    },
+    {
+      "id": 1777400261157,
+      "nome": "Credito mercado final",
+      "cat": 9,
+      "total": 900,
+      "mensal": 103,
+      "parcelas": 8,
+      "faltam": 7,
+      "pag": 8,
+      "inicio": "2026-04-28",
+      "pago": true
+    },
+    {
+      "id": 1777993913525,
+      "nome": "Parcelas Santander",
+      "cat": 10,
+      "total": 1190,
+      "mensal": 173,
+      "parcelas": 7,
+      "faltam": 6,
+      "pag": 9,
+      "inicio": "2026-05-05",
+      "pago": true
+    },
+    {
+      "id": 1781015077243,
+      "nome": "Calça H&M",
+      "cat": 10,
+      "total": 260,
+      "mensal": 43.33,
+      "parcelas": 6,
+      "faltam": 6,
+      "pag": 1,
+      "inicio": "2026-06-09",
+      "pago": false
+    },
+    {
+      "id": 1781015163372,
+      "nome": "Farmacia Parcela",
+      "cat": 2,
+      "total": 85,
+      "mensal": 28.33,
+      "parcelas": 3,
+      "faltam": 3,
+      "pag": 1,
+      "inicio": "2026-06-09",
+      "pago": false
+    },
+    {
+      "id": 1781015454096,
+      "nome": "AmazonPrime",
+      "cat": 4,
+      "total": 70,
+      "mensal": 14,
+      "parcelas": 5,
+      "faltam": 5,
+      "pag": 1,
+      "inicio": "2026-06-09",
+      "pago": false
+    },
+    {
+      "id": 1781016100423,
+      "nome": "Compras Mercado Livre",
+      "cat": 10,
+      "total": 283,
+      "mensal": 23.58,
+      "parcelas": 12,
+      "faltam": 12,
+      "pag": 2,
+      "inicio": "2026-06-23",
+      "pago": false
+    },
+    {
+      "id": 1781016291651,
+      "nome": "Credito maior de todos",
+      "cat": 9,
+      "total": 3526,
+      "mensal": 146.92,
+      "parcelas": 24,
+      "faltam": 24,
+      "pag": 8,
+      "inicio": "2026-06-09",
+      "pago": false
+    }
+  ],
+  "gastos": [
+    {
+      "id": 1776081083724,
+      "cat": 3,
+      "desc": "",
+      "valor": 517,
+      "pag": 1,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081161558,
+      "cat": 2,
+      "desc": "Desodorantes",
+      "valor": 51,
+      "pag": 3,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081202128,
+      "cat": 5,
+      "desc": "Pizza com julia",
+      "valor": 110,
+      "pag": 9,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776081225519,
+      "cat": 1,
+      "desc": "Almoco com julia",
+      "valor": 50,
+      "pag": 9,
+      "data": "2026-04-13"
+    },
+    {
+      "id": 1776166517051,
+      "cat": 4,
+      "desc": "Paramount",
+      "valor": 35,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166541907,
+      "cat": 4,
+      "desc": "Netflix",
+      "valor": 20,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166564467,
+      "cat": 4,
+      "desc": "Hbo",
+      "valor": 31,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166581664,
+      "cat": 4,
+      "desc": "Apple",
+      "valor": 6,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166626420,
+      "cat": 1,
+      "desc": "Sorvete",
+      "valor": 17,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166650016,
+      "cat": 1,
+      "desc": "Pastel",
+      "valor": 20,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776166666900,
+      "cat": 6,
+      "desc": "Estacionamento",
+      "valor": 14,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776167369515,
+      "cat": 1,
+      "desc": "Cacau Show",
+      "valor": 43,
+      "pag": 1,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776167419694,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 18,
+      "pag": 1,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776207198845,
+      "cat": 1,
+      "desc": "Açaí",
+      "valor": 26,
+      "pag": 5,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776209742308,
+      "cat": 4,
+      "desc": "Meli mais",
+      "valor": 60,
+      "pag": 9,
+      "data": "2026-04-14"
+    },
+    {
+      "id": 1776337749715,
+      "cat": 5,
+      "desc": "Sushi",
+      "valor": 110,
+      "pag": 5,
+      "data": "2026-04-16"
+    },
+    {
+      "id": 1776349173005,
+      "cat": 1,
+      "desc": "Tonello",
+      "valor": 30,
+      "pag": 9,
+      "data": "2026-04-16"
+    },
+    {
+      "id": 1776425472980,
+      "cat": 10,
+      "desc": "Cabo de carregar",
+      "valor": 30,
+      "pag": 9,
+      "data": "2026-04-17"
+    },
+    {
+      "id": 1776649956043,
+      "cat": 5,
+      "desc": "Bruce burguer",
+      "valor": 55,
+      "pag": 5,
+      "data": "2026-04-19"
+    },
+    {
+      "id": 1776649972065,
+      "cat": 5,
+      "desc": "Uff bier",
+      "valor": 87,
+      "pag": 9,
+      "data": "2026-04-19"
+    },
+    {
+      "id": 1777466409187,
+      "cat": 2,
+      "desc": "Compras farmacia",
+      "valor": 90,
+      "pag": 5,
+      "data": "2026-04-29"
+    },
+    {
+      "id": 1777466434791,
+      "cat": 1,
+      "desc": "Almoço",
+      "valor": 100,
+      "pag": 3,
+      "data": "2026-04-29"
+    },
+    {
+      "id": 1777466515367,
+      "cat": 5,
+      "desc": "Shawarma",
+      "valor": 90,
+      "pag": 5,
+      "data": "2026-04-29"
+    },
+    {
+      "id": 1777994447072,
+      "cat": 10,
+      "desc": "Garrafa do nick",
+      "valor": 32,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994460871,
+      "cat": 1,
+      "desc": "san marino",
+      "valor": 20,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994471851,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 10,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994500543,
+      "cat": 5,
+      "desc": "Gigetto",
+      "valor": 110,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994516590,
+      "cat": 2,
+      "desc": "Cabelo",
+      "valor": 100,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994607163,
+      "cat": 5,
+      "desc": "Chale",
+      "valor": 16,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1777994622200,
+      "cat": 5,
+      "desc": "Ifood",
+      "valor": 67,
+      "pag": 3,
+      "data": "2026-05-05"
+    },
+    {
+      "id": 1778246170976,
+      "cat": 3,
+      "desc": "Facul",
+      "valor": 517,
+      "pag": 1,
+      "data": "2026-05-08"
+    },
+    {
+      "id": 1778246191614,
+      "cat": 1,
+      "desc": "comidas",
+      "valor": 60,
+      "pag": 3,
+      "data": "2026-05-08"
+    },
+    {
+      "id": 1778668431020,
+      "cat": 1,
+      "desc": "Mate",
+      "valor": 50,
+      "pag": 2,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668521517,
+      "cat": 4,
+      "desc": "Netflix",
+      "valor": 20.9,
+      "pag": 9,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668553560,
+      "cat": 2,
+      "desc": "Farmacia",
+      "valor": 30,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668629720,
+      "cat": 4,
+      "desc": "ifood club",
+      "valor": 8,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668646924,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 15,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668657799,
+      "cat": 6,
+      "desc": "Caxiense",
+      "valor": 12,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778668675771,
+      "cat": 4,
+      "desc": "AmazonPrime",
+      "valor": 34.9,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778695843719,
+      "cat": 1,
+      "desc": "Nhoque",
+      "valor": 36,
+      "pag": 1,
+      "data": "2026-05-13"
+    },
+    {
+      "id": 1778764664424,
+      "cat": 2,
+      "desc": "Panvel",
+      "valor": 50,
+      "pag": 1,
+      "data": "2026-05-14"
+    },
+    {
+      "id": 1781015023261,
+      "cat": 1,
+      "desc": "Mercado",
+      "valor": 15,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015103191,
+      "cat": 2,
+      "desc": "Farmacia",
+      "valor": 85,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015192639,
+      "cat": 3,
+      "desc": "Facul",
+      "valor": 517,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015226230,
+      "cat": 11,
+      "desc": "Flores Dia dos Namorados",
+      "valor": 131,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015296702,
+      "cat": 5,
+      "desc": "QuieroCafe",
+      "valor": 160,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015308272,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 8,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015317867,
+      "cat": 4,
+      "desc": "Premiere",
+      "valor": 60,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015344946,
+      "cat": 11,
+      "desc": "Aluguel do Filme",
+      "valor": 30,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015368064,
+      "cat": 4,
+      "desc": "Prime Video",
+      "valor": 30,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015388132,
+      "cat": 11,
+      "desc": "Bio e sla o que",
+      "valor": 37,
+      "pag": 1,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015672716,
+      "cat": 1,
+      "desc": "Mercado",
+      "valor": 40,
+      "pag": 3,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015917126,
+      "cat": 1,
+      "desc": "Sabor e Arte",
+      "valor": 27,
+      "pag": 9,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781015924887,
+      "cat": 4,
+      "desc": "Amazon Prime Canais",
+      "valor": 35,
+      "pag": 9,
+      "data": "2026-06-09"
+    },
+    {
+      "id": 1781132691151,
+      "cat": 1,
+      "desc": "Mercado",
+      "valor": 60,
+      "pag": 1,
+      "data": "2026-06-10"
+    },
+    {
+      "id": 1781132707489,
+      "cat": 2,
+      "desc": "Cabelo",
+      "valor": 100,
+      "pag": 1,
+      "data": "2026-06-10"
+    },
+    {
+      "id": 1781132727475,
+      "cat": 4,
+      "desc": "Hbo",
+      "valor": 33,
+      "pag": 9,
+      "data": "2026-06-10"
+    },
+    {
+      "id": 1781278846601,
+      "cat": 1,
+      "desc": "Reserva dia dos namorados",
+      "valor": 100,
+      "pag": 5,
+      "data": "2026-06-12"
+    },
+    {
+      "id": 1781278880174,
+      "cat": 1,
+      "desc": "Dia dos namorados",
+      "valor": 300,
+      "pag": 1,
+      "data": "2026-06-12"
+    },
+    {
+      "id": 1781280536838,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 25,
+      "pag": 1,
+      "data": "2026-06-12"
+    },
+    {
+      "id": 1781280557954,
+      "cat": 10,
+      "desc": "Película",
+      "valor": 70,
+      "pag": 1,
+      "data": "2026-06-12"
+    },
+    {
+      "id": 1781379587027,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 35,
+      "pag": 1,
+      "data": "2026-06-13"
+    },
+    {
+      "id": 1781379594245,
+      "cat": 1,
+      "desc": "Arco da velha",
+      "valor": 20,
+      "pag": 1,
+      "data": "2026-06-13"
+    },
+    {
+      "id": 1781463489666,
+      "cat": 4,
+      "desc": "Apple",
+      "valor": 6,
+      "pag": 9,
+      "data": "2026-06-14"
+    },
+    {
+      "id": 1781650873364,
+      "cat": 2,
+      "desc": "Minoxidil",
+      "valor": 70,
+      "pag": 1,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650890582,
+      "cat": 1,
+      "desc": "Energético",
+      "valor": 30,
+      "pag": 5,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650914374,
+      "cat": 5,
+      "desc": "Festa junina",
+      "valor": 35,
+      "pag": 5,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650972681,
+      "cat": 4,
+      "desc": "Meli+",
+      "valor": 60,
+      "pag": 2,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781650993100,
+      "cat": 9,
+      "desc": "Seguros",
+      "valor": 20,
+      "pag": 2,
+      "data": "2026-06-16"
+    },
+    {
+      "id": 1781651053933,
+      "cat": 6,
+      "desc": "Gasolina",
+      "valor": 100,
+      "pag": 1,
+      "data": "2026-06-16"
+    }
+  ],
+  "fechamentos": {
+    "1": 27,
+    "2": 9,
+    "3": 29,
+    "9": 5
+  }
+}
