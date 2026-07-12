@@ -31,6 +31,14 @@
   --shadow:0 1px 3px rgba(15,23,42,.05), 0 1px 2px rgba(15,23,42,.03);
   --shadow-lg:0 10px 30px -12px rgba(15,23,42,.15);
 }
+[data-theme="dark"]{
+  --bg:#020617; --bg2:#0f172a; --bg3:#1e293b;
+  --card:#0f172a; --border:#1e293b; --border-s:#334155;
+  --text:#f1f5f9; --text-s:#cbd5e1; --text-t:#64748b;
+  --green-light:#064e3b; --red-light:#7f1d1d; --amber-light:#78350f; --blue-light:#1e3a8a;
+  --shadow:0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-lg:0 10px 30px -12px rgba(0,0,0,.6);
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
@@ -39,7 +47,7 @@ input[type=number]{-moz-appearance:textfield}
 a{color:inherit}
 
 /* ============ LAYOUT ============ */
-.app{display:flex;min-height:100vh;max-width:1500px;margin:0 auto}
+.app{display:flex;min-height:100vh;width:100%}
 aside.sidebar{position:sticky;top:0;height:100vh;width:240px;flex-shrink:0;background:var(--slate-950);color:#e2e8f0;padding:22px 14px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
 .sidebar .brand{display:flex;align-items:center;gap:11px;padding:0 6px 22px}
 .sidebar .brand-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#10b981,#059669);display:grid;place-items:center;font-family:'Outfit';font-weight:800;font-size:18px;color:#052e2b;box-shadow:0 8px 24px -8px rgba(16,185,129,.55)}
@@ -280,6 +288,7 @@ tbody tr:hover{background:var(--bg2)}
       <span id="sync-label-m">…</span>
     </span>
     <button class="btn btn-primary btn-sm" id="btn-salvar-m" onclick="githubSave()" style="display:none">☁</button>
+    <button class="btn btn-ghost btn-sm" onclick="toggleTheme()" title="Tema" id="btn-theme-m">🌙</button>
     <button class="btn btn-ghost btn-sm" onclick="showConfig()" title="GitHub">⚙</button>
   </div>
 </div>
@@ -308,6 +317,7 @@ tbody tr:hover{background:var(--bg2)}
         <span id="sync-label">Carregando…</span>
       </span>
       <button class="nav-item" id="btn-salvar" onclick="githubSave()" style="display:none;color:#6ee7b7"><span class="ic">☁</span>Salvar no GitHub</button>
+      <button class="nav-item" onclick="toggleTheme()" id="btn-theme"><span class="ic" id="theme-ic">🌙</span><span id="theme-lbl">Modo escuro</span></button>
       <button class="nav-item" onclick="showConfig()"><span class="ic">⚙</span>Configurar GitHub</button>
     </div>
   </aside>
@@ -1564,8 +1574,24 @@ function delGasto(id){ ensureGastos(); if(!confirm('Remover este lançamento?'))
   document.getElementById('g-ano').value = now.getFullYear();
   let rt;
   window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>reRenderActive(),200); });
+  // Tema (dark/light)
+  const savedTheme = localStorage.getItem('mf_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  applyTheme(savedTheme);
   githubLoad();
 })();
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('mf_theme', t);
+  const isDark = t==='dark';
+  const ic = document.getElementById('theme-ic'); if(ic) ic.textContent = isDark?'☀':'🌙';
+  const lbl = document.getElementById('theme-lbl'); if(lbl) lbl.textContent = isDark?'Modo claro':'Modo escuro';
+  const m = document.getElementById('btn-theme-m'); if(m) m.textContent = isDark?'☀':'🌙';
+  if(typeof reRenderActive==='function') try{ reRenderActive(); }catch(e){}
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme')||'light';
+  applyTheme(cur==='dark'?'light':'dark');
+}
 </script>
 </body>
 </html>
