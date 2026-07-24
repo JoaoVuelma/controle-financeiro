@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:57:12.307Z",
+  "_savedAt": "2026-07-24T23:58:42.393Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -458,6 +458,18 @@
       "faltam": 12,
       "pag": 8,
       "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784937522606,
+      "nome": "Restante do Primo",
+      "cat": 2,
+      "total": 400,
+      "mensal": 400,
+      "parcelas": 1,
+      "faltam": 1,
+      "pag": 5,
+      "inicio": "2026-11-10",
       "pago": false
     }
   ],
