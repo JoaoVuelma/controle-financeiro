@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:48:25.583Z",
+  "_savedAt": "2026-07-24T23:52:37.645Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -427,6 +427,18 @@
       "mensal": 113.85,
       "parcelas": 11,
       "faltam": 11,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784937158553,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 2081.64,
+      "mensal": 173.47,
+      "parcelas": 12,
+      "faltam": 12,
       "pag": 8,
       "inicio": "2026-07-24",
       "pago": false
