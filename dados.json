@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:03:49.566Z",
+  "_savedAt": "2026-07-24T23:05:18.492Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -200,6 +200,30 @@
       "cat": 10,
       "total": 274.33,
       "mensal": 39.19,
+      "parcelas": 7,
+      "faltam": 7,
+      "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934272364,
+      "nome": "ML",
+      "cat": 10,
+      "total": 31.12,
+      "mensal": 7.78,
+      "parcelas": 4,
+      "faltam": 4,
+      "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934317771,
+      "nome": "ML",
+      "cat": 10,
+      "total": 392.63,
+      "mensal": 56.09,
       "parcelas": 7,
       "faltam": 7,
       "pag": 2,
