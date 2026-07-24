@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-06T01:49:32.651Z",
+  "_savedAt": "2026-07-24T21:59:27.954Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -19,6 +19,135 @@
   ],
   "fixas": [],
   "variaveis": [],
-  "gastos": [],
+  "gastos": [
+    {
+      "id": 1784928531432,
+      "cat": 9,
+      "desc": "Anuidade",
+      "valor": 11,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784928550253,
+      "cat": 10,
+      "desc": "Mercado Livre",
+      "valor": 19.01,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784928578008,
+      "cat": 1,
+      "desc": "Cheers",
+      "valor": 50,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784928591933,
+      "cat": 1,
+      "desc": "Tonelo",
+      "valor": 64.73,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784928613952,
+      "cat": 10,
+      "desc": "Mercado livre",
+      "valor": 51.27,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784928631432,
+      "cat": 1,
+      "desc": "Tonello",
+      "valor": 34.69,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930097456,
+      "cat": 5,
+      "desc": "Restaurante",
+      "valor": 122.5,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930120793,
+      "cat": 6,
+      "desc": "uber",
+      "valor": 16.97,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930151830,
+      "cat": 1,
+      "desc": "Alimento",
+      "valor": 70,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930166421,
+      "cat": 6,
+      "desc": "Uber",
+      "valor": 13,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930226352,
+      "cat": 2,
+      "desc": "Remedio Julia",
+      "valor": 150,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930248958,
+      "cat": 6,
+      "desc": "Caxiense",
+      "valor": 11.25,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930258602,
+      "cat": 1,
+      "desc": "Sabor e arte",
+      "valor": 24,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930297807,
+      "cat": 1,
+      "desc": "SanMarino",
+      "valor": 25,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930315684,
+      "cat": 5,
+      "desc": "Cinema",
+      "valor": 36.5,
+      "pag": 3,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784930340607,
+      "cat": 6,
+      "desc": "Caxiense",
+      "valor": 11.25,
+      "pag": 3,
+      "data": "2026-07-24"
+    }
+  ],
   "fechamentos": {}
 }
