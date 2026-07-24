@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:28:11.694Z",
+  "_savedAt": "2026-07-24T23:36:25.548Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -286,6 +286,78 @@
       "parcelas": 5,
       "faltam": 5,
       "pag": 1,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784935897514,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 840.96,
+      "mensal": 105.12,
+      "parcelas": 8,
+      "faltam": 8,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784935979223,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 863,
+      "mensal": 43.15,
+      "parcelas": 20,
+      "faltam": 20,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784936026707,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 935.82,
+      "mensal": 103.98,
+      "parcelas": 9,
+      "faltam": 9,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784936095050,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 3379.85,
+      "mensal": 146.95,
+      "parcelas": 23,
+      "faltam": 23,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784936144167,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 865.04,
+      "mensal": 78.64,
+      "parcelas": 11,
+      "faltam": 11,
+      "pag": 8,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784936192334,
+      "nome": "Credito",
+      "cat": 9,
+      "total": 1252.35,
+      "mensal": 113.85,
+      "parcelas": 11,
+      "faltam": 11,
+      "pag": 8,
       "inicio": "2026-07-24",
       "pago": false
     }
