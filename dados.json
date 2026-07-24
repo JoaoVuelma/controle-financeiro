@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:10:25.123Z",
+  "_savedAt": "2026-07-24T23:15:20.413Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -227,6 +227,54 @@
       "parcelas": 7,
       "faltam": 7,
       "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934793016,
+      "nome": "Prime",
+      "cat": 4,
+      "total": 55.6,
+      "mensal": 13.9,
+      "parcelas": 4,
+      "faltam": 4,
+      "pag": 1,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934836104,
+      "nome": "H&M",
+      "cat": 10,
+      "total": 116.56,
+      "mensal": 58.28,
+      "parcelas": 2,
+      "faltam": 2,
+      "pag": 1,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934869275,
+      "nome": "Farmacia",
+      "cat": 2,
+      "total": 56.44,
+      "mensal": 28.22,
+      "parcelas": 2,
+      "faltam": 2,
+      "pag": 1,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784934910275,
+      "nome": "H&M",
+      "cat": 10,
+      "total": 216.5,
+      "mensal": 43.3,
+      "parcelas": 5,
+      "faltam": 5,
+      "pag": 1,
       "inicio": "2026-07-24",
       "pago": false
     }
