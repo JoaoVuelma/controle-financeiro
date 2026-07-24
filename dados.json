@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:36:25.548Z",
+  "_savedAt": "2026-07-24T23:45:44.030Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -34,6 +34,46 @@
       "pag": 1,
       "inicio": "2026-07-24",
       "fim": "2026-07-24"
+    },
+    {
+      "id": 1784936557447,
+      "desc": "Faculdade",
+      "cat": 3,
+      "limite": 520,
+      "valor": 520,
+      "pag": "",
+      "inicio": "2026-07-24",
+      "fim": "2026-12-24"
+    },
+    {
+      "id": 1784936616258,
+      "desc": "Serviços",
+      "cat": 4,
+      "limite": 200,
+      "valor": 200,
+      "pag": "",
+      "inicio": "2026-07-24",
+      "fim": ""
+    },
+    {
+      "id": 1784936679771,
+      "desc": "Transporte",
+      "cat": 6,
+      "limite": 200,
+      "valor": 200,
+      "pag": "",
+      "inicio": "2026-07-24",
+      "fim": ""
+    },
+    {
+      "id": 1784936732531,
+      "desc": "Lazer",
+      "cat": 5,
+      "limite": 400,
+      "valor": 400,
+      "pag": "",
+      "inicio": "2026-07-24",
+      "fim": ""
     }
   ],
   "variaveis": [
