@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T22:43:22.318Z",
+  "_savedAt": "2026-07-24T23:01:30.674Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -30,10 +30,10 @@
       "id": 1784930509146,
       "nome": "Amazon",
       "cat": 10,
-      "total": 94.66,
+      "total": 141.99,
       "mensal": 47.33,
-      "parcelas": 2,
-      "faltam": 2,
+      "parcelas": 3,
+      "faltam": 3,
       "pag": 3,
       "inicio": "2026-07-24",
       "pago": false
@@ -131,6 +131,54 @@
       "parcelas": 58,
       "faltam": 58,
       "pag": 9,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784933502219,
+      "nome": "H&M",
+      "cat": 10,
+      "total": 132.16,
+      "mensal": 33.04,
+      "parcelas": 4,
+      "faltam": 4,
+      "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784933572490,
+      "nome": "Vava",
+      "cat": 10,
+      "total": 30.18,
+      "mensal": 10.06,
+      "parcelas": 3,
+      "faltam": 3,
+      "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784933615859,
+      "nome": "ML",
+      "cat": 10,
+      "total": 235.1,
+      "mensal": 23.51,
+      "parcelas": 10,
+      "faltam": 10,
+      "pag": 2,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784933911634,
+      "nome": "ML",
+      "cat": 10,
+      "total": 55.08,
+      "mensal": 27.54,
+      "parcelas": 2,
+      "faltam": 2,
+      "pag": 2,
       "inicio": "2026-07-24",
       "pago": false
     }
@@ -326,6 +374,46 @@
       "desc": "Amazon",
       "valor": 10,
       "pag": 9,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784933372387,
+      "cat": 10,
+      "desc": "Meli",
+      "valor": 68.15,
+      "pag": 2,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784933402284,
+      "cat": 4,
+      "desc": "Meli+",
+      "valor": 20,
+      "pag": 2,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784933429788,
+      "cat": 4,
+      "desc": "Seguro",
+      "valor": 11.59,
+      "pag": 2,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784933518814,
+      "cat": 4,
+      "desc": "Seguros",
+      "valor": 11,
+      "pag": 2,
+      "data": "2026-07-24"
+    },
+    {
+      "id": 1784933534163,
+      "cat": 4,
+      "desc": "Premiere",
+      "valor": 48,
+      "pag": 2,
       "data": "2026-07-24"
     }
   ],
