@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T22:35:38.698Z",
+  "_savedAt": "2026-07-24T22:43:22.318Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -118,6 +118,18 @@
       "mensal": 19.64,
       "parcelas": 7,
       "faltam": 7,
+      "pag": 9,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784932864227,
+      "nome": "DINDIN",
+      "cat": 7,
+      "total": 1740,
+      "mensal": 30,
+      "parcelas": 58,
+      "faltam": 58,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
