@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:05:18.492Z",
+  "_savedAt": "2026-07-24T23:10:25.123Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -56,8 +56,8 @@
       "cat": 10,
       "total": 290.22,
       "mensal": 48.37,
-      "parcelas": 6,
-      "faltam": 6,
+      "parcelas": 7,
+      "faltam": 7,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -68,8 +68,8 @@
       "cat": 10,
       "total": 142.24,
       "mensal": 20.32,
-      "parcelas": 7,
-      "faltam": 7,
+      "parcelas": 8,
+      "faltam": 8,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -80,8 +80,8 @@
       "cat": 10,
       "total": 167,
       "mensal": 41.75,
-      "parcelas": 4,
-      "faltam": 4,
+      "parcelas": 5,
+      "faltam": 5,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -92,8 +92,8 @@
       "cat": 10,
       "total": 72.46,
       "mensal": 36.23,
-      "parcelas": 2,
-      "faltam": 2,
+      "parcelas": 3,
+      "faltam": 3,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -104,8 +104,8 @@
       "cat": 10,
       "total": 40.62,
       "mensal": 6.77,
-      "parcelas": 6,
-      "faltam": 6,
+      "parcelas": 7,
+      "faltam": 7,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -116,8 +116,8 @@
       "cat": 10,
       "total": 137.48,
       "mensal": 19.64,
-      "parcelas": 7,
-      "faltam": 7,
+      "parcelas": 8,
+      "faltam": 8,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
