@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T21:59:27.954Z",
+  "_savedAt": "2026-07-24T22:03:37.323Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -18,7 +18,32 @@
     }
   ],
   "fixas": [],
-  "variaveis": [],
+  "variaveis": [
+    {
+      "id": 1784930509146,
+      "nome": "Amazon",
+      "cat": 10,
+      "total": 94.66,
+      "mensal": 47.33,
+      "parcelas": 2,
+      "faltam": 2,
+      "pag": 3,
+      "inicio": "2026-07-24",
+      "pago": false
+    },
+    {
+      "id": 1784930613290,
+      "nome": "Airbnb",
+      "cat": 5,
+      "total": 72.93,
+      "mensal": 72.93,
+      "parcelas": 1,
+      "faltam": 1,
+      "pag": 3,
+      "inicio": "2026-07-24",
+      "pago": false
+    }
+  ],
   "gastos": [
     {
       "id": 1784928531432,
