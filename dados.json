@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-07-24T23:58:42.393Z",
+  "_savedAt": "2026-07-25T00:06:07.254Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -28,6 +28,20 @@
       "desc": "Credito",
       "valor": 1400,
       "inicio": "2026-07-24",
+      "fim": "2026-07-24"
+    },
+    {
+      "id": 1784937948202,
+      "desc": "Primeira Decimo",
+      "valor": 1200,
+      "inicio": "2026-11-24",
+      "fim": "2026-11-24"
+    },
+    {
+      "id": 1784937968793,
+      "desc": "Segunda Decimo",
+      "valor": 1000,
+      "inicio": "2026-12-24",
       "fim": "2026-07-24"
     }
   ],
@@ -66,8 +80,8 @@
       "id": 1784936679771,
       "desc": "Transporte",
       "cat": 6,
-      "limite": 200,
-      "valor": 200,
+      "limite": 175,
+      "valor": 175,
       "pag": "",
       "inicio": "2026-07-24",
       "fim": ""
@@ -96,8 +110,8 @@
       "id": 1784936844896,
       "desc": "Saude",
       "cat": 2,
-      "limite": 100,
-      "valor": 100,
+      "limite": 80,
+      "valor": 80,
       "pag": "",
       "inicio": "2026-07-24",
       "fim": ""
