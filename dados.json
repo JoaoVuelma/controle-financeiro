@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-21T12:14:01.720Z",
+  "_savedAt": "2026-08-21T12:22:06.258Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -537,6 +537,18 @@
       "parcelas": 6,
       "faltam": 6,
       "pag": 1,
+      "inicio": "2026-08-21",
+      "pago": false
+    },
+    {
+      "id": 1787314932366,
+      "nome": "Dindin 2",
+      "cat": 7,
+      "total": 0,
+      "mensal": 35,
+      "parcelas": 59,
+      "faltam": 59,
+      "pag": 9,
       "inicio": "2026-08-21",
       "pago": false
     }
@@ -1172,6 +1184,30 @@
       "desc": "Ifood CLub",
       "valor": 12,
       "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314513045,
+      "cat": 9,
+      "desc": "Credito pego do cartão meli",
+      "valor": 436.61,
+      "pag": 2,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314528405,
+      "cat": 4,
+      "desc": "Meli",
+      "valor": 20,
+      "pag": 2,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314679212,
+      "cat": 4,
+      "desc": "Seguros",
+      "valor": 60,
+      "pag": 2,
       "data": "2026-08-21"
     }
   ],
