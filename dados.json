@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-21T12:08:50.728Z",
+  "_savedAt": "2026-08-21T12:12:08.146Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -1088,6 +1088,78 @@
       "desc": "Anuidade",
       "valor": 11,
       "pag": 3,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314180704,
+      "cat": 9,
+      "desc": "Credito pego do cartão",
+      "valor": 468.56,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314198268,
+      "cat": 5,
+      "desc": "Gastos da viagem",
+      "valor": 31,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314217638,
+      "cat": 2,
+      "desc": "Barber",
+      "valor": 100,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314249080,
+      "cat": 1,
+      "desc": "mErcado?",
+      "valor": 38,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314260617,
+      "cat": 5,
+      "desc": "Burritos",
+      "valor": 138,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314274176,
+      "cat": 4,
+      "desc": "Youtube",
+      "valor": 4,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314297056,
+      "cat": 9,
+      "desc": "Credito pego do cartão",
+      "valor": 745,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314320217,
+      "cat": 4,
+      "desc": "YOutube premium",
+      "valor": 17,
+      "pag": 1,
+      "data": "2026-08-21"
+    },
+    {
+      "id": 1787314323915,
+      "cat": 4,
+      "desc": "Ifood CLub",
+      "valor": 12,
+      "pag": 1,
       "data": "2026-08-21"
     }
   ],
