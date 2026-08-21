@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-21T12:31:41.322Z",
+  "_savedAt": "2026-08-21T12:32:50.931Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -548,6 +548,18 @@
       "mensal": 35,
       "parcelas": 59,
       "faltam": 59,
+      "pag": 9,
+      "inicio": "2026-08-21",
+      "pago": false
+    },
+    {
+      "id": 1787315557849,
+      "nome": "FOOOO FIghters",
+      "cat": 5,
+      "total": 792,
+      "mensal": 158.4,
+      "parcelas": 5,
+      "faltam": 5,
       "pag": 9,
       "inicio": "2026-08-21",
       "pago": false
