@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-21T12:12:08.146Z",
+  "_savedAt": "2026-08-21T12:14:01.720Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -526,6 +526,18 @@
       "faltam": 1,
       "pag": 5,
       "inicio": "2026-11-10",
+      "pago": false
+    },
+    {
+      "id": 1787314427631,
+      "nome": "Ifood farmacia",
+      "cat": 2,
+      "total": 199,
+      "mensal": 33.17,
+      "parcelas": 6,
+      "faltam": 6,
+      "pag": 1,
+      "inicio": "2026-08-21",
       "pago": false
     }
   ],
