@@ -18,20 +18,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Configurar Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          
       - name: Instalar dependências
         run: npm install
+        working-directory: ./meu-financeiro  # <--- Ensina o GitHub a entrar na pasta
+        
       - name: Compilar projeto (Build)
         run: npm run build
+        working-directory: ./meu-financeiro  # <--- Ensina o GitHub a compilar na pasta
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        
       - name: Fazer upload da pasta dist
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './meu-financeiro/dist'      # <--- Pega o resultado de dentro da pasta
+          
       - name: Fazer Deploy
         id: deployment
         uses: actions/deploy-pages@v4
