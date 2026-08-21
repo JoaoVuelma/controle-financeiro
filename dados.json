@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-21T12:32:50.931Z",
+  "_savedAt": "2026-08-21T12:33:52.157Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -560,6 +560,18 @@
       "mensal": 158.4,
       "parcelas": 5,
       "faltam": 5,
+      "pag": 9,
+      "inicio": "2026-08-21",
+      "pago": false
+    },
+    {
+      "id": 1787315636103,
+      "nome": "Fautra Banri PArcelada",
+      "cat": 9,
+      "total": 356,
+      "mensal": 89,
+      "parcelas": 4,
+      "faltam": 4,
       "pag": 9,
       "inicio": "2026-08-21",
       "pago": false
