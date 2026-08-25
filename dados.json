@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-22T21:45:42.158Z",
+  "_savedAt": "2026-08-25T17:53:43.182Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -581,6 +581,18 @@
       "faltam": 4,
       "pag": 9,
       "inicio": "2026-08-21",
+      "pago": false
+    },
+    {
+      "id": 1787680423059,
+      "nome": "Renner",
+      "cat": 10,
+      "total": 246.89,
+      "mensal": 35.27,
+      "parcelas": 7,
+      "faltam": 7,
+      "pag": 5,
+      "inicio": "2026-09-25",
       "pago": false
     }
   ],
