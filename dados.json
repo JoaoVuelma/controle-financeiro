@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-09-15T17:26:08.511Z",
+  "_savedAt": "2026-09-15T17:35:17.753Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -544,7 +544,7 @@
     },
     {
       "id": 1787315636103,
-      "nome": "Fautra Banri PArcelada",
+      "nome": "Fautra Santander PArcelada",
       "cat": 9,
       "total": 356,
       "mensal": 89,
@@ -575,6 +575,18 @@
       "parcelas": 6,
       "faltam": 5,
       "pag": 7,
+      "inicio": "2026-10-10",
+      "pago": false
+    },
+    {
+      "id": 1789493715972,
+      "nome": "Fautra MELI PArcelada",
+      "cat": 9,
+      "total": 0,
+      "mensal": 116,
+      "parcelas": 5,
+      "faltam": 5,
+      "pag": 2,
       "inicio": "2026-10-10",
       "pago": false
     }
