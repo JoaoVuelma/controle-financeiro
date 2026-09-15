@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/meu-financeiro-app/',
+  // Mude para o nome exato do repositório onde está a página:
+  base: '/controle-financeiro/',
+
   build: {
     outDir: 'dist',
   }
