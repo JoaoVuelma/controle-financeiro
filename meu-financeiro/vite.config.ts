@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/controle-financeiro/'
+  base: '/meu-financeiro-app/',
+  build: {
+    outDir: 'dist',
+  }
 })
