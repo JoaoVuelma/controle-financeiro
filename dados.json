@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-09-15T17:22:25.016Z",
+  "_savedAt": "2026-09-15T17:24:13.921Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -61,7 +61,7 @@
     {
       "id": 1784938486328,
       "desc": "Vale",
-      "valor": 1050,
+      "valor": 1250,
       "inicio": "2026-09-24",
       "fim": "2026-11-24"
     },
@@ -279,18 +279,6 @@
       "mensal": 19.64,
       "parcelas": 8,
       "faltam": 8,
-      "pag": 9,
-      "inicio": "2026-07-24",
-      "pago": false
-    },
-    {
-      "id": 1784932864227,
-      "nome": "DINDIN",
-      "cat": 7,
-      "total": 1740,
-      "mensal": 30,
-      "parcelas": 58,
-      "faltam": 58,
       "pag": 9,
       "inicio": "2026-07-24",
       "pago": false
@@ -524,18 +512,6 @@
       "pago": false
     },
     {
-      "id": 1784937522606,
-      "nome": "Restante do Primo",
-      "cat": 2,
-      "total": 400,
-      "mensal": 400,
-      "parcelas": 1,
-      "faltam": 1,
-      "pag": 5,
-      "inicio": "2026-11-10",
-      "pago": false
-    },
-    {
       "id": 1787314427631,
       "nome": "Ifood farmacia",
       "cat": 2,
@@ -544,18 +520,6 @@
       "parcelas": 6,
       "faltam": 6,
       "pag": 1,
-      "inicio": "2026-08-21",
-      "pago": false
-    },
-    {
-      "id": 1787314932366,
-      "nome": "Dindin 2",
-      "cat": 7,
-      "total": 0,
-      "mensal": 35,
-      "parcelas": 59,
-      "faltam": 59,
-      "pag": 9,
       "inicio": "2026-08-21",
       "pago": false
     },
