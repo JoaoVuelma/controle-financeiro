@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-08-27T20:36:07.065Z",
+  "_savedAt": "2026-09-15T17:22:25.016Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -61,7 +61,7 @@
     {
       "id": 1784938486328,
       "desc": "Vale",
-      "valor": 1250,
+      "valor": 1050,
       "inicio": "2026-09-24",
       "fim": "2026-11-24"
     },
@@ -593,6 +593,18 @@
       "faltam": 7,
       "pag": 5,
       "inicio": "2026-09-25",
+      "pago": false
+    },
+    {
+      "id": 1789492921573,
+      "nome": "banri",
+      "cat": 9,
+      "total": 200,
+      "mensal": 40,
+      "parcelas": 6,
+      "faltam": 5,
+      "pag": 7,
+      "inicio": "2026-10-10",
       "pago": false
     }
   ],
