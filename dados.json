@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-09-15T18:02:15.764Z",
+  "_savedAt": "2026-09-18T12:06:15.840Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -106,6 +106,13 @@
       "valor": 65,
       "inicio": "2026-09-15",
       "fim": "2026-09-15"
+    },
+    {
+      "id": 1789733121498,
+      "desc": "Valor",
+      "valor": 2000,
+      "inicio": "2026-09-18",
+      "fim": "2026-09-18"
     }
   ],
   "fixas": [
@@ -631,6 +638,18 @@
       "faltam": 3,
       "pag": 1,
       "inicio": "2026-09-15",
+      "pago": false
+    },
+    {
+      "id": 1789733173619,
+      "nome": "Parcela Valor",
+      "cat": 11,
+      "total": 2000,
+      "mensal": 250,
+      "parcelas": 8,
+      "faltam": 8,
+      "pag": 5,
+      "inicio": "2026-10-18",
       "pago": false
     }
   ],
