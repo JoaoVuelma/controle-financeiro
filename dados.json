@@ -1,6 +1,6 @@
 {
   "_version": 1,
-  "_savedAt": "2026-09-24T13:41:12.655Z",
+  "_savedAt": "2026-09-25T12:54:59.578Z",
   "receitas": [
     {
       "id": 1783301954238,
@@ -671,6 +671,18 @@
       "faltam": 8,
       "pag": 5,
       "inicio": "2026-10-18",
+      "pago": false
+    },
+    {
+      "id": 1790340873015,
+      "nome": "Viagem",
+      "cat": 5,
+      "total": 800,
+      "mensal": 800,
+      "parcelas": 1,
+      "faltam": 1,
+      "pag": 5,
+      "inicio": "2026-09-25",
       "pago": false
     }
   ],
